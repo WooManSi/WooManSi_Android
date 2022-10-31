@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "77436335834",
+    "project_id": "woomansi",
+    "storage_bucket": "woomansi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77436335834:android:8c9d143570ac37c006d7e3",
+        "android_client_info": {
+          "package_name": "com.example.woomansi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77436335834-hqb5cpq76vdhtthbvcsfpe0cikh435bk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0bYODRdCNMK7XjUv4_EZMgByn9RF3uGA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77436335834-hqb5cpq76vdhtthbvcsfpe0cikh435bk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
