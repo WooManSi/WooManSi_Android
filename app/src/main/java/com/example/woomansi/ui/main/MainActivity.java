@@ -1,10 +1,11 @@
-package com.example.woomansi;
+package com.example.woomansi.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
+import com.example.woomansi.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
