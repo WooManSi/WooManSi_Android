@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/dialog_addGroup_createGroupButton"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingStart="23dp"
+        android:drawableStart="@drawable/ic_add_black"
+        android:drawablePadding="25dp"
+        android:text="그룹 생성하기"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20.26sp"
+        android:textAlignment="textStart"
+        android:background="#FFFFFF"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/dialog_addGroup_joinGroupButton"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingStart="23dp"
+        android:drawableStart="@drawable/ic_join_group"
+        android:drawablePadding="25dp"
+        android:text="그룹 참여하기"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20.26sp"
+        android:textAlignment="textStart"
+        android:background="#FFFFFF"/>
+</LinearLayout>
