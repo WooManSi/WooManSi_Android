@@ -1,4 +1,4 @@
-package com.example.woomansi.ui.main;
+package com.example.woomansi.ui.screen.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

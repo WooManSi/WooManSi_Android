@@ -1,4 +1,4 @@
-package com.example.woomansi.ui.main;
+package com.example.woomansi.ui.screen.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,20 +9,20 @@ import androidx.fragment.app.Fragment;
 
 import com.example.woomansi.R;
 
-public class Main2Fragment extends Fragment {
+public class Main3Fragment extends Fragment {
 
-    public Main2Fragment() {
+    public Main3Fragment() {
         // Required empty public constructor
     }
 
-    public static Main2Fragment newInstance() {
-        return new Main2Fragment();
+    public static Main3Fragment newInstance() {
+        return new Main3Fragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main2, container, false);
+        return inflater.inflate(R.layout.fragment_main3, container, false);
     }
 }

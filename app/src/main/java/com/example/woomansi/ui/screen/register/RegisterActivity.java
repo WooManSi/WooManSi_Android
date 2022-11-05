@@ -1,4 +1,4 @@
-package com.example.woomansi.ui.register;
+package com.example.woomansi.ui.screen.register;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
