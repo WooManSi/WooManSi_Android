@@ -29,12 +29,13 @@ public class MainActivity extends AppCompatActivity {
     private void changeFragment(int itemId) {
         Fragment fragment = getFragmentByItemId(itemId);
 
-        if (fragment == null)
+        if (fragment == null) {
             return;
+        }
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_main, fragment)
-                .commit();
+            .replace(R.id.content_main, fragment)
+            .commit();
     }
 
     private Fragment getFragmentByItemId(int itemId) {
