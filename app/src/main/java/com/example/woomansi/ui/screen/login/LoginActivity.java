@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.woomansi.R;
+import com.example.woomansi.ui.screen.main.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -32,38 +33,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        join = findViewById(R.id.goto_signup);
-        login = findViewById(R.id.btn_login);
-        email_login = findViewById(R.id.LoginActivity_et_Id_Text);
-        pwd_login = findViewById(R.id.LoginActivity_et_Pw_Text);
 
-        firebaseAuth = firebaseAuth.getInstance();
-
-        login.setOnClickListener(new View.OnClickListener() {
+        TextView tw_goto_register = findViewById(R.id.LoginActivity_tv_goto_signup);
+        tw_goto_register.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String email = email_login.getText().toString().trim();
-                String pwd = pwd_login.getText().toString().trim();
-
-                firebaseAuth.signInWithEmailAndPassword(email, pwd)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);    //메인화면 넘어가기
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "로그인 오류", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-
-            }
-        });
-
-        join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                //회원가입 화면으로 이동
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }

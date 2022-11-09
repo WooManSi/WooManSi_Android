@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray100">
+    android:background="@color/gray100"
+    tools:context=".ui.screen.login.RegisterActivity">
 
 
   <TextView
@@ -40,7 +41,7 @@
           android:ems="12"
           android:hint="test@example.com"
           android:imeOptions="actionDone"
-          android:inputType="text"
+          android:inputType="textEmailAddress"
           android:padding="8dp" />
 
       <EditText
