@@ -23,7 +23,7 @@ public class GroupCreateActivity extends AppCompatActivity {
 
     ImageButton cancelBtn;
     Button createGroupBtn;
-
+/*
     //아래로는 캘린더 코드
     Calendar myCalendar = Calendar.getInstance();
 
@@ -39,7 +39,7 @@ public class GroupCreateActivity extends AppCompatActivity {
         myCalendar.set(Calendar.MONTH, month);
         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         updateEndDate();
-    };
+    };*/
 
     //onCreate 함수
     @Override
@@ -69,7 +69,7 @@ public class GroupCreateActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+/*
         //시작 날짜
         EditText start_Date = (EditText) findViewById(R.id.editStartDate);
         start_Date.setOnClickListener(new View.OnClickListener() {
@@ -119,8 +119,9 @@ public class GroupCreateActivity extends AppCompatActivity {
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.show();
             }
-        });
+        });*/
     }
+/*
 
     private void updateStartDate() {
         String myFormat = "yyyy년 MM월 dd일 (E)";    // 출력형식: 2022년 11월 1일 (화)
@@ -137,6 +138,7 @@ public class GroupCreateActivity extends AppCompatActivity {
         EditText end_date = (EditText) findViewById(R.id.editEndDate);
         end_date.setText(sdf.format(myCalendar.getTime()));
     }
+*/
 
 }
 

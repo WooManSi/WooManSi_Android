@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginBottom="50dp">
+        android:layout_above="@id/bottom_nav">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -79,52 +79,14 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="#f3f2f2"
-        android:paddingTop="2dp"
-        android:orientation="horizontal">
-
-
-        <ImageButton
-            android:id="@+id/ic_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:minHeight="48dp"
-            app:srcCompat="@drawable/ic_home" />
-
-        <ImageButton
-            android:id="@+id/ic_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:minHeight="48dp"
-            app:srcCompat="@drawable/ic_group" />
-
-        <ImageButton
-            android:id="@+id/ic_alarm_not_exist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:minHeight="48dp"
-            app:srcCompat="@drawable/ic_alarm_not_exist" />
-
-        <ImageButton
-            android:id="@+id/ic_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:minHeight="48dp"
-            app:srcCompat="@drawable/ic_setting" />
-
-    </LinearLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+      android:id="@+id/bottom_nav"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      app:menu="@menu/menu_main"
+      app:itemIconTint="@color/selector_menu_color"
+      app:itemTextColor="#222222"/>
 
 </RelativeLayout>
 
