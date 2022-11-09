@@ -62,15 +62,12 @@ public class RegisterActivity extends AppCompatActivity {
 
                             //setvalue : database에 insert 하는 행위
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
-                            Button tw_goto_register = findViewById(R.id.RegisterActivity_et_Signup_button);
-                            tw_goto_register.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
+
                                     //회원가입 화면으로 이동
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                     startActivity(intent);
-                                }
-                            });
+                                    finish();
+
                             Toast.makeText(RegisterActivity.this, "회원가입에 성공 하셨습니다.", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(RegisterActivity.this, "회원가입에 실패 하셨습니다.", Toast.LENGTH_SHORT).show();
