@@ -55,6 +55,17 @@
           android:imeOptions="actionDone"
           android:inputType="textPassword"
           android:padding="8dp" />
+      <EditText
+          android:id="@+id/RegisterActivity_et_Nickname_Text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="16dp"
+          android:background="@drawable/round_border"
+          android:ems="12"
+          android:hint="닉네임"
+          android:imeOptions="actionDone"
+          android:inputType="text"
+          android:padding="8dp" />
 
       <Button
           android:id="@+id/RegisterActivity_et_Signup_button"

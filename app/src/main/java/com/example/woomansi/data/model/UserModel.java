@@ -1,16 +1,16 @@
-package com.example.woomansi.ui.screen.login;
+package com.example.woomansi.data.model;
 
 /**
  * 사용자 계정 정보 모델 클래스
  */
-public class UserAccount {
+public class UserModel {
 
     private String idToken;         //  Firebase Uid(고유 토큰정보)
     private String emailId;         //  이메일 아이디
     private String password;        // 비밀번호
+    private String nickname;
 
-
-    public UserAccount() {    }         //파이어베이스 realtime database 를 사용할때 빈 생성자를 만들어 줘야해서 추가.
+    public UserModel() {    }         //파이어베이스 realtime database 를 사용할때 빈 생성자를 만들어 줘야해서 추가.
 
 //getter and setter 세팅
     public String getEmailId() {    return emailId;    }
@@ -24,4 +24,8 @@ public class UserAccount {
     public String getIdToken() {        return idToken;    }
 
     public void setIdToken(String idToken) {        this.idToken = idToken;    }
+
+    public String getNickname() {        return nickname;    }
+
+    public void setNickname(String nickname) {        this.nickname = nickname;    }
 }
