@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.woomansi.ListView.MemberListAdapter;
+import com.example.woomansi.ui.adapter.MemberListAdapter;
 import com.example.woomansi.R;
 
 import java.util.ArrayList;

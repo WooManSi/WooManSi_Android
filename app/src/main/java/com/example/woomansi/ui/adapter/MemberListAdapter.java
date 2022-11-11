@@ -1,4 +1,4 @@
-package com.example.woomansi.ListView;
+package com.example.woomansi.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
