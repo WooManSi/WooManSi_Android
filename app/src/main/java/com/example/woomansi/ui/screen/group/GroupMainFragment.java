@@ -1,56 +1,61 @@
-package com.example.woomansi.Activity;
+package com.example.woomansi.ui.screen.group;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.example.woomansi.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-public class GroupMainActivity extends AppCompatActivity {
+public class GroupMainFragment extends Fragment {
 
     ImageButton backBtn;
     ImageButton plusBtn;
     BottomSheetDialog dialog_addGroup;
     Dialog dialog_joinGroup;
-    BottomNavigationView bottomNav;
+
+    public static GroupMainFragment newInstance() {
+        GroupMainFragment gmf = new GroupMainFragment();
+        Bundle bundle = new Bundle();
+//        bundle.putInt("number", number);
+        gmf.setArguments(bundle);
+        return new GroupMainFragment();
+    }
+
+    public GroupMainFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_main);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_group_main, container, false);
 
-        backBtn = findViewById(R.id.groupMain_backButton);
-        plusBtn = findViewById(R.id.groupMain_plusButton);
+        backBtn = v.findViewById(R.id.groupMain_backButton);
+        plusBtn = v.findViewById(R.id.groupMain_plusButton);
         plusBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
                 showAddGroupDialog();
             }
         });
 
-        dialog_addGroup = new BottomSheetDialog(GroupMainActivity.this);
+        dialog_addGroup = new BottomSheetDialog(v.getContext());
         dialog_addGroup.setContentView(R.layout.dialog_add_group);
 
-        dialog_joinGroup = new Dialog(GroupMainActivity.this);
+        dialog_joinGroup = new Dialog(v.getContext());
         dialog_joinGroup.setContentView(R.layout.dialog_join_group);
         dialog_joinGroup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-
-        bottomNav = findViewById(R.id.bottom_nav);
-        bottomNav.setOnItemSelectedListener(item -> {
-            changeFragment(item.getItemId());
-            return true;
-        });
-        bottomNav.setSelectedItemId(R.id.item_home);
+        return v;
     }
+
 
     public void showAddGroupDialog(){
         dialog_addGroup.show(); // 다이얼로그 띄우기
@@ -60,7 +65,7 @@ public class GroupMainActivity extends AppCompatActivity {
         addGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GroupCreateActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), GroupCreateActivity.class);
                 startActivity(intent);
             }
         });
@@ -98,30 +103,5 @@ public class GroupMainActivity extends AppCompatActivity {
                  */
             }
         });
-    }
-
-    private void changeFragment(int itemId) {
-        Fragment fragment = getFragmentByItemId(itemId);
-
-        if (fragment == null)
-            return;
-
-        getSupportFragmentManager().beginTransaction()
-            .replace(R.id.content_main, fragment)
-            .commit();
-    }
-
-    private Fragment getFragmentByItemId(int itemId) {
-        switch (itemId) {
-/*            case R.id.item_home:
-                return Main1Fragment.newInstance();
-            case R.id.item_group:
-                return Main2Fragment.newInstance();
-            case R.id.item_notification:
-                return Main3Fragment.newInstance();
-            case R.id.item_account:
-                return Main4Fragment.newInstance();*/
-        }
-        return null;
     }
 }

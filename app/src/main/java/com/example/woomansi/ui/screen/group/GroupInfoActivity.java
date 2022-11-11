@@ -1,4 +1,4 @@
-package com.example.woomansi.Activity;
+package com.example.woomansi.ui.screen.group;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -7,10 +7,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.woomansi.R;
+import com.example.woomansi.ui.screen.main.MainActivity;
 
 public class GroupInfoActivity extends AppCompatActivity {
 
@@ -56,7 +55,8 @@ public class GroupInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO: 누르면 해당 사용자는 그룹에서 탈퇴되며, 사용자의 그룹리스트에서 해당그룹이 삭제됨.
-                Intent intent = new Intent(getApplicationContext(), GroupMainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("전환할 화면", "그룹");
                 startActivity(intent);
             }
         });

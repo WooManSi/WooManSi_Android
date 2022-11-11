@@ -1,12 +1,16 @@
 package com.example.woomansi.ui.screen.main;
 
+import android.content.Intent;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
 import com.example.woomansi.R;
+import com.example.woomansi.ui.screen.group.GroupMainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +27,16 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(item.getItemId());
             return true;
         });
-        bottomNav.setSelectedItemId(R.id.item_home);
+
+        String fragment = getIntent().getStringExtra("전환할 화면");
+
+        if(Objects.equals(fragment, "그룹"))
+        {
+            bottomNav.setSelectedItemId(R.id.item_group);
+        }
+        else {
+            bottomNav.setSelectedItemId(R.id.item_home);
+        }
     }
 
     private void changeFragment(int itemId) {
@@ -43,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.item_home:
                 return Main1Fragment.newInstance();
             case R.id.item_group:
-                return Main2Fragment.newInstance();
+                return GroupMainFragment.newInstance();
             case R.id.item_notification:
                 return Main3Fragment.newInstance();
             case R.id.item_account:

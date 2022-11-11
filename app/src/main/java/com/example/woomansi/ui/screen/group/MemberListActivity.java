@@ -1,4 +1,4 @@
-package com.example.woomansi.Activity;
+package com.example.woomansi.ui.screen.group;
 
 import android.os.Bundle;
 
