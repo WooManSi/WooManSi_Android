@@ -55,9 +55,7 @@ public class GroupInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO: 누르면 해당 사용자는 그룹에서 탈퇴되며, 사용자의 그룹리스트에서 해당그룹이 삭제됨.
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("전환할 화면", "그룹");
-                startActivity(intent);
+                finish();
             }
         });
     }

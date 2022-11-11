@@ -1,4 +1,4 @@
-package com.example.woomansi.ui.screen.group;
+package com.example.woomansi.ui.screen.main;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.fragment.app.Fragment;
 import com.example.woomansi.R;
+import com.example.woomansi.ui.screen.group.GroupCreateActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class GroupMainFragment extends Fragment {
@@ -21,13 +22,7 @@ public class GroupMainFragment extends Fragment {
     BottomSheetDialog dialog_addGroup;
     Dialog dialog_joinGroup;
 
-    public static GroupMainFragment newInstance() {
-        GroupMainFragment gmf = new GroupMainFragment();
-        Bundle bundle = new Bundle();
-//        bundle.putInt("number", number);
-        gmf.setArguments(bundle);
-        return new GroupMainFragment();
-    }
+    public static GroupMainFragment newInstance() { return new GroupMainFragment(); }
 
     public GroupMainFragment() {
         // Required empty public constructor

@@ -28,9 +28,7 @@ public class GroupCreateActivity extends AppCompatActivity {
         cancelBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("전환할 화면", "그룹");
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -42,9 +40,7 @@ public class GroupCreateActivity extends AppCompatActivity {
                 /*TODO: 그룹명, 비밀번호, 날짜데이터 들어왔는지 모두 검사하고,
                    정상이면 서버에 그룹데이터 넣고 사용자 그룹리스트에 그룹 추가해줌.
                  */
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("전환할 화면", "그룹");
-                startActivity(intent);
+                finish();
             }
         });
     }
