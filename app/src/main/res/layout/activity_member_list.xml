@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F2F2"
+    android:paddingTop="15dp">
+
+    <ImageButton
+        android:id="@+id/groupMain_backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:background="@android:color/transparent"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/ic_arrow_back_black" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/groupMain_backButton"
+        android:layout_marginTop="7dp"
+        android:text="멤버 리스트"
+        android:textAppearance="@style/black_bold"
+        android:textSize="25dp" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@id/groupMain_backButton"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/group_leader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/divider2"
+        android:text="그룹장"
+        android:textAppearance="@style/black_bold"
+        android:textSize="20dp" />
+
+    <RelativeLayout
+        android:id="@+id/groupLeaderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_margin="15dp"
+        android:layout_below="@id/group_leader"
+        android:background="@drawable/rectangle_round_white"
+        android:elevation="10dp"
+        android:paddingStart="15dp">
+
+        <TextView
+            android:id="@+id/member_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableStart="@drawable/ic_profile"
+            android:drawablePadding="20dp"
+            android:gravity="center"
+            android:text="이름 들어가는 곳"
+            android:textAppearance="@style/black_bold"
+            android:textSize="20dp" />
+
+
+        <ImageView
+            android:id="@+id/crown_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_crown" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/group_member"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/groupLeaderLayout"
+        android:text="멤버(4)"
+        android:textAppearance="@style/black_bold"
+        android:textSize="20dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/memberRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/group_member" />
+
+</RelativeLayout>

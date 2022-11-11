@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_margin="20dp"
+    android:paddingStart="15dp"
+    android:background="@drawable/rectangle_round_white"
+    android:elevation="10dp">
+
+
+    <TextView
+        android:id="@+id/member_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:drawableStart="@drawable/ic_profile"
+        android:drawablePadding="20dp"
+        android:gravity="center"
+        android:text="사용자 이름"
+        android:textAppearance="@style/black_bold"
+        android:textSize="20dp" />
+
+
+    <ImageView
+        android:id="@+id/crown_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_crown"
+        android:background="@android:color/transparent" />
+
+</RelativeLayout>

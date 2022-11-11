@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="text_white_bold">
+
+        <item name="android:textColor">
+            #FFF
+        </item>
+
+        <item name="android:shadowColor">
+            #40000000
+        </item>
+
+        <item name="android:shadowDx">
+            0
+        </item>
+
+        <item name="android:shadowDy">
+            4
+        </item>
+
+        <item name="android:shadowRadius">
+            4
+        </item>
+
+        <item name="android:textStyle">
+            bold
+        </item>
+
+    </style>
+
+    <style name="black_bold">
+
+        <item name="android:textColor">
+            @color/black
+        </item>
+
+        <item name="android:textStyle">
+            bold
+        </item>
+
+    </style>
+
+    <style name="gray_bold">
+
+        <item name="android:textColor">
+            #a0a0a0
+        </item>
+
+        <item name="android:textStyle">
+            bold
+        </item>
+
+    </style>
+
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:paddingStart="15dp"
+    android:paddingTop="15dp"
+    android:paddingEnd="15dp"
+    android:paddingBottom="5dp"
+    android:background="@drawable/rectangle_round_white"
+    android:elevation="10dp">
+
+    <TextView
+      android:id="@+id/Exit"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:text="그룹을 찾지 못하였습니다.\n다시 입력해주세요!"
+      android:textAppearance="@style/black_bold"
+      android:textSize="20dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/accept_join_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="다시하기"
+            android:textColor="#F69F38"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:background="@android:color/transparent"/>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_button"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/accept_join_button"
+            android:text="취소"
+            android:textColor="#F69F38"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:background="@android:color/transparent"/>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

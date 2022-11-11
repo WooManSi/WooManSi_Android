@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">WooManSi</string>
+    <string name="my_group">나의 그룹들</string>
+    <string name="group_not_exist">현재 그룹이 존재하지 않습니다.\n우측 상단 버튼을 통해 그룹을 추가해주세요!</string>
+    <string name="group_name">사인페</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
