@@ -34,7 +34,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.My
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_member,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_member,parent,false);
         return new MyViewHolder(view);
     }
 
