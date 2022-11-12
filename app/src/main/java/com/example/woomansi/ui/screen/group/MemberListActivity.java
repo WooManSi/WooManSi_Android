@@ -30,7 +30,7 @@ public class MemberListActivity extends AppCompatActivity {
         list.add("유OO");
         list.add("강OO");
 
-        recyclerView1 = (RecyclerView)findViewById(R.id.memberRecyclerView);
+        recyclerView1 = findViewById(R.id.memberRecyclerView);
         recyclerView1.setLayoutManager(new LinearLayoutManager(this));
         recyclerView1.setAdapter(new MemberListAdapter(list));
     }

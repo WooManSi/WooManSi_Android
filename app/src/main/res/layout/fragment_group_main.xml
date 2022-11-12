@@ -54,6 +54,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ListView
+              android:id="@+id/groupMain_lv_listView"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="10dp"
+              android:clipToPadding="false"
+              android:scrollbarStyle="outsideOverlay"
+              android:scrollbarSize="10dp"
+              android:divider="#00000000"
+              android:dividerHeight="15dp" />
+
             <ImageView
                 android:id="@+id/groupMain_iv_questionIcon"
                 android:layout_width="wrap_content"

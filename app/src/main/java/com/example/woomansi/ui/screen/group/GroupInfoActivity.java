@@ -13,8 +13,8 @@ import com.example.woomansi.ui.screen.main.MainActivity;
 
 public class GroupInfoActivity extends AppCompatActivity {
 
-    Button exitGroupBtn;
-    Dialog dialog_exitGroup;
+    private Button exitGroupBtn;
+    private Dialog dialog_exitGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
