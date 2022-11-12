@@ -10,7 +10,6 @@
     android:elevation="10dp">
 
     <TextView
-      android:id="@+id/Exit"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
@@ -25,7 +24,7 @@
         android:layout_alignParentBottom="true">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/accept_join_button"
+            android:id="@+id/dialog_joinGroupFail_btn_retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -37,10 +36,10 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cancel_button"
+            android:id="@+id/dialog_joinGroupFail_btn_cancel"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/accept_join_button"
+            android:layout_toLeftOf="@id/dialog_joinGroupFail_btn_retry"
             android:text="취소"
             android:textColor="#F69F38"
             android:textStyle="bold"

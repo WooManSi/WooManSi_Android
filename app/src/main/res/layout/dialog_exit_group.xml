@@ -24,7 +24,7 @@
         android:layout_alignParentBottom="true">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/dialog_exitGroup_acceptExitButton"
+            android:id="@+id/dialog_exitGroup_btn_acceptExit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -36,10 +36,10 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/dialog_exitGroup_cancelButton"
+            android:id="@+id/dialog_exitGroup_btn_cancel"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/dialog_exitGroup_acceptExitButton"
+            android:layout_toLeftOf="@id/dialog_exitGroup_btn_acceptExit"
             android:text="취소"
             android:textColor="#F69F38"
             android:textStyle="bold"

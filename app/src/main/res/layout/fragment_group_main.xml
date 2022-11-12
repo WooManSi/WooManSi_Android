@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/groupMain_tv_groupNotExist"
                 android:layout_centerHorizontal="true"
-                app:srcCompat="@drawable/ic_question" />
+                app:srcCompat="@drawable/ic_question_white" />
 
             <TextView
                 android:id="@+id/groupMain_tv_groupNotExist"

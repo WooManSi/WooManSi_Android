@@ -9,14 +9,13 @@
     android:background="@drawable/rectangle_round_white"
     android:elevation="10dp">
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/listItemGroup_groupName"
+            android:id="@+id/listItemGroup_tv_groupName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="그룹명"
@@ -24,7 +23,7 @@
             android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/listItemGroup_groupCreatedDate"
+            android:id="@+id/listItemGroup_tv_groupCreatedDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="그룹생성날짜"
@@ -33,13 +32,13 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/listItemGroup_enterGroupButton"
+        android:id="@+id/listItemGroup_ib_enterGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_arrow_right_gray"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"/>
 
 </RelativeLayout>
