@@ -44,7 +44,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/editGroupName"
+            android:id="@+id/groupCreate_et_editGroupName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -55,7 +55,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editGroupPassword"
+            android:id="@+id/groupCreate_et_editGroupPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

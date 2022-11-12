@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
     android:layout_height="70dp"
     android:layout_marginTop="20dp"
     android:layout_marginLeft="20dp"
@@ -9,17 +10,24 @@
     android:background="@drawable/rectangle_round_white"
     android:elevation="10dp">
 
+    <ImageView
+      android:id="@+id/listItemMember_profile"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:srcCompat="@drawable/ic_profile"
+      android:layout_centerVertical="true"
+      />
 
     <TextView
-        android:id="@+id/member_info"
+        android:id="@+id/listItemMember_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:drawableStart="@drawable/ic_profile"
-        android:drawablePadding="20dp"
+        android:layout_toRightOf="@id/listItemMember_profile"
+        android:layout_marginStart="20dp"
         android:gravity="center"
         android:text="사용자 이름"
         android:textAppearance="@style/black_bold"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
 </RelativeLayout>
