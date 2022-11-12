@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/bottomSheet_groupInfo_btn_memberList"
+      android:textStyle="bold"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:paddingStart="23dp"
+      android:background="#FFFFFF"
+      android:drawablePadding="25dp"
+      android:drawableStart="@drawable/ic_group"
+      android:text="멤버 리스트 확인"
+      android:textAlignment="textStart"
+      android:textColor="@color/black"
+      android:textSize="20.26sp" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bottomSheet_groupInfo_btn_groupInfo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingStart="23dp"
+        android:drawableStart="@drawable/ic_question_black"
+        android:drawablePadding="25dp"
+        android:text="그룹 정보 및 탈퇴"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20.26sp"
+        android:textAlignment="textStart"
+        android:background="#FFFFFF"/>
+</LinearLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="#F3F2F2">
+
+  <ImageView
+    android:id="@+id/groupDetail_iv_vote"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_vote" />
+
+  <ImageView
+    android:id="@+id/groupDetail_iv_groupInfo"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_marginEnd="12dp"
+    app:layout_constraintBottom_toBottomOf="@+id/groupDetail_iv_vote"
+    app:layout_constraintEnd_toStartOf="@+id/groupDetail_iv_vote"
+    app:srcCompat="@drawable/ic_group_info" />
+
+  <TextView
+    android:id="@+id/groupDetail_tv_groupName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:text="그룹명"
+    android:textAppearance="@style/black_bold"
+    android:textSize="25sp"
+    app:layout_constraintBottom_toBottomOf="@+id/groupDetail_iv_groupInfo"
+    app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
