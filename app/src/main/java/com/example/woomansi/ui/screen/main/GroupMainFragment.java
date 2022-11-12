@@ -8,19 +8,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import com.example.woomansi.R;
+import com.example.woomansi.data.model.GroupModel;
+import com.example.woomansi.ui.adapter.GroupListAdapter;
 import com.example.woomansi.ui.screen.group.GroupCreateActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import java.util.ArrayList;
 
 public class GroupMainFragment extends Fragment {
 
-    ImageButton backBtn;
-    ImageButton plusBtn;
-    BottomSheetDialog dialog_addGroup;
-    Dialog dialog_joinGroup;
+    private ImageButton backBtn;
+    private ImageButton plusBtn;
+    private BottomSheetDialog dialog_addGroup;
+    private Dialog dialog_joinGroup;
+
+    private ArrayList<GroupModel> groupDataList;
+    private ListView listView;
 
     public static GroupMainFragment newInstance() { return new GroupMainFragment(); }
 
@@ -33,8 +43,8 @@ public class GroupMainFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_group_main, container, false);
 
-        backBtn = v.findViewById(R.id.groupMain_backButton);
-        plusBtn = v.findViewById(R.id.groupMain_plusButton);
+        backBtn = v.findViewById(R.id.groupMain_ib_backButton);
+        plusBtn = v.findViewById(R.id.groupMain_ib_plusButton);
         plusBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
                 showAddGroupDialog();
@@ -47,6 +57,30 @@ public class GroupMainFragment extends Fragment {
         dialog_joinGroup = new Dialog(v.getContext());
         dialog_joinGroup.setContentView(R.layout.dialog_join_group);
         dialog_joinGroup.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        this.InitializeGroupData();
+
+        listView = v.findViewById(R.id.groupMain_lv_listView);
+        final GroupListAdapter groupListAdapter = new GroupListAdapter(v.getContext(), groupDataList);
+
+        listView.setAdapter(groupListAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id){
+                groupListAdapter.getItem(position).getGroupName();
+
+            }
+        });
+
+        ImageView questionIcon = v.findViewById(R.id.groupMain_iv_questionIcon);
+        TextView groupNotExist = v.findViewById(R.id.groupMain_tv_groupNotExist);
+
+        //그룹이 있을경우 그룹을 생성해달라는 경고창을 비활성화.
+        if(!groupDataList.isEmpty()) {
+            questionIcon.setVisibility(View.INVISIBLE);
+            groupNotExist.setVisibility(View.INVISIBLE);
+        }
 
         return v;
     }
@@ -98,5 +132,15 @@ public class GroupMainFragment extends Fragment {
                  */
             }
         });
+    }
+
+    public void InitializeGroupData()
+    {
+        groupDataList = new ArrayList<GroupModel>();
+
+        //TODO : 현재는 임시값, 나중에는 로그인 한 사용자의 그룹 리스트를 불러와 초기화해주기.
+        for(int i = 1; i <= 10; i++) {
+            groupDataList.add(new GroupModel("그룹" + i, "groupPassword", "2022.11.13"));
+        }
     }
 }
