@@ -3,11 +3,14 @@ package com.example.woomansi.ui.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.GroupModel;
+import com.example.woomansi.ui.screen.main.GroupMainFragment.ImageItemClickListener;
 import java.util.ArrayList;
 
 public class GroupListAdapter extends BaseAdapter {
@@ -15,11 +18,12 @@ public class GroupListAdapter extends BaseAdapter {
     Context mContext = null;
     LayoutInflater mLayoutInflater = null;
     ArrayList<GroupModel> group;
+    private ImageItemClickListener mImageItemClickListener;
 
     public GroupListAdapter(Context context, ArrayList<GroupModel> data) {
       mContext = context;
-      group = data;
       mLayoutInflater = LayoutInflater.from(mContext);
+      group = data;
     }
 
     @Override
@@ -41,12 +45,26 @@ public class GroupListAdapter extends BaseAdapter {
     public View getView(int position, View converView, ViewGroup parent) {
       View view = mLayoutInflater.inflate(R.layout.list_item_groups, null);
 
-      TextView groupName = view.findViewById(R.id.listItemGroup_groupName);
-      TextView groupCreateDate = view.findViewById(R.id.listItemGroup_groupCreatedDate);
+      TextView groupName = view.findViewById(R.id.listItemGroup_tv_groupName);
+      TextView groupCreateDate = view.findViewById(R.id.listItemGroup_tv_groupCreatedDate);
 
       groupName.setText(group.get(position).getGroupName());
       groupCreateDate.setText(group.get(position).getGroupCreateDate());
 
+      ImageButton enterGroup = view.findViewById(R.id.listItemGroup_ib_enterGroup);
+      enterGroup.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          if (mImageItemClickListener != null) {
+            mImageItemClickListener.onImageItemClick(position);
+          }
+        }
+      });
+
       return view;
+    }
+
+    public void setImageItemClickListener(ImageItemClickListener a_listener) {
+      mImageItemClickListener = a_listener;
     }
 }
