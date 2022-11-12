@@ -41,7 +41,7 @@ public class GroupCreateActivity extends AppCompatActivity {
         editGroupPassword = findViewById(R.id.groupCreate_et_editGroupPassword);
 
         //취소 버튼
-        cancelBtn = findViewById(R.id.groupCreate_cancelButton);
+        cancelBtn = findViewById(R.id.groupCreate_btn_cancel);
         cancelBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -50,7 +50,7 @@ public class GroupCreateActivity extends AppCompatActivity {
         });
 
         //그룹생성 버튼
-        createGroupBtn = findViewById(R.id.groupCreate_createGroupButton);
+        createGroupBtn = findViewById(R.id.groupCreate_btn_createGroup);
         createGroupBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
