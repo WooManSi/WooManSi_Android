@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.example.woomansi.R;
+import com.example.woomansi.data.model.GroupModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class GroupDetailActivity extends AppCompatActivity {
@@ -20,14 +21,17 @@ public class GroupDetailActivity extends AppCompatActivity {
   private ImageView vote;
   private BottomSheetDialog dialog_groupInfo;
   private BottomSheetDialog dialog_vote;
+  private GroupModel group;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.fragment_group_detail);
 
+      group = (GroupModel) getIntent().getSerializableExtra("group");
+
       groupName = findViewById(R.id.groupDetail_tv_groupName);
-      groupName.setText(getIntent().getStringExtra("그룹명"));
+      groupName.setText(group.getGroupName());
 
       groupInfo = findViewById(R.id.groupDetail_iv_groupInfo);
       groupInfo.setOnClickListener(new View.OnClickListener(){
@@ -61,6 +65,7 @@ public class GroupDetailActivity extends AppCompatActivity {
       public void onClick(View view) {
         dialog_groupInfo.dismiss();
         Intent intent = new Intent(getApplicationContext(), MemberListActivity.class);
+        intent.putExtra("group", group);
         startActivity(intent);
       }
     });
@@ -71,12 +76,9 @@ public class GroupDetailActivity extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         dialog_groupInfo.dismiss();
-        Bundle extras = new Bundle();
-        extras.putString("그룹명", getIntent().getStringExtra("그룹명"));
-        extras.putString("비밀번호", getIntent().getStringExtra("비밀번호"));
 
         Intent intent = new Intent(getApplicationContext(), GroupInfoActivity.class);
-        intent.putExtras(extras);
+        intent.putExtra("group", group);
         startActivity(intent);
       }
     });
