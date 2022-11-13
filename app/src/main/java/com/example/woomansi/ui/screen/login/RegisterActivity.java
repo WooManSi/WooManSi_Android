@@ -1,16 +1,12 @@
 package com.example.woomansi.ui.screen.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,14 +14,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;          //파이어베이스 인증
-    private DatabaseReference mDatabaseRef;     //실시간 데이터베이스
+    private FirebaseFirestore mFirestore;     //데이터베이스
     private EditText mEtEmail, mEtPwd, mEtname;          //회원가입 입력필드
     private Button mBtnRegister;            //회원가입 버튼
     @Override
@@ -34,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("woomansi");
+        mFirestore = FirebaseFirestore.getInstance();
 
         mEtEmail = findViewById(R.id.RegisterActivity_et_Signup_Id_Text);
         mEtPwd = findViewById(R.id.RegisterActivity_et_Signup_Pw_Text);
@@ -60,8 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setPassword(strPwd);
                             account.setNickname(strName);
 
-                            //setvalue : database에 insert 하는 행위
-                            mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
+                            mFirestore.collection("users")
+                                    .add(account);
 
                                     //회원가입 화면으로 이동
                                     finish();

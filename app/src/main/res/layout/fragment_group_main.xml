@@ -71,7 +71,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/groupMain_tv_groupNotExist"
                 android:layout_centerHorizontal="true"
-                app:srcCompat="@drawable/ic_question_white" />
+                app:srcCompat="@drawable/ic_question_white"
+                android:visibility="invisible"/>
 
             <TextView
                 android:id="@+id/groupMain_tv_groupNotExist"
@@ -83,7 +84,8 @@
                 android:text="@string/group_not_exist"
                 android:textAppearance="@style/text_white_bold"
                 android:textSize="16sp"
-                android:translationY="-0.93sp" />
+                android:translationY="-0.93sp"
+                android:visibility="invisible"/>
 
         </RelativeLayout>
 
