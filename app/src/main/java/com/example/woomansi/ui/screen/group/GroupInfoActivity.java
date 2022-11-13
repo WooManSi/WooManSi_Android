@@ -108,7 +108,6 @@ public class GroupInfoActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     for (DocumentSnapshot document : task.getResult()) {
                                         DocumentReference d = document.getReference();
-                                        System.out.println(d);
                                         d.delete();
                                     }
                                 }
@@ -129,7 +128,6 @@ public class GroupInfoActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     for (DocumentSnapshot document : task.getResult()) {
                                         DocumentReference d = document.getReference();
-                                        System.out.println(d);
                                         d.update("memberList", memberList);
                                     }
                                 }

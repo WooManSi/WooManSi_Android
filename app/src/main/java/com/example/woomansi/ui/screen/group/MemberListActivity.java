@@ -93,7 +93,7 @@ public class MemberListActivity extends AppCompatActivity {
     {
         memberUidArrayList = group.getMemberList();
         memberUidArrayList.remove(group.getLeaderUid());
-        System.out.println("list 출력: " + memberUidArrayList);
+
         userModelArrayList = new ArrayList<UserModel>();
 
         //가져온 memberUidArray를 이용하여 유저 목록(UserModel) 가져오기
@@ -106,7 +106,7 @@ public class MemberListActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.w(TAG, "InitializeMemberData - 유저 멤버 가져오기 성공.", task.getException());
+                            Log.d(TAG, "InitializeMemberData - 유저 멤버 가져오기 성공.", task.getException());
                             for (DocumentSnapshot document : task.getResult()) {
                                 UserModel member = document.toObject(UserModel.class);
                                 userModelArrayList.add(member);

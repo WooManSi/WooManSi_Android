@@ -187,8 +187,8 @@ public class GroupMainFragment extends Fragment {
             public void onClick(View view) {
                 String groupName = editGroupName.getText().toString();
                 String groupPassword = editGroupPassword.getText().toString();
-                System.out.println(groupName);
-                System.out.println(groupPassword);
+                Log.d(TAG, "그룹 네임 : " + groupName);
+                Log.d(TAG, "그룹 패스워드 : " + groupPassword);
 
                 fireStore.collection("groups")
                     .whereEqualTo("groupName", groupName)
