@@ -7,15 +7,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.example.woomansi.R;
+import com.example.woomansi.data.model.UserModel;
 import java.util.List;
 
 public class MemberListAdapter extends BaseAdapter {
 
     Context mContext = null;
     LayoutInflater mLayoutInflater = null;
-    private List<String> memberList;
+    private List<UserModel> memberList;
 
-    public MemberListAdapter(Context context, List<String> list) {
+    public MemberListAdapter(Context context, List<UserModel> list) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);
         memberList = list;
@@ -32,7 +33,7 @@ public class MemberListAdapter extends BaseAdapter {
     }
 
     @Override
-    public String getItem(int position) {
+    public UserModel getItem(int position) {
         return memberList.get(position);
     }
 
@@ -41,7 +42,7 @@ public class MemberListAdapter extends BaseAdapter {
         View view = mLayoutInflater.inflate(R.layout.list_item_member, null);
 
         TextView memberName = view.findViewById(R.id.listItemMember_tv_name);
-        memberName.setText(memberList.get(position));
+        memberName.setText(memberList.get(position).getNickname());
 
         return view;
     }

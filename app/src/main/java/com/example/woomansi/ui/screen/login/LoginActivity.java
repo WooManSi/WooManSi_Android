@@ -5,14 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.woomansi.R;
 import com.example.woomansi.ui.screen.main.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -78,4 +74,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+/*
+//    아이디 로그인 기록이 있을 때, 앱 재실행 시 바로 메인화면으로 가게 해주는 코드
+//    매번 로그인 하기 귀찮아서 제작. 사용하고 싶을 시 주석 풀고 사용하기
+    @Override
+    protected void onStart() {
+        super.onStart();
+        moveMainPage(mFirebaseAuth.getCurrentUser());
+    }
+
+    private void moveMainPage(FirebaseUser user) {
+        if (user != null) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }*/
 }
