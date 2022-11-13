@@ -24,7 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;          //파이어베이스 인증
     private FirebaseFirestore db;     //실시간 데이터베이스
-    private EditText tl_emailId, tl_password, tl_name;          //회원가입 입력필드
+    private EditText et_emailId, et_password, et_name;          //회원가입 입력필드
     private Button mBtnRegister;            //회원가입 버튼
     private String strName, strEmail, strPwd;
 
@@ -37,9 +37,9 @@ public class RegisterActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        tl_name = findViewById(R.id.RegisterActivity_et_Nickname_Text); //이름
-        tl_emailId = findViewById(R.id.RegisterActivity_et_Signup_Id_Text); //이메일 아이디
-        tl_password = findViewById(R.id.RegisterActivity_et_Signup_Pw_Text); //비밀번호
+        et_name = findViewById(R.id.RegisterActivity_et_Nickname_Text); //이름
+        et_emailId = findViewById(R.id.RegisterActivity_et_Signup_Id_Text); //이메일 아이디
+        et_password = findViewById(R.id.RegisterActivity_et_Signup_Pw_Text); //비밀번호
         mBtnRegister = findViewById(R.id.RegisterActivity_et_Signup_button); //회원가입 완료 버튼
 
 
@@ -48,15 +48,15 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //회원가입 처리 시작
                 //각각의 텍스트에 입력되어 있는 정보를 변수에 저장
-                strName = tl_name.getText().toString();
-                strEmail = tl_emailId.getText().toString();
-                strPwd = tl_password.getText().toString();
+                strName = et_name.getText().toString();
+                strEmail = et_emailId.getText().toString();
+                strPwd =et_password.getText().toString();
 
                 Log.i("name",strName);
                 Log.i("id",strEmail);
                 Log.i("pwd",strPwd);
 
-                if(strName!=null && strEmail!=null && strPwd!=null ){ //모든 칸을 채워야 함
+                if(strName!=null && strEmail!=null && strPwd!=null &&!strEmail.isEmpty() &&!strName.isEmpty() && !strPwd.isEmpty()){ //모든 칸을 채워야 함
                     //Firebase Auth 진행
                     mFirebaseAuth.createUserWithEmailAndPassword(strEmail,strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -66,13 +66,8 @@ public class RegisterActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 //현재 로그인 된 유저를 가지고 오는 변수
                                 FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                                UserModel account = new UserModel();
+                                UserModel account = new UserModel(firebaseUser.getUid(), firebaseUser.getEmail(), strPwd, strName);
                                 //로그인 된 정보를 저장
-                                account.setIdToken(firebaseUser.getUid());
-                                account.setNickname(strName);
-                                account.setEmailId(firebaseUser.getEmail());
-                                account.setPassword(strPwd);
-
                                 //데이터 베이스 TravelRecord에 데이터 삽입
                                 //set은 database에 삽입
                                 //Uid를 키값으로 UserAccount의 데이터를 set
