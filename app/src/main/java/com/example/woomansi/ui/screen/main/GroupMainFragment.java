@@ -61,10 +61,6 @@ public class GroupMainFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public interface ImageItemClickListener {
-        void onImageItemClick(int a_imageResId) ;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -101,15 +97,12 @@ public class GroupMainFragment extends Fragment {
         //리스트 뷰 초기화
         listView = v.findViewById(R.id.groupMain_lv_listView);
         groupListAdapter = new GroupListAdapter(v.getContext(), groupModelArrayList);
-        groupListAdapter.setImageItemClickListener(new ImageItemClickListener() {
-            @Override
-            public void onImageItemClick(int position) {
-                GroupModel groupModel = groupListAdapter.getItem(position);
+        groupListAdapter.setImageItemClickListener(position -> {
+            GroupModel groupModel = groupListAdapter.getItem(position);
 
-                Intent intent = new Intent(getActivity().getApplicationContext(), GroupDetailActivity.class);
-                intent.putExtra("group", groupModel);
-                startActivity(intent);
-            }
+            Intent intent = new Intent(getActivity().getApplicationContext(), GroupDetailActivity.class);
+            intent.putExtra("group", groupModel);
+            startActivity(intent);
         });
 
         //리스트뷰에 Adapter 연결

@@ -8,9 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.GroupModel;
-import com.example.woomansi.ui.screen.main.GroupMainFragment.ImageItemClickListener;
+
 import java.util.ArrayList;
 
 public class GroupListAdapter extends BaseAdapter {
@@ -24,6 +25,10 @@ public class GroupListAdapter extends BaseAdapter {
       mContext = context;
       mLayoutInflater = LayoutInflater.from(mContext);
       group = data;
+    }
+
+    public interface ImageItemClickListener {
+        void onImageItemClick(int a_imageResId) ;
     }
 
     @Override
