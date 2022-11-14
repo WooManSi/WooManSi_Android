@@ -8,21 +8,29 @@
     android:elevation="10dp">
 
 
+    <ImageView
+      android:id="@+id/listItemMemberLeader_iv_profile"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/ic_profile"
+      android:layout_centerVertical="true"
+      />
+
     <TextView
-        android:id="@+id/member_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:drawableStart="@drawable/ic_profile"
-        android:drawablePadding="20dp"
-        android:gravity="center"
-        android:text="사용자 이름"
-        android:textAppearance="@style/black_bold"
-        android:textSize="20dp" />
+      android:id="@+id/listItemMemberLeader_tv_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_toRightOf="@id/listItemMemberLeader_iv_profile"
+      android:layout_marginStart="20dp"
+      android:gravity="center"
+      android:text="사용자 이름"
+      android:textAppearance="@style/black_bold"
+      android:textSize="20sp" />
 
 
     <ImageView
-        android:id="@+id/crown_icon"
+        android:id="@+id/listItemMemberLeader_iv_crown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

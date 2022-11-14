@@ -16,7 +16,7 @@
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/groupMain_backButton"
+                android:id="@+id/groupMain_ib_backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
@@ -26,7 +26,7 @@
                 android:src="@drawable/ic_arrow_back_white" />
 
             <ImageButton
-                android:id="@+id/groupMain_plusButton"
+                android:id="@+id/groupMain_ib_plusButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -40,7 +40,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/myGroups"
+            android:id="@+id/groupMain_tv_myGroups"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
@@ -54,16 +54,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ListView
+              android:id="@+id/groupMain_lv_listView"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="10dp"
+              android:clipToPadding="false"
+              android:scrollbarStyle="outsideOverlay"
+              android:scrollbarSize="10dp"
+              android:divider="#00000000"
+              android:dividerHeight="15dp" />
+
             <ImageView
-                android:id="@+id/questionIcon"
+                android:id="@+id/groupMain_iv_questionIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/groupNotExist"
+                android:layout_above="@id/groupMain_tv_groupNotExist"
                 android:layout_centerHorizontal="true"
-                app:srcCompat="@drawable/ic_question" />
+                app:srcCompat="@drawable/ic_question_white"
+                android:visibility="invisible"/>
 
             <TextView
-                android:id="@+id/groupNotExist"
+                android:id="@+id/groupMain_tv_groupNotExist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -72,7 +84,8 @@
                 android:text="@string/group_not_exist"
                 android:textAppearance="@style/text_white_bold"
                 android:textSize="16sp"
-                android:translationY="-0.93sp" />
+                android:translationY="-0.93sp"
+                android:visibility="invisible"/>
 
         </RelativeLayout>
 

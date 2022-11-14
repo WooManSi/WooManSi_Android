@@ -6,7 +6,7 @@
     android:paddingTop="15dp">
 
     <ImageButton
-        android:id="@+id/groupCreate_cancelButton"
+        android:id="@+id/groupCreate_btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -16,27 +16,27 @@
         android:src="@drawable/ic_cancel" />
 
     <TextView
-        android:id="@+id/Exit"
+        android:id="@+id/groupCreate_tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/groupCreate_cancelButton"
+        android:layout_toRightOf="@id/groupCreate_btn_cancel"
         android:layout_marginTop="7dp"
         android:text="그룹 생성"
         android:textAppearance="@style/black_bold"
         android:textSize="25dp" />
 
     <View
-        android:id="@+id/divider2"
+        android:id="@+id/groupCreate_v_divider2"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:layout_below="@id/groupCreate_cancelButton"
+        android:layout_below="@id/groupCreate_btn_cancel"
         android:layout_marginTop="10dp"
         android:background="?android:attr/listDivider" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/divider2"
+        android:layout_below="@id/groupCreate_v_divider2"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
@@ -44,7 +44,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/editGroupName"
+            android:id="@+id/groupCreate_et_editGroupName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -55,7 +55,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editGroupPassword"
+            android:id="@+id/groupCreate_et_editGroupPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -66,7 +66,7 @@
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/groupCreate_createGroupButton"
+            android:id="@+id/groupCreate_btn_createGroup"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_gravity="center"

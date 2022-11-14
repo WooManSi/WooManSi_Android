@@ -25,7 +25,7 @@
 
 
         <EditText
-            android:id="@+id/dialog_joinGroup_editGroupName"
+            android:id="@+id/dialog_joinGroup_et_GroupName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -39,7 +39,7 @@
             />
 
         <EditText
-            android:id="@+id/dialog_joinGroup_editGroupPassword"
+            android:id="@+id/dialog_joinGroup_et_GroupPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -61,7 +61,7 @@
         android:layout_alignParentBottom="true">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/dialog_joinGroup_acceptJoinButton"
+            android:id="@+id/dialog_joinGroup_btn_acceptJoin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -73,10 +73,10 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/dialog_joinGroup_cancelButton"
+            android:id="@+id/dialog_joinGroup_btn_cancel"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/dialog_joinGroup_acceptJoinButton"
+            android:layout_toLeftOf="@id/dialog_joinGroup_btn_acceptJoin"
             android:text="취소"
             android:textColor="#F69F38"
             android:textStyle="bold"

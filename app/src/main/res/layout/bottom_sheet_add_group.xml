@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/dialog_addGroup_createGroupButton"
+        android:id="@+id/bottomSheet_addGroup_btn_createGroup"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:paddingStart="23dp"
@@ -20,7 +20,7 @@
         android:background="#FFFFFF"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/dialog_addGroup_joinGroupButton"
+        android:id="@+id/bottomSheet_addGroup_btn_joinGroup"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:paddingStart="23dp"

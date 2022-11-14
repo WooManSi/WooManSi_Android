@@ -22,7 +22,11 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        bottomNav.setSelectedItemId(R.id.item_home);
+        //그룹 탈퇴 시 바로 그룹 메인화면으로 보여주기 위함
+        if(getIntent().getStringExtra("group") != null)
+            bottomNav.setSelectedItemId(R.id.item_group);
+        else
+            bottomNav.setSelectedItemId(R.id.item_home);
     }
 
     private void changeFragment(int itemId) {

@@ -1,49 +1,49 @@
 package com.example.woomansi.ui.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.woomansi.R;
-
+import com.example.woomansi.data.model.UserModel;
 import java.util.List;
 
-public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.MyViewHolder> {
+public class MemberListAdapter extends BaseAdapter {
 
-    private List<String> list;
+    Context mContext = null;
+    LayoutInflater mLayoutInflater = null;
+    private List<UserModel> memberList;
 
-    public MemberListAdapter(List<String> list) {
-        this.list = list;
+    public MemberListAdapter(Context context, List<UserModel> list) {
+        mContext = context;
+        mLayoutInflater = LayoutInflater.from(mContext);
+        memberList = list;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        String text = list.get(position);
-        holder.textView1.setText(text);
+    public int getCount() {
+        return memberList.size();
     }
 
     @Override
-    public int getItemCount() {
-        return list.size();
+    public long getItemId(int position) {
+        return position;
     }
 
-    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_member,parent,false);
-        return new MyViewHolder(view);
+    public UserModel getItem(int position) {
+        return memberList.get(position);
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView textView1;
+    @Override
+    public View getView(int position, View converView, ViewGroup parent) {
+        View view = mLayoutInflater.inflate(R.layout.list_item_member, null);
 
-        MyViewHolder(View view){
-            super(view);
-            textView1 = (TextView)view.findViewById(R.id.member_info);
-        }
+        TextView memberName = view.findViewById(R.id.listItemMember_tv_name);
+        memberName.setText(memberList.get(position).getNickname());
+
+        return view;
     }
 }

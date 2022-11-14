@@ -1,37 +1,120 @@
 package com.example.woomansi.ui.screen.group;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.os.Bundle;
-
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.woomansi.ui.adapter.MemberListAdapter;
 import com.example.woomansi.R;
-
+import com.example.woomansi.data.model.GroupModel;
+import com.example.woomansi.data.model.UserModel;
+import com.example.woomansi.ui.adapter.MemberListAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MemberListActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView1;
-    private List<String> list;
+    private ListView listView;
+    private ArrayList<String> memberUidArrayList;
+    private ArrayList<UserModel> userModelArrayList;
+    private MemberListAdapter memberListAdapter;
+    private GroupModel group;
+
+    private TextView memberCount;
+    private ImageButton backBtn;
+    private TextView leaderName;
+
+    private FirebaseAuth auth;
+    private FirebaseFirestore fireStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_list);
 
-        list = new ArrayList<>();
-        list.add("김OO");
-        list.add("이OO");
-        list.add("박OO");
-        list.add("최OO");
-        list.add("유OO");
-        list.add("강OO");
+        auth = FirebaseAuth.getInstance();
+        fireStore = FirebaseFirestore.getInstance();
 
-        recyclerView1 = (RecyclerView)findViewById(R.id.memberRecyclerView);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView1.setAdapter(new MemberListAdapter(list));
+        group = (GroupModel) getIntent().getSerializableExtra("group");
+
+        //멤버 리스트 데이터 초기화
+        this.InitializeMemberData();
+
+        //리스트 뷰 초기화
+        listView = findViewById(R.id.memberList_lv_listView);
+        memberListAdapter = new MemberListAdapter(MemberListActivity.this, userModelArrayList);
+
+        listView.setAdapter(memberListAdapter);
+
+        //멤버 수 세팅
+        memberUidArrayList = group.getMemberList();
+        memberUidArrayList.remove(group.getLeaderUid());
+        memberCount = findViewById(R.id.memberList_tv_memberCount);
+        memberCount.setText("멤버(" + memberUidArrayList.size() + ")");
+
+        //리더 닉네임 셋팅
+        leaderName = findViewById(R.id.memberList_tv_leaderName);
+        fireStore.collection("users")
+            .whereEqualTo("idToken", group.getLeaderUid())
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "MemberList - 그룹 가져오기 성공.", task.getException());
+                        DocumentSnapshot document =  task.getResult().getDocuments().get(0);
+                        UserModel userModel = document.toObject(UserModel.class);
+                        leaderName.setText(userModel.getNickname());
+                    }
+                }
+            });
+
+        //뒤로가기 화살표 버튼
+        backBtn = findViewById(R.id.memberList_ib_backButton);
+        backBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    public void InitializeMemberData()
+    {
+        memberUidArrayList = group.getMemberList();
+        memberUidArrayList.remove(group.getLeaderUid());
+
+        userModelArrayList = new ArrayList<UserModel>();
+
+        //가져온 memberUidArray를 이용하여 유저 목록(UserModel) 가져오기
+        //가져온 userModel을 가지고 유저의 프로필사진, 닉네임 등을 세팅해줌.
+        if(!memberUidArrayList.isEmpty()) {
+            fireStore.collection("users")
+                .whereIn("idToken", memberUidArrayList)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "InitializeMemberData - 유저 멤버 가져오기 성공.", task.getException());
+                            for (DocumentSnapshot document : task.getResult()) {
+                                UserModel member = document.toObject(UserModel.class);
+                                userModelArrayList.add(member);
+                            }
+                            memberListAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+        }
     }
 }
