@@ -12,6 +12,13 @@ public class UserModel {
 
     public UserModel() {    }         //파이어베이스 realtime database 를 사용할때 빈 생성자를 만들어 줘야해서 추가.
 
+    public UserModel(String idToken, String emailId, String password, String nickname) {
+        this.idToken = idToken;
+        this.emailId = emailId;
+        this.password = password;
+        this.nickname = nickname;
+
+    }
 //getter and setter 세팅
     public String getEmailId() {    return emailId;    }
 
