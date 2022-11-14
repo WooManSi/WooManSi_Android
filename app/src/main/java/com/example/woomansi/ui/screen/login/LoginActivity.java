@@ -17,6 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button login;
     private EditText email_login, pwd_login;
     private FirebaseAuth mFirebaseAuth;
-    private DatabaseReference mDatabaseRef;
+    private FirebaseFirestore mDatabaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
         login = findViewById(R.id.LoginActivity_btn_login);
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("woomansi");
+
         email_login = findViewById(R.id.LoginActivity_et_Id_Text);
         pwd_login = findViewById(R.id.LoginActivity_et_Pw_Text);
 
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mDatabaseRef = FirebaseFirestore.getInstance();
                 //로그인 요청
                 String strEmail = email_login.getText().toString();        //문자열로 변환된 입력값을 변수안에 저장
                 String strPwd = pwd_login.getText().toString();
