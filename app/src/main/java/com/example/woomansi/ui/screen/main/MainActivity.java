@@ -54,11 +54,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
-
-    //그룹 fragment 새로고침 용도
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        new GroupMainFragment().refreshAdapter();
-    }
 }
