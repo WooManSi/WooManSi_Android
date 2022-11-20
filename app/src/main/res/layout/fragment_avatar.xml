@@ -8,6 +8,7 @@
     android:padding="10dp" >
 
         <TextView
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="프로필 사진"
@@ -21,18 +22,21 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
                 <ImageView
+                    android:src="@drawable/ic_profile1"
                     android:padding="2dp"
                     android:id="@+id/image1"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"/>
                 <ImageView
+                    android:src="@drawable/ic_profile2"
                     android:padding="2dp"
                     android:id="@+id/image2"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"/>
                 <ImageView
+                    android:src="@drawable/ic_profile3"
                     android:padding="2dp"
                     android:id="@+id/image3"
                     android:layout_width="0dp"
@@ -47,18 +51,21 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
                 <ImageView
+                    android:src="@drawable/ic_profile4"
                     android:padding="2dp"
                     android:id="@+id/image4"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"/>
                 <ImageView
+                    android:src="@drawable/ic_profile5"
                     android:padding="2dp"
                     android:id="@+id/image5"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"/>
                 <ImageView
+                    android:src="@drawable/ic_profile6"
                     android:padding="2dp"
                     android:id="@+id/image6"
                     android:layout_width="0dp"

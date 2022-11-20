@@ -1,5 +1,7 @@
 package com.example.woomansi.data.model;
 
+import android.net.Uri;
+
 import java.net.URI;
 
 /**
@@ -11,11 +13,11 @@ public class UserModel {
     private String emailId;         //  이메일 아이디
     private String password;        // 비밀번호
     private String nickname;
-    private URI profile;
+    private String profile;
 
     public UserModel() {    }         //파이어베이스 realtime database 를 사용할때 빈 생성자를 만들어 줘야해서 추가.
 
-    public UserModel(String idToken, String emailId, String password, String nickname, URI profile) {
+    public UserModel(String idToken, String emailId, String password, String nickname, String profile) {
         this.idToken = idToken;
         this.emailId = emailId;
         this.password = password;
@@ -40,11 +42,11 @@ public class UserModel {
 
     public void setNickname(String nickname) {        this.nickname = nickname;    }
 
-    public URI getProfile() {
+    public String getProfile() {
         return profile;
     }
 
-    public void setProfile(URI profile) {
+    public void setProfile(String profile) {
         this.profile = profile;
     }
 }
