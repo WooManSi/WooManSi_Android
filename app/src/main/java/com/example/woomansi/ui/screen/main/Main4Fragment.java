@@ -43,6 +43,7 @@ public class Main4Fragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.appBar_deleteAccount) {
+            //TODO : 탈퇴 및 계정 삭제 클릭 시 탈퇴화면으로 이동하는 코드. 탈퇴 화면 작성 후에 갈아끼워주기
             Intent intent = new Intent(getActivity().getApplicationContext(), createTimeTableActivity.class);
             startActivity(intent);
         }

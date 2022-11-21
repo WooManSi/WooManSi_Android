@@ -44,6 +44,7 @@ public class Main1Fragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.appBar_plusButton) {
+            //TODO : 내 시간표 화면에서 (+) 버튼 클릭 시 시간표 제작 화면으로 이동하는 코드. 제대로 된 화면 작성후엔 교체해주기.
             Intent intent = new Intent(getActivity().getApplicationContext(), createTimeTableActivity.class);
             startActivity(intent);
         }
