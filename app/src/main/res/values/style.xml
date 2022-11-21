@@ -55,7 +55,7 @@
         </item>
 
         <item name="android:textSize">
-            35sp
+            25sp
         </item>
 
     </style>

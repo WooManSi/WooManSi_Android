@@ -3,11 +3,10 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item
-    android:id="@+id/edit"
+    android:id="@+id/appBar_plusButton"
     android:icon="@drawable/ic_add_white"
-    android:title="추가"
+    android:title="오른쪽버튼"
     app:showAsAction="always">
-
   </item>
 
 </menu>

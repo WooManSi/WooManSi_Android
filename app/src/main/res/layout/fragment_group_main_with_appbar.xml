@@ -4,33 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FF8E2B">
-<!--    #FF8E2B-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <com.google.android.material.appbar.AppBarLayout
-          android:id="@+id/appBar"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:background="#FF8E2B" >
-
-            <com.google.android.material.appbar.MaterialToolbar
-              android:id="@+id/topAppBar"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_margin="10dp"
-              app:title="나의 그룹들"
-              app:titleTextColor="@color/white"
-              app:titleTextAppearance="@style/text_white_bold_title"
-
-              app:menu="@menu/menu_appbar_with_plus_button"/>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-
 
         <RelativeLayout
             android:layout_width="match_parent"
