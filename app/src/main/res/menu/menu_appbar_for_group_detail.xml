@@ -3,7 +3,6 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item
-    android:id="@+id/edit"
     android:icon="@drawable/ic_three_dots"
     android:title="더보기"
     app:showAsAction="always">
@@ -11,13 +10,13 @@
     <menu>
 
       <item
-        android:id="@+id/group"
+        android:id="@+id/appBar_groupInfo"
         android:icon="@drawable/ic_group_info_no_text"
         android:title="그룹정보"
         app:showAsAction="ifRoom" />
 
       <item
-        android:id="@+id/vote"
+        android:id="@+id/appBar_vote"
         android:icon="@drawable/ic_vote_no_text"
         android:title="투표"
         app:showAsAction="always" />

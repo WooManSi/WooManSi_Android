@@ -8,13 +8,13 @@
 
 
   <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBar"
+    android:id="@+id/groupDetail_appBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#F3F2F2" >
 
     <com.google.android.material.appbar.MaterialToolbar
-      android:id="@+id/topAppBar"
+      android:id="@+id/groupDetail_topAppBar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="10dp"
