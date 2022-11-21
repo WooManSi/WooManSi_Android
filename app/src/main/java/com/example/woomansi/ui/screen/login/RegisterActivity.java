@@ -1,5 +1,6 @@
 package com.example.woomansi.ui.screen.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.UserModel;
+import com.example.woomansi.ui.screen.main.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -75,7 +77,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 db.collection("users").document(firebaseUser.getUid()).set(account);
 
                                 Toast.makeText(RegisterActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
-                                finish();
+                                Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
+                                startActivity(intent);
                             } else {
                                 Toast.makeText(RegisterActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
                             }

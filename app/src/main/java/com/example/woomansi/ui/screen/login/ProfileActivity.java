@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,6 +27,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -37,15 +40,14 @@ import java.util.Map;
 public class ProfileActivity extends AppCompatActivity {
     private ImageView imageView;
     private Button button;
-    private ImageView[] mIv = new ImageView[6];
     private int result = 0;
-    private int n_result = 0;
     //private FirebaseStorage mStorage;
     //private FirebaseDatabase mDatabase;
+    private FirebaseFirestore db;
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
 
-    private int customDialog() {
+    private void customDialog() {
         Dialog dialog = new Dialog(ProfileActivity.this);
         dialog.setContentView(R.layout.fragment_avatar);
         dialog.setTitle("custom dialog !!");
@@ -101,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         button_choose_iv.setOnClickListener(view -> dialog.dismiss());
-        return result;
+
     }
 
 
@@ -109,7 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
+        db = FirebaseFirestore.getInstance();
         button = findViewById(R.id.ProfileActivity_bt_profilebtn);
         imageView = findViewById(R.id.ProfileActivity_iv_image);
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -127,8 +129,20 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(ProfileActivity.this, getString(R.string.example, result), Toast.LENGTH_SHORT).show();
-                mDatabaseRef = FirebaseDatabase.getInstance().getReference("woomansi/UserAccount").child(firebaseUser.getUid());
-                mDatabaseRef.child("profile").setValue(getString(R.string.profile,result));
+
+                DocumentReference profileRef = db.collection("users").document(firebaseUser.getUid());
+                profileRef
+                        .update("profile", getString(R.string.profile,result))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(ProfileActivity.this,"프로필 설정 완료",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
+               // mDatabaseRef = FirebaseDatabase.getInstance().getReference("woomansi/UserAccount").child(firebaseUser.getUid());
+               // mDatabaseRef.child("profile").setValue(getString(R.string.profile,result));
                 //DatabaseReference conditionRef = mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("profile");
                 /*StorageReference storageReference = storage.getReference();
                 StorageReference pathReference = storageReference.child(getString(R.string.profile,result));
