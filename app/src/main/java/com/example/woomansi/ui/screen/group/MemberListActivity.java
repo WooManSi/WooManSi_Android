@@ -16,6 +16,7 @@ import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.ui.adapter.MemberListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,7 +32,6 @@ public class MemberListActivity extends AppCompatActivity {
     private GroupModel group;
 
     private TextView memberCount;
-    private ImageButton backBtn;
     private TextView leaderName;
 
     private FirebaseAuth auth;
@@ -40,12 +40,15 @@ public class MemberListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_member_list);
+        setContentView(R.layout.activity_member_list_with_appbar);
 
         auth = FirebaseAuth.getInstance();
         fireStore = FirebaseFirestore.getInstance();
 
         group = (GroupModel) getIntent().getSerializableExtra("group");
+
+        MaterialToolbar topAppBar= findViewById(R.id.memberList_topAppBar);
+        topAppBar.setTitle(group.getGroupName());
 
         //멤버 리스트 데이터 초기화
         this.InitializeMemberData();
@@ -78,15 +81,6 @@ public class MemberListActivity extends AppCompatActivity {
                     }
                 }
             });
-
-        //뒤로가기 화살표 버튼
-        backBtn = findViewById(R.id.memberList_ib_backButton);
-        backBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     public void InitializeMemberData()
