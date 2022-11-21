@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF8E2B">
+<!--    #FF8E2B-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+          android:id="@+id/appBar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="#FF8E2B" >
+
+            <com.google.android.material.appbar.MaterialToolbar
+              android:id="@+id/topAppBar"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="10dp"
+              app:title="나의 그룹들"
+              app:titleTextColor="@color/white"
+              app:titleTextAppearance="@style/text_white_bold_title"
+
+              app:menu="@menu/menu_appbar_with_plus_button"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+              android:id="@+id/groupMain_lv_listView"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="10dp"
+              android:clipToPadding="false"
+              android:scrollbarStyle="outsideOverlay"
+              android:scrollbarSize="10dp"
+              android:divider="#00000000"
+              android:dividerHeight="15dp" />
+
+            <ImageView
+                android:id="@+id/groupMain_iv_questionIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/groupMain_tv_groupNotExist"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/ic_question_white"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/groupMain_tv_groupNotExist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal|top"
+                android:lineSpacingExtra="2sp"
+                android:text="@string/group_not_exist"
+                android:textAppearance="@style/text_white_bold"
+                android:textSize="16sp"
+                android:translationY="-0.93sp"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+      android:id="@+id/imageView2"
+      android:layout_width="200dp"
+      android:layout_height="200dp"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentRight="true"
+      android:layout_marginRight="50dp"
+      android:layout_marginBottom="100dp"
+      app:srcCompat="@drawable/ic_group_background" />
+
+</RelativeLayout>
+
+
+
+

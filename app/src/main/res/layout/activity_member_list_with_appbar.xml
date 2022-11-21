@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:background="#F3F2F2">
+
+    <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/appBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="#F3F2F2">
+
+        <com.google.android.material.appbar.MaterialToolbar
+          android:id="@+id/topAppBar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          app:title="그룹 생성"
+          app:titleTextAppearance="@style/black_bold_title"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/memberList_tv_group_leader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/appBar"
+        android:text="그룹장"
+        android:textAppearance="@style/black_bold"
+        android:textSize="20dp" />
+
+    <RelativeLayout
+      android:id="@+id/memberList_rl_groupLeaderLayout"
+      android:layout_width="match_parent"
+      android:layout_height="70dp"
+      android:layout_margin="15dp"
+      android:layout_below="@id/memberList_tv_group_leader"
+      android:paddingStart="15dp"
+      android:background="@drawable/rectangle_round_white"
+      android:elevation="10dp">
+
+        <ImageView
+          android:id="@+id/memberList_iv_leaderProfile"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerVertical="true"
+          android:src="@drawable/ic_profile" />
+
+        <ImageView
+          android:id="@+id/memberList_iv_crown"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:layout_marginRight="20dp"
+          android:layout_alignParentRight="true"
+          android:layout_centerVertical="true"
+          android:background="@android:color/transparent"
+          android:src="@drawable/ic_crown" />
+
+        <TextView
+          android:id="@+id/memberList_tv_leaderName"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_centerVertical="true"
+          android:layout_toRightOf="@id/memberList_iv_leaderProfile"
+          android:gravity="center"
+          android:text="사용자 이름"
+          android:textAppearance="@style/black_bold"
+          android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/memberList_tv_memberCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/memberList_rl_groupLeaderLayout"
+        android:text="멤버(인원수)"
+        android:textAppearance="@style/black_bold"
+        android:textSize="20dp" />
+
+    <ListView
+      android:id="@+id/memberList_lv_listView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/memberList_tv_memberCount"
+      android:layout_marginTop="15dp"
+      android:paddingLeft="15dp"
+      android:paddingRight="15dp"
+      android:paddingBottom="15dp"
+      android:clipToPadding="false"
+      android:scrollbarStyle="outsideOverlay"
+      android:scrollbarSize="10dp"
+      android:divider="#00000000"
+      android:dividerHeight="15dp" />
+
+</RelativeLayout>
