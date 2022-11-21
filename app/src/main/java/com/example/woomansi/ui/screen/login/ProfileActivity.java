@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.woomansi.R;
@@ -30,6 +31,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
     private ImageView imageView;
@@ -37,8 +40,8 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView[] mIv = new ImageView[6];
     private int result = 0;
     private int n_result = 0;
-    private FirebaseStorage mStorage;
-    private FirebaseDatabase mDatabase;
+    //private FirebaseStorage mStorage;
+    //private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
 
@@ -52,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
         ImageView iv4 = dialog.findViewById(R.id.image4);
         ImageView iv5 = dialog.findViewById(R.id.image5);
         ImageView iv6 = dialog.findViewById(R.id.image6);
-        Button button = dialog.findViewById(R.id.btn_ok);
+        Button button_choose_iv = dialog.findViewById(R.id.btn_ok);
 
         dialog.show();
         iv1.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
                 result = 6;
             }
         });
-        button.setOnClickListener(view -> dialog.dismiss());
+        button_choose_iv.setOnClickListener(view -> dialog.dismiss());
         return result;
     }
 
@@ -111,36 +114,45 @@ public class ProfileActivity extends AppCompatActivity {
         imageView = findViewById(R.id.ProfileActivity_iv_image);
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
+        //FirebaseStorage storage = FirebaseStorage.getInstance();
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {n_result = customDialog();}
-            });
-
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference conditionRef = mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("profile");
-                        StorageReference storageReference = storage.getReference();
-                        StorageReference pathReference = storageReference.child("ic_profile"+n_result+".png");
-                        pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                UserModel account = new UserModel();
-                                String url = uri.toString();
-                                account.setProfile(url);
-                                conditionRef.setValue(account);
-                            }
-                        });
-                        Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
+            public void onClick(View view) {
+                customDialog();
             }
-        }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ProfileActivity.this, getString(R.string.example, result), Toast.LENGTH_SHORT).show();
+                mDatabaseRef = FirebaseDatabase.getInstance().getReference("woomansi/UserAccount").child(firebaseUser.getUid());
+                mDatabaseRef.child("profile").setValue(getString(R.string.profile,result));
+                //DatabaseReference conditionRef = mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("profile");
+                /*StorageReference storageReference = storage.getReference();
+                StorageReference pathReference = storageReference.child(getString(R.string.profile,result));
+
+                pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Toast.makeText(ProfileActivity.this, "다운로드 성공", Toast.LENGTH_SHORT).show();
+                        UserModel account = new UserModel();
+                        String url = uri.toString();
+
+                        Toast.makeText(ProfileActivity.this, url, Toast.LENGTH_SHORT).show();
+
+                        UploadTask uploadTask=pathReference.putFile(uri);
 
 
+                    }
+                });*/
+                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                startActivity(intent);
+
+
+            }
+        });
+    }
+}
 
