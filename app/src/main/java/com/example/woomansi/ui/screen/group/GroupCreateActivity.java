@@ -34,7 +34,6 @@ import java.util.TimeZone;
 
 public class GroupCreateActivity extends AppCompatActivity {
 
-    private ImageButton cancelBtn;
     private Button createGroupBtn;
     private EditText editGroupName;
     private EditText editGroupPassword;
@@ -45,7 +44,7 @@ public class GroupCreateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_create);
+        setContentView(R.layout.activity_group_create_with_appbar);
 
         auth = FirebaseAuth.getInstance();
         fireStore = FirebaseFirestore.getInstance();
@@ -53,14 +52,6 @@ public class GroupCreateActivity extends AppCompatActivity {
         editGroupName = findViewById(R.id.groupCreate_et_editGroupName);
         editGroupPassword = findViewById(R.id.groupCreate_et_editGroupPassword);
 
-        //취소 버튼
-        cancelBtn = findViewById(R.id.groupCreate_btn_cancel);
-        cancelBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         //그룹생성 버튼
         createGroupBtn = findViewById(R.id.groupCreate_btn_createGroup);

@@ -9,12 +9,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,8 +40,6 @@ import java.util.ArrayList;
 
 public class GroupMainFragment extends Fragment {
 
-    private ImageButton backBtn;
-    private ImageButton plusBtn;
     private BottomSheetDialog dialog_addGroup;
     private Dialog dialog_joinGroup;
     private Dialog dialog_failToJoinGroup;
@@ -64,18 +64,10 @@ public class GroupMainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_group_main, container, false);
+        v = inflater.inflate(R.layout.fragment_group_main_with_appbar, container, false);
 
         auth = FirebaseAuth.getInstance();
         fireStore = FirebaseFirestore.getInstance();
-
-        backBtn = v.findViewById(R.id.groupMain_ib_backButton);
-        plusBtn = v.findViewById(R.id.groupMain_ib_plusButton);
-        plusBtn.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view) {
-                showAddGroupDialog();
-            }
-        });
 
         //그룹 추가 다이얼로그
         dialog_addGroup = new BottomSheetDialog(v.getContext());
@@ -128,6 +120,9 @@ public class GroupMainFragment extends Fragment {
             questionIcon.setVisibility(View.INVISIBLE);
             groupNotExist.setVisibility(View.INVISIBLE);
         }
+
+        //appBar의 fragment개별 맞춤 설정
+        setHasOptionsMenu(true);
 
         return v;
     }
@@ -283,5 +278,21 @@ public class GroupMainFragment extends Fragment {
         groupListAdapter = new GroupListAdapter(v.getContext(), groupModelArrayList);
         groupListAdapter.notifyDataSetChanged();
         listView.setAdapter(groupListAdapter);
+    }
+
+    //작성한 맞춤별 menu.xml을 적용해주는 코드
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_appbar_with_plus_btn, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    //topAppBar 속 icon들의 click 이벤트를 담당하는 코드
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.appBar_plusButton) {
+            showAddGroupDialog();
+        }
+        return true;
     }
 }
