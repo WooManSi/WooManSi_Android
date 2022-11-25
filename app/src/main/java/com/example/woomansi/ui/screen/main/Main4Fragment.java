@@ -42,11 +42,11 @@ public class Main4Fragment extends Fragment{
         return new Main4Fragment();
     }
 
-    private ImageView imageView;
-    private Button button;
-    private int num = 0;
+    private ImageView ivProfile;
+    private Button btn;
+
     private int i = 0;
-    private int j = 0;
+
     private int count = 0;
     private int result = 0;
     //private FirebaseStorage mStorage;
@@ -55,7 +55,17 @@ public class Main4Fragment extends Fragment{
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
     private View view;
-    ArrayList idList = new ArrayList();
+
+    private final int[] profiles = new int[] {
+            R.drawable.ic_profile1,
+            R.drawable.ic_profile2,
+            R.drawable.ic_profile3,
+            R.drawable.ic_profile4,
+            R.drawable.ic_profile5,
+            R.drawable.ic_profile6
+    };
+
+
 
     private void customDialog() {
         Dialog dialog = new Dialog(getActivity());
@@ -68,15 +78,16 @@ public class Main4Fragment extends Fragment{
         dialog.show();
 
         for(i = 0; i< count ; i++) {
+            int j = i;
             ImageView iv = (ImageView) g1.getChildAt(i);
             StringBuilder fileName = new StringBuilder("ic_profile");
-            fileName.append(i+1);
+            fileName.append(j+1);
 
             iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    imageView.setImageResource(getResources().getIdentifier(fileName.toString(), "drawable", getActivity().getPackageName()));
-                    result = fileName.toString().compareTo("ic_profile0");
+                    ivProfile.setImageResource(profiles[j]);
+                    result = j;
                     dialog.dismiss();
                 }
             });
@@ -93,21 +104,21 @@ public class Main4Fragment extends Fragment{
         view = inflater.inflate(R.layout.fragment_main4, container, false);
 
         db = FirebaseFirestore.getInstance();
-        button = view.findViewById(R.id.ProfileActivity_bt_profilebtn);
-        imageView = view.findViewById(R.id.ProfileActivity_iv_image);
+        btn = view.findViewById(R.id.ProfileActivity_bt_profilebtn);
+        ivProfile = view.findViewById(R.id.ProfileActivity_iv_image);
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         //FirebaseStorage storage = FirebaseStorage.getInstance();
 
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        ivProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
               customDialog();
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

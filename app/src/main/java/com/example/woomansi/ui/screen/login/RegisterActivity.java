@@ -59,36 +59,37 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.i("pwd", strPwd);
 
                 if (strName != null && strEmail != null && strPwd != null) {
-                    if (!strEmail.isEmpty() && !strName.isEmpty() && !strPwd.isEmpty()) { //모든 칸을 채워야 함
+                    if (strEmail.isEmpty() || strName.isEmpty() || strPwd.isEmpty()) {
+                        //모든 칸을 채워야 함
                         //Firebase Auth 진행
-                        mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                //회원가입이 이루어졌을 때의 처리
-                                //task는 회원가입 처리 후의 결과값
-                                if (task.isSuccessful()) {
-                                    //현재 로그인 된 유저를 가지고 오는 변수
-                                    FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                                    UserModel account = new UserModel(firebaseUser.getUid(), firebaseUser.getEmail(), strPwd, strName, "");
-                                    //로그인 된 정보를 저장
-                                    //데이터 베이스 TravelRecord에 데이터 삽입
-                                    //set은 database에 삽입
-                                    //Uid를 키값으로 UserAccount의 데이터를 set
-                                    //collection-document
-                                    db.collection("users").document(firebaseUser.getUid()).set(account);
-
-                                    Toast.makeText(RegisterActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(RegisterActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    } else {
-                        Toast.makeText(RegisterActivity.this, "모두 입력하세요", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            //회원가입이 이루어졌을 때의 처리
+                            //task는 회원가입 처리 후의 결과값
+                            if (task.isSuccessful()) {
+                                //현재 로그인 된 유저를 가지고 오는 변수
+                                FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+                                UserModel account = new UserModel(firebaseUser.getUid(), firebaseUser.getEmail(), strPwd, strName, "");
+                                //로그인 된 정보를 저장
+                                //데이터 베이스 TravelRecord에 데이터 삽입
+                                //set은 database에 삽입
+                                //Uid를 키값으로 UserAccount의 데이터를 set
+                                //collection-document
+                                db.collection("users").document(firebaseUser.getUid()).set(account);
 
+                                Toast.makeText(RegisterActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(RegisterActivity.this, "모두 입력하세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
