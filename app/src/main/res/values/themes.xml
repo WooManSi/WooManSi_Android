@@ -14,4 +14,17 @@
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="Theme.WooManSi.Button.Round" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/round_border</item>
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+
+    <style name="Theme.WooManSi.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/round_border</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.item_home:
                 return Main1Fragment.newInstance();
             case R.id.item_group:
-                return GroupMainFragment.newInstance();
+                return Main2Fragment.newInstance();
             case R.id.item_notification:
                 return Main3Fragment.newInstance();
             case R.id.item_account:
