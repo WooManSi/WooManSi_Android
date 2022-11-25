@@ -18,6 +18,7 @@ import android.app.Dialog;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.woomansi.ui.screen.login.ProfileActivity;
@@ -44,7 +45,7 @@ public class Main4Fragment extends Fragment{
 
     private ImageView ivProfile;
     private Button btn;
-
+    private TextView tvprofile;
     private int i = 0;
 
     private int count = 0;
@@ -87,7 +88,7 @@ public class Main4Fragment extends Fragment{
                 @Override
                 public void onClick(View view) {
                     ivProfile.setImageResource(profiles[j]);
-                    result = j;
+                    result = j+1;
                     dialog.dismiss();
                 }
             });
@@ -101,15 +102,16 @@ public class Main4Fragment extends Fragment{
         //appBar의 fragment개별 맞춤 설정
         setHasOptionsMenu(true);
 
-        view = inflater.inflate(R.layout.fragment_main4, container, false);
 
+        view = inflater.inflate(R.layout.fragment_main4, container, false);
+        tvprofile = view.findViewById(R.id.textView2);
         db = FirebaseFirestore.getInstance();
         btn = view.findViewById(R.id.ProfileActivity_bt_profilebtn);
         ivProfile = view.findViewById(R.id.ProfileActivity_iv_image);
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-        //FirebaseStorage storage = FirebaseStorage.getInstance();
 
+        tvprofile.setVisibility(View.INVISIBLE);
 
         ivProfile.setOnClickListener(new View.OnClickListener() {
             @Override

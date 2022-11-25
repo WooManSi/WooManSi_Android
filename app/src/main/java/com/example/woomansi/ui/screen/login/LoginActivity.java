@@ -76,18 +76,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-/*
-//    아이디 로그인 기록이 있을 때, 앱 재실행 시 바로 메인화면으로 가게 해주는 코드
-//    매번 로그인 하기 귀찮아서 제작. 사용하고 싶을 시 주석 풀고 사용하기
-    @Override
-    protected void onStart() {
-        super.onStart();
-        moveMainPage(mFirebaseAuth.getCurrentUser());
-    }
 
-    private void moveMainPage(FirebaseUser user) {
-        if (user != null) {
-            startActivity(new Intent(this, MainActivity.class));
-        }
-    }*/
 }
