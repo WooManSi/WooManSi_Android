@@ -1,4 +1,4 @@
-package com.example.woomansi.ui.screen.login;
+package com.example.woomansi.ui.screen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,9 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.woomansi.R;
-import com.example.woomansi.ui.screen.main.MainActivity;
+import com.example.woomansi.ui.screen.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class SplashActivity extends AppCompatActivity {

@@ -32,7 +32,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.screen.login.SplashActivity"
+            android:name=".ui.screen.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
