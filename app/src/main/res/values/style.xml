@@ -28,6 +28,38 @@
 
     </style>
 
+    <style name="text_white_bold_title">
+
+        <item name="android:textColor">
+            #FFFFFF
+        </item>
+
+        <item name="android:shadowColor">
+            #40000000
+        </item>
+
+        <item name="android:shadowDx">
+            0
+        </item>
+
+        <item name="android:shadowDy">
+            4
+        </item>
+
+        <item name="android:shadowRadius">
+            4
+        </item>
+
+        <item name="android:textStyle">
+            bold
+        </item>
+
+        <item name="android:textSize">
+            25sp
+        </item>
+
+    </style>
+
     <style name="black_bold">
 
         <item name="android:textColor">
@@ -36,6 +68,22 @@
 
         <item name="android:textStyle">
             bold
+        </item>
+
+    </style>
+
+    <style name="black_bold_title">
+
+        <item name="android:textColor">
+            @color/black
+        </item>
+
+        <item name="android:textStyle">
+            bold
+        </item>
+
+        <item name="android:textSize">
+            25sp
         </item>
 
     </style>

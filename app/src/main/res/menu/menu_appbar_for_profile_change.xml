@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <item
+    android:id="@+id/appBar_deleteAccount"
+    android:icon="@drawable/ic_three_dots"
+    android:title="탈퇴 및 계정 삭제"
+    app:showAsAction="collapseActionView">
+  </item>
+
+</menu>

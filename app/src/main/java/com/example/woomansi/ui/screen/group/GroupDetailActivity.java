@@ -2,21 +2,19 @@ package com.example.woomansi.ui.screen.group;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.appcompat.widget.Toolbar.OnMenuItemClickListener;
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.GroupModel;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class GroupDetailActivity extends AppCompatActivity {
 
-  private TextView groupName;
-  private ImageView groupInfo;
-  private ImageView vote;
   private BottomSheetDialog dialog_groupInfo;
   private BottomSheetDialog dialog_vote;
   private GroupModel group;
@@ -24,24 +22,23 @@ public class GroupDetailActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_group_detail);
+      setContentView(R.layout.activity_group_detail_with_appbar);
 
       group = (GroupModel) getIntent().getSerializableExtra("group");
 
-      groupName = findViewById(R.id.groupDetail_tv_groupName);
-      groupName.setText(group.getGroupName());
-
-      groupInfo = findViewById(R.id.groupDetail_iv_groupInfo);
-      groupInfo.setOnClickListener(new View.OnClickListener(){
-        public void onClick(View view) {
-          showGroupInfoDialog();
-        }
-      });
-
-      vote = findViewById(R.id.groupDetail_iv_vote);
-      vote.setOnClickListener(new View.OnClickListener(){
-        public void onClick(View view) {
-          showVoteDialog();
+      MaterialToolbar topAppBar= findViewById(R.id.groupDetail_topAppBar);
+      topAppBar.setTitle(group.getGroupName());
+      topAppBar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+          if (item.getItemId() == R.id.appBar_groupInfo) {
+            showGroupInfoDialog();
+            return true;
+          } else if (item.getItemId() == R.id.appBar_vote) {
+            showVoteDialog();
+            return true;
+          }
+          return true;
         }
       });
 
@@ -52,6 +49,13 @@ public class GroupDetailActivity extends AppCompatActivity {
       dialog_vote.setContentView(R.layout.bottom_sheet_vote);
   }
 
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_appbar_for_group_detail, menu);
+
+    return true;
+  }
 
   public void showGroupInfoDialog(){
     dialog_groupInfo.show(); // 다이얼로그 띄우기
