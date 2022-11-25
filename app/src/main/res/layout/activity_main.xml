@@ -19,7 +19,6 @@
           android:id="@+id/main_topAppBar"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_margin="10dp"
           app:menu="@menu/menu_appbar_with_plus_btn"
           app:title="타이틀"
           app:titleTextAppearance="@style/black_bold_title" />

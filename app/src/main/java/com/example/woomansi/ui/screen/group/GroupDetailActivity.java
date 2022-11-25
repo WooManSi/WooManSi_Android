@@ -18,6 +18,7 @@ public class GroupDetailActivity extends AppCompatActivity {
   private BottomSheetDialog dialog_groupInfo;
   private BottomSheetDialog dialog_vote;
   private GroupModel group;
+  MaterialToolbar topAppBar;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +27,9 @@ public class GroupDetailActivity extends AppCompatActivity {
 
       group = (GroupModel) getIntent().getSerializableExtra("group");
 
-      MaterialToolbar topAppBar= findViewById(R.id.groupDetail_topAppBar);
+      topAppBar= findViewById(R.id.groupDetail_topAppBar);
       topAppBar.setTitle(group.getGroupName());
+      topAppBar.setNavigationOnClickListener(view -> finish());
       topAppBar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {

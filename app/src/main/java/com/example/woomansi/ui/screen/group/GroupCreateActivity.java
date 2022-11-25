@@ -8,9 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,10 +20,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +38,7 @@ public class GroupCreateActivity extends AppCompatActivity {
     private Button createGroupBtn;
     private EditText editGroupName;
     private EditText editGroupPassword;
+    MaterialToolbar topAppBar;
 
     private FirebaseAuth auth;
     private FirebaseFirestore fireStore;
@@ -113,6 +115,10 @@ public class GroupCreateActivity extends AppCompatActivity {
                     });
             }
         });
+
+        //뒤로가기 버튼
+        topAppBar = findViewById(R.id.groupCreate_topAppBar);
+        topAppBar.setNavigationOnClickListener(view -> finish());
     }
 
     //날짜 구하는 함수. 나중에 여러곳에서 쓴다면 util로 빼도 괜찮을듯?

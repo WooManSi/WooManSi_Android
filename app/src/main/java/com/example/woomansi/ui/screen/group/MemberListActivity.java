@@ -30,6 +30,7 @@ public class MemberListActivity extends AppCompatActivity {
     private ArrayList<UserModel> userModelArrayList;
     private MemberListAdapter memberListAdapter;
     private GroupModel group;
+    MaterialToolbar topAppBar;
 
     private TextView memberCount;
     private TextView leaderName;
@@ -47,8 +48,9 @@ public class MemberListActivity extends AppCompatActivity {
 
         group = (GroupModel) getIntent().getSerializableExtra("group");
 
-        MaterialToolbar topAppBar= findViewById(R.id.memberList_topAppBar);
+        topAppBar= findViewById(R.id.memberList_topAppBar);
         topAppBar.setTitle(group.getGroupName());
+        topAppBar.setNavigationOnClickListener(view -> finish());
 
         //멤버 리스트 데이터 초기화
         this.InitializeMemberData();
