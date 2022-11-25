@@ -24,8 +24,7 @@ import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
     private ImageView imageView;
-    private Button button;
-    private int num = 0;
+    private Button btn;
     private int i = 0;
     private int count = 0;
     private int result = 0;
@@ -68,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         db = FirebaseFirestore.getInstance();
-        button = findViewById(R.id.ProfileActivity_bt_profilebtn);
+        btn = findViewById(R.id.ProfileActivity_bt_profilebtn);
         imageView = findViewById(R.id.ProfileActivity_iv_image);
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -81,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DocumentReference profileRef = db.collection("users").document(firebaseUser.getUid());
