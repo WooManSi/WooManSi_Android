@@ -15,9 +15,9 @@
           android:id="@+id/groupCreate_topAppBar"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_margin="10dp"
           app:title="그룹 생성"
-          app:titleTextAppearance="@style/black_bold_title"/>
+          app:titleTextAppearance="@style/black_bold_title"
+          app:navigationIcon="@drawable/ic_arrow_back_black"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
