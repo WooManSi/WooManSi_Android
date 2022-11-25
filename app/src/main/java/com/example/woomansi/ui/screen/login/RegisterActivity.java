@@ -1,5 +1,6 @@
 package com.example.woomansi.ui.screen.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.UserModel;
+import com.example.woomansi.ui.screen.main.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -50,23 +52,27 @@ public class RegisterActivity extends AppCompatActivity {
                 //각각의 텍스트에 입력되어 있는 정보를 변수에 저장
                 strName = et_name.getText().toString();
                 strEmail = et_emailId.getText().toString();
-                strPwd =et_password.getText().toString();
+                strPwd = et_password.getText().toString();
 
-                Log.i("name",strName);
-                Log.i("id",strEmail);
-                Log.i("pwd",strPwd);
+                Log.i("name", strName);
+                Log.i("id", strEmail);
+                Log.i("pwd", strPwd);
 
-                if(strName!=null && strEmail!=null && strPwd!=null &&!strEmail.isEmpty() &&!strName.isEmpty() && !strPwd.isEmpty()){ //모든 칸을 채워야 함
-                    //Firebase Auth 진행
-                    mFirebaseAuth.createUserWithEmailAndPassword(strEmail,strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                if (strName != null && strEmail != null && strPwd != null) {
+                    if (strEmail.isEmpty() || strName.isEmpty() || strPwd.isEmpty()) {
+                        //모든 칸을 채워야 함
+                        //Firebase Auth 진행
+                        return;
+                    }
+                    mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             //회원가입이 이루어졌을 때의 처리
                             //task는 회원가입 처리 후의 결과값
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 //현재 로그인 된 유저를 가지고 오는 변수
                                 FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                                UserModel account = new UserModel(firebaseUser.getUid(), firebaseUser.getEmail(), strPwd, strName);
+                                UserModel account = new UserModel(firebaseUser.getUid(), firebaseUser.getEmail(), strPwd, strName, "");
                                 //로그인 된 정보를 저장
                                 //데이터 베이스 TravelRecord에 데이터 삽입
                                 //set은 database에 삽입
@@ -75,18 +81,16 @@ public class RegisterActivity extends AppCompatActivity {
                                 db.collection("users").document(firebaseUser.getUid()).set(account);
 
                                 Toast.makeText(RegisterActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                            else{
+                                Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
+                                startActivity(intent);
+                            } else {
                                 Toast.makeText(RegisterActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-                }
-                else{
+                } else {
                     Toast.makeText(RegisterActivity.this, "모두 입력하세요", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
