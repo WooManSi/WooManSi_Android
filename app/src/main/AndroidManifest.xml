@@ -16,6 +16,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".TimeTableActivity"
+            android:exported="false"
+            android:label="@string/title_activity_time_table"
+            android:theme="@style/Theme.WooManSi">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.screen.login.ProfileActivity"
             android:exported="false">
             <meta-data
@@ -53,32 +62,22 @@
         <activity android:name=".ui.screen.login.RegisterActivity" />
         <activity
             android:name=".ui.screen.login.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.screen.group.MemberListActivity"
             android:exported="true"></activity>
-
-
         <activity
-          android:name=".ui.screen.group.MemberListActivity"
-          android:exported="true">
-        </activity>
-
+            android:name=".ui.screen.group.GroupCreateActivity"
+            android:exported="true" />
         <activity
-          android:name=".ui.screen.group.GroupCreateActivity"
-          android:exported="true"/>
-
+            android:name=".ui.screen.group.GroupInfoActivity"
+            android:exported="true"></activity>
         <activity
-          android:name=".ui.screen.group.GroupInfoActivity"
-          android:exported="true">
-        </activity>
-
+            android:name=".ui.screen.group.GroupDetailActivity"
+            android:exported="true"></activity>
         <activity
-          android:name=".ui.screen.group.GroupDetailActivity"
-          android:exported="true">
-        </activity>
-
-        <activity
-          android:name=".ui.screen.timetable.createTimeTableActivity"
-          android:exported="true">
-        </activity>
+            android:name=".ui.screen.timetable.createTimeTableActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>
