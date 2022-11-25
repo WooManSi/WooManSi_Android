@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,7 +18,7 @@ import android.view.ViewGroup;
 import com.example.woomansi.R;
 import com.example.woomansi.ui.screen.timetable.createTimeTableActivity;
 
-public class Main1Fragment extends Fragment {
+/*public class Main1Fragment extends Fragment {
 
     public Main1Fragment() {
         // Required empty public constructor
@@ -36,6 +39,12 @@ public class Main1Fragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.cv_time_table);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_appbar_with_plus_btn, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -50,4 +59,4 @@ public class Main1Fragment extends Fragment {
         }
         return true;
     }
-}
+}*/

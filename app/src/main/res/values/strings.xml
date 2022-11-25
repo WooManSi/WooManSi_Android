@@ -5,6 +5,7 @@
     <string name="group_name">사인페</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_time_table">TimeTableActivity</string>
 
     <string name="example">%1d번</string>
     <string name="profile">ic_profile%1d.png</string>
