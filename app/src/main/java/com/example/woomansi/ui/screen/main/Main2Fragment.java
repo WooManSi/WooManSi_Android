@@ -38,7 +38,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
-public class GroupMainFragment extends Fragment {
+public class Main2Fragment extends Fragment {
 
     private BottomSheetDialog dialog_addGroup;
     private Dialog dialog_joinGroup;
@@ -55,16 +55,16 @@ public class GroupMainFragment extends Fragment {
     private FirebaseAuth auth;
     private FirebaseFirestore fireStore;
 
-    public static GroupMainFragment newInstance() { return new GroupMainFragment(); }
+    public static Main2Fragment newInstance() { return new Main2Fragment(); }
 
-    public GroupMainFragment() {
+    public Main2Fragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_group_main_with_appbar, container, false);
+        v = inflater.inflate(R.layout.fragment_main2, container, false);
 
         auth = FirebaseAuth.getInstance();
         fireStore = FirebaseFirestore.getInstance();

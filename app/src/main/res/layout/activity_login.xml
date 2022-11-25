@@ -33,35 +33,35 @@
 
         <EditText
             android:id="@+id/LoginActivity_et_Id_Text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/round_border"
             android:ems="12"
             android:hint="test@example.com"
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
-            android:padding="8dp" />
+            android:padding="8dp"
+            style="@style/Theme.WooManSi.EditText"/>
 
         <EditText
             android:id="@+id/LoginActivity_et_Pw_Text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/round_border"
             android:ems="12"
             android:hint="password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:padding="8dp" />
+            android:padding="8dp"
+            style="@style/Theme.WooManSi.EditText"/>
 
         <Button
             android:id="@+id/LoginActivity_btn_login"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="?attr/colorPrimary"
-            android:text="등록" />
+            android:text="로그인"
+            style="@style/Theme.WooManSi.Button.Round"/>
 
     </LinearLayout>
 
