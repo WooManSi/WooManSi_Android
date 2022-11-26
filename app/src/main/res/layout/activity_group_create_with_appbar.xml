@@ -36,22 +36,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rectangle_round_white"
             android:hint="그룹명"
+            android:inputType="text"
             android:padding="10dp"
-            android:privateImeOptions="defaultInputmode=korean"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:imeOptions="actionNext"
+            style="@style/Theme.WooManSi.EditText" />
 
         <EditText
             android:id="@+id/groupCreate_et_editGroupPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rectangle_round_white"
             android:hint="비밀번호(코드)"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:imeOptions="actionDone"
+            style="@style/Theme.WooManSi.EditText" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/groupCreate_btn_createGroup"
@@ -59,11 +61,11 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
-            android:background="@drawable/rectangle_round_orange"
             android:text="그룹 생성하기"
             android:textColor="#FFF"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            style="@style/Theme.WooManSi.Button.Round"/>
 
     </LinearLayout>
 
