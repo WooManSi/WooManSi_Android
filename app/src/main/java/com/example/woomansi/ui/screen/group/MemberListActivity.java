@@ -49,7 +49,6 @@ public class MemberListActivity extends AppCompatActivity {
         group = (GroupModel) getIntent().getSerializableExtra("group");
 
         topAppBar= findViewById(R.id.memberList_topAppBar);
-        topAppBar.setTitle(group.getGroupName());
         topAppBar.setNavigationOnClickListener(view -> finish());
 
         //멤버 리스트 데이터 초기화
