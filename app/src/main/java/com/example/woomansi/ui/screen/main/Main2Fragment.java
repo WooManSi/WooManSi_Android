@@ -290,7 +290,7 @@ public class Main2Fragment extends Fragment {
     //topAppBar 속 icon들의 click 이벤트를 담당하는 코드
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.appBar_plusButton) {
+        if (item.getItemId() == R.id.item_plus) {
             showAddGroupDialog();
         }
         return true;
