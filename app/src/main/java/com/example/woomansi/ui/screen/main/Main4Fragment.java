@@ -1,7 +1,9 @@
 package com.example.woomansi.ui.screen.main;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,9 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.helper.widget.MotionEffect;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.woomansi.R;
+import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.ui.screen.timetable.createTimeTableActivity;
 
 import android.app.Dialog;
@@ -22,12 +28,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.woomansi.ui.screen.login.ProfileActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -47,7 +59,7 @@ public class Main4Fragment extends Fragment{
     private Button btn;
     private TextView tvprofile;
     private int i = 0;
-
+    private String st_profile;
     private int count = 0;
     private int result = 0;
     //private FirebaseStorage mStorage;
@@ -101,8 +113,6 @@ public class Main4Fragment extends Fragment{
                              Bundle savedInstanceState) {
         //appBar의 fragment개별 맞춤 설정
         setHasOptionsMenu(true);
-
-
         view = inflater.inflate(R.layout.fragment_main4, container, false);
         tvprofile = view.findViewById(R.id.textView2);
         db = FirebaseFirestore.getInstance();
@@ -112,6 +122,36 @@ public class Main4Fragment extends Fragment{
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
 
         tvprofile.setVisibility(View.INVISIBLE);
+
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+
+        db.collection("users")
+                .whereEqualTo("idToken", firebaseUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                UserModel member = document.toObject(UserModel.class);
+                                st_profile = member.getProfile();
+                                storageRef.child(st_profile).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Glide.with(getContext()).load(uri).into(ivProfile);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+
+
+
+
 
         ivProfile.setOnClickListener(new View.OnClickListener() {
             @Override

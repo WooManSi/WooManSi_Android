@@ -27,9 +27,8 @@
         android:id="@+id/ProfileActivity_iv_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:src="@drawable/ic_profile2"
         android:scaleType="center"
-        android:src="@drawable/mainimage"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
