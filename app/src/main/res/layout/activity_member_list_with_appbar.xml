@@ -15,7 +15,7 @@
           android:id="@+id/memberList_topAppBar"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          app:title="그룹 생성"
+          app:title="멤버 리스트"
           app:titleTextAppearance="@style/black_bold_title"
           app:navigationIcon="@drawable/ic_arrow_back_black"/>
 
