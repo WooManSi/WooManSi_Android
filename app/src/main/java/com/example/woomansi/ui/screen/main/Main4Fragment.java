@@ -62,6 +62,7 @@ public class Main4Fragment extends Fragment{
     private String st_profile;
     private int count = 0;
     private int result = 0;
+    private int result2 = 0;
     //private FirebaseStorage mStorage;
     //private FirebaseDatabase mDatabase;
     private FirebaseFirestore db;
@@ -122,7 +123,7 @@ public class Main4Fragment extends Fragment{
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
 
         tvprofile.setVisibility(View.INVISIBLE);
-
+        ivProfile.setVisibility(View.INVISIBLE);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -138,12 +139,9 @@ public class Main4Fragment extends Fragment{
                             for (DocumentSnapshot document : task.getResult()) {
                                 UserModel member = document.toObject(UserModel.class);
                                 st_profile = member.getProfile();
-                                storageRef.child(st_profile).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        Glide.with(getContext()).load(uri).into(ivProfile);
-                                    }
-                                });
+                                result2 = getProfileId(st_profile);
+                                ivProfile.setImageResource(profiles[result2]);
+                                ivProfile.setVisibility(View.VISIBLE);
                             }
                         }
                     }
@@ -177,6 +175,26 @@ public class Main4Fragment extends Fragment{
         });
 
         return view;
+    }
+
+    private int getProfileId(String profile) {
+        int f_result = 0;
+        switch (profile){
+            case "ic_profile1.png": f_result = 0;
+                                    break;
+            case "ic_profile2.png":  f_result= 1;
+                break;
+            case "ic_profile3.png": f_result = 2;
+                break;
+            case "ic_profile4.png":  f_result = 3;
+                break;
+            case "ic_profile5.png":  f_result = 4;
+                break;
+            case "ic_profile6.png":  f_result = 5;
+                break;
+        }
+
+        return f_result;
     }
 
 
