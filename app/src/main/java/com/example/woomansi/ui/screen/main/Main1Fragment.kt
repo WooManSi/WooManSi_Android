@@ -5,11 +5,14 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
+import com.example.woomansi.ui.viewmodel.Main1ViewModel
 
 class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
@@ -18,6 +21,10 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
         fun newInstance(): Main1Fragment = Main1Fragment()
     }
 
+    private lateinit var viewModel: Main1ViewModel
+
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -25,6 +32,10 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(this).get(Main1ViewModel::class.java)
+
+        progressBar = view.findViewById(R.id.pb_loading)
 
         view.findViewById<ComposeView>(R.id.cv_time_table).apply {
             setViewCompositionStrategy(DisposeOnViewTreeLifecycleDestroyed)
@@ -35,6 +46,10 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
                     onCellClick = {}
                 )
             }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            progressBar.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
 
