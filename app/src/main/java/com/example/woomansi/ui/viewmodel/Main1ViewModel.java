@@ -21,6 +21,10 @@ public class Main1ViewModel extends ViewModel {
         return schedules;
     }
 
+    public void createSchedule() {
+
+    }
+
     private void loadSchedules(String userId) {
         FirebaseSchedules.getScheduleList(
             userId,

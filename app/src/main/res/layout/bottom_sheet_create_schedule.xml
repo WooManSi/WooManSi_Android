@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/bottom_sheet_create_schedule"
+  android:layout_width="match_parent"
+  android:layout_height="400dp"
+  android:background="@color/gray100"
+  app:behavior_draggable="true"
+  app:behavior_hideable="true"
+  app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+  <View
+    android:id="@+id/view2"
+    android:layout_width="40dp"
+    android:layout_height="6dp"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/round_border"
+    android:backgroundTint="@android:color/darker_gray"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    android:id="@+id/tv_create"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="16dp"
+    android:padding="4dp"
+    android:text="추가"
+    android:textColor="?attr/colorPrimary"
+    android:textSize="16sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <EditText
+    android:id="@+id/et_title"
+    style="@style/Theme.WooManSi.EditText"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginHorizontal="16dp"
+    android:hint="제목"
+    android:textSize="20dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tv_create" />
+
+  <RelativeLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginHorizontal="16dp"
+    android:background="@drawable/round_border"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/et_title">
+
+    <TextView
+      android:id="@+id/tv1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:drawablePadding="16dp"
+      android:focusableInTouchMode="false"
+      android:layout_marginStart="8dp"
+      android:text="시작 시간"
+      android:padding="10dp"
+      android:textSize="16sp"
+      android:textStyle="bold"
+      app:drawableStartCompat="@drawable/ic_arrow_bar_right" />
+
+    <TextView
+      android:id="@+id/tv2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/tv1"
+      android:drawablePadding="16dp"
+      android:focusableInTouchMode="false"
+      android:layout_marginStart="8dp"
+      android:text="종료 시간"
+      android:padding="10dp"
+      android:textSize="16sp"
+      android:textStyle="bold"
+      app:drawableStartCompat="@drawable/ic_arrow_bar_left" />
+
+    <TextView
+      android:id="@+id/tv_start_time"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@id/tv_start_time"
+      android:layout_alignParentEnd="true"
+      android:layout_marginEnd="10dp"
+      android:background="@android:color/transparent"
+      android:focusableInTouchMode="false"
+      android:hint="일정 시작시간"
+      android:padding="10dp"
+      android:textSize="16sp"
+      android:textStyle="bold" />
+
+    <TextView
+      android:id="@+id/tv_end_time"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@id/tv2"
+      android:layout_alignParentEnd="true"
+      android:layout_marginEnd="10dp"
+      android:background="@android:color/transparent"
+      android:focusableInTouchMode="false"
+      android:hint="일정 종료시간"
+      android:padding="10dp"
+      android:textSize="16sp"
+      android:textStyle="bold" />
+
+  </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

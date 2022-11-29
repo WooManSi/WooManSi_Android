@@ -5,7 +5,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
 import androidx.fragment.app.Fragment
@@ -13,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
 import com.example.woomansi.ui.viewmodel.Main1ViewModel
+import com.example.woomansi.util.UserCache
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
@@ -24,6 +29,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
     private lateinit var viewModel: Main1ViewModel
 
     private lateinit var progressBar: ProgressBar
+    private lateinit var scheduleCreateDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +42,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
         viewModel = ViewModelProvider(this).get(Main1ViewModel::class.java)
 
         progressBar = view.findViewById(R.id.pb_loading)
+        bottomSheetSetting()
 
         view.findViewById<ComposeView>(R.id.cv_time_table).apply {
             setViewCompositionStrategy(DisposeOnViewTreeLifecycleDestroyed)
@@ -51,6 +58,28 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
         viewModel.isLoading.observe(viewLifecycleOwner) {
             progressBar.visibility = if (it) View.VISIBLE else View.GONE
         }
+
+        val uid = UserCache.getUser(requireActivity())?.idToken ?: "test"
+        viewModel.getSchedules(uid)
+    }
+
+    private fun bottomSheetSetting() {
+        scheduleCreateDialog = BottomSheetDialog(requireActivity()).apply {
+            setContentView(R.layout.bottom_sheet_create_schedule)
+
+            findViewById<TextView>(R.id.tv_create)?.setOnClickListener {
+                val scheduleName = findViewById<EditText>(R.id.et_title)?.text ?: ""
+                Toast.makeText(requireActivity(), scheduleName, Toast.LENGTH_SHORT).show()
+            }
+
+            findViewById<TextView>(R.id.tv_start_time)?.setOnClickListener {
+
+            }
+
+            findViewById<TextView>(R.id.tv_end_time)?.setOnClickListener {
+
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -61,7 +90,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_plus -> {
-
+                scheduleCreateDialog.show()
             }
         }
         return super.onOptionsItemSelected(item)
