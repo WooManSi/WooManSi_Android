@@ -19,7 +19,7 @@ public class ModelTransformUtil {
         List<ScheduleDayData> dayDataList = new ArrayList<>();
 
         for (String key : scheduleMap.keySet()) {
-            ScheduleDayData dayData = new ScheduleDayData();
+
             List<ScheduleModel> scheduleModels = scheduleMap.get(key);
 
             for (ScheduleModel schedule : scheduleMap.get(key)) {

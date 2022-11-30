@@ -55,8 +55,9 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             setViewCompositionStrategy(DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ComposeTimeTable(
-                    dayNames = dayNameList.toList(),
-                    timeTableData = TimeTableData(List(dayNameList.size) { ScheduleDayData() }),
+                    timeTableData = TimeTableData(
+                        List(dayNameList.size) { ScheduleDayData(dayNameList[it]) }
+                    ),
                     onCellClick = {}
                 )
             }
