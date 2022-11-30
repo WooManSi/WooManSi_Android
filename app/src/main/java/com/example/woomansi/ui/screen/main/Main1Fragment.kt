@@ -1,14 +1,12 @@
 package com.example.woomansi.ui.screen.main
 
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
 import androidx.fragment.app.Fragment
@@ -16,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
 import com.example.woomansi.ui.viewmodel.Main1ViewModel
+import com.example.woomansi.util.DateFormatUtil
 import com.example.woomansi.util.UserCache
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -59,7 +58,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             progressBar.visibility = if (it) View.VISIBLE else View.GONE
         }
 
-        val uid = UserCache.getUser(requireActivity())?.idToken ?: "test"
+        val uid = UserCache.getUser(requireContext())?.idToken ?: "test"
         viewModel.getSchedules(uid)
     }
 
@@ -67,19 +66,56 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
         scheduleCreateDialog = BottomSheetDialog(requireActivity()).apply {
             setContentView(R.layout.bottom_sheet_create_schedule)
 
-            findViewById<TextView>(R.id.tv_create)?.setOnClickListener {
-                val scheduleName = findViewById<EditText>(R.id.et_title)?.text ?: ""
-                Toast.makeText(requireActivity(), scheduleName, Toast.LENGTH_SHORT).show()
+            val etTitle = findViewById<EditText>(R.id.et_title)!!
+            val tvCreate = findViewById<TextView>(R.id.tv_create)!!
+            val tvStartTime = findViewById<TextView>(R.id.tv_start_time)!!
+            val tvEndTime = findViewById<TextView>(R.id.tv_end_time)!!
+
+            var curStartTime: String = "00:00"
+            var curEndTime: String = "00:00"
+
+            tvCreate.setOnClickListener {
+                viewModel.createSchedule(
+                    etTitle.text.toString(),
+                    curStartTime,
+                    curEndTime
+                )
             }
 
-            findViewById<TextView>(R.id.tv_start_time)?.setOnClickListener {
-
+            tvStartTime.setOnClickListener {
+                showTimePickerDialog(curStartTime) { hour, minute ->
+                    curStartTime = DateFormatUtil.dateToString(hour, minute)
+                    val s = if (hour <= 12) "오전" else "오후"
+                    val h = if (hour <= 12) hour else hour - 12
+                    (it as TextView).text = String.format("%s %02d:%02d", s, h, minute)
+                }
             }
 
-            findViewById<TextView>(R.id.tv_end_time)?.setOnClickListener {
-
+            tvEndTime.setOnClickListener {
+                showTimePickerDialog(curEndTime) { hour, minute ->
+                    curEndTime = DateFormatUtil.dateToString(hour, minute)
+                    val s = if (hour <= 12) "오전" else "오후"
+                    val h = if (hour <= 12) hour else hour - 12
+                    (it as TextView).text = String.format("%s %02d:%02d", s, h, minute)
+                }
             }
         }
+    }
+
+    private fun showTimePickerDialog(
+        initialTime: String,
+        onTimeSelect: (Int, Int) -> Unit
+    ) {
+        val (curHour, curMin) = initialTime.let {
+            val date = DateFormatUtil.stringToDate(it)
+            listOf(date.hour, date.minute)
+        }
+
+        TimePickerDialog(
+            requireContext(),
+            { _, hourOfDay, minute -> onTimeSelect(hourOfDay, minute)},
+            curHour, curMin, false
+        ).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

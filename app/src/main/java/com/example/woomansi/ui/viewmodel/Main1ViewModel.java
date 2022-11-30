@@ -9,9 +9,12 @@ import java.util.List;
 
 public class Main1ViewModel extends ViewModel {
 
-    public MutableLiveData<Boolean> isLoading = new MutableLiveData<>(true);
-
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(true);
     private MutableLiveData<List<ScheduleModel>> schedules;
+
+    public LiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
 
     public LiveData<List<ScheduleModel>> getSchedules(String userId) {
         if (schedules == null) {
@@ -21,14 +24,15 @@ public class Main1ViewModel extends ViewModel {
         return schedules;
     }
 
-    public void createSchedule() {
-
+    public void createSchedule(String title, String startTime, String endTime) {
+        // TODO: 스케줄 올리기
     }
 
     private void loadSchedules(String userId) {
         FirebaseSchedules.getScheduleList(
             userId,
             scheduleModels -> {
+                isLoading.setValue(false);
             },
             (message, isEmpty) -> {
                 isLoading.setValue(false);
