@@ -30,8 +30,7 @@ public class SplashActivity extends AppCompatActivity {
             UserModel userCache = UserCache.getUser(this);
             Intent intent;
 
-//            if (user != null && userCache != null) {
-            if (user != null) {
+            if (user != null && userCache != null) {
                 // 로그인 되어 있을 때
                 intent = new Intent(SplashActivity.this, MainActivity.class);
             } else {

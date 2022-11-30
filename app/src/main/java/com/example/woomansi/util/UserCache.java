@@ -13,6 +13,7 @@ public class UserCache {
     private static UserModel cache;
 
     public static void setUser(@NonNull Context context, UserModel userModel) {
+        cache = userModel;
         String json = new Gson().toJson(userModel);
         SharedPreferencesUtil.putString(context, KEY_USER_CACHE, json);
     }
