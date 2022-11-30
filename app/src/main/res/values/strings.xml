@@ -9,4 +9,14 @@
 
     <string name="example">%1d번</string>
     <string name="profile">ic_profile%1d.png</string>
+
+    <string-array name="day_name">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </string-array>
 </resources>

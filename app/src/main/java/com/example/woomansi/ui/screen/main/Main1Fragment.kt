@@ -7,16 +7,22 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
+import com.cometj03.composetimetable.ScheduleDayData
+import com.cometj03.composetimetable.TimeTableData
 import com.example.woomansi.R
 import com.example.woomansi.ui.viewmodel.Main1ViewModel
 import com.example.woomansi.util.DateFormatUtil
 import com.example.woomansi.util.UserCache
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
+import com.google.android.material.chip.ChipGroup
 
 class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
@@ -29,6 +35,8 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
     private lateinit var progressBar: ProgressBar
     private lateinit var scheduleCreateDialog: BottomSheetDialog
+
+    private val dayNameList by lazy { resources.getStringArray(R.array.day_name) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +55,8 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             setViewCompositionStrategy(DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ComposeTimeTable(
-                    dayNames = listOf("월", "화", "수", "목", "금"),
-                    timeTableData = timeTableData,
+                    dayNames = dayNameList.toList(),
+                    timeTableData = TimeTableData(List(dayNameList.size) { ScheduleDayData() }),
                     onCellClick = {}
                 )
             }
@@ -58,8 +66,6 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             progressBar.visibility = if (it) View.VISIBLE else View.GONE
         }
 
-        val uid = UserCache.getUser(requireContext())?.idToken ?: "test"
-        viewModel.getSchedules(uid)
     }
 
     private fun bottomSheetSetting() {
@@ -68,6 +74,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
             val etTitle = findViewById<EditText>(R.id.et_title)!!
             val tvCreate = findViewById<TextView>(R.id.tv_create)!!
+            val chipGroup = findViewById<ChipGroup>(R.id.cg_days)!!
             val tvStartTime = findViewById<TextView>(R.id.tv_start_time)!!
             val tvEndTime = findViewById<TextView>(R.id.tv_end_time)!!
 
@@ -98,6 +105,19 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
                     val h = if (hour <= 12) hour else hour - 12
                     (it as TextView).text = String.format("%s %02d:%02d", s, h, minute)
                 }
+            }
+
+            val chipDrawable = ChipDrawable.createFromAttributes(
+                requireContext(),
+                null, 0, R.style.Theme_WooManSi_ChipChoice
+            )
+            dayNameList.forEach {
+                chipGroup.addView(
+                    Chip(requireContext()).apply {
+                        text = it
+                        setChipDrawable(chipDrawable)
+                    }
+                )
             }
         }
     }
