@@ -23,6 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.chip.ChipGroup
+import java.time.LocalTime
 
 class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
@@ -63,10 +64,19 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             }
         }
 
+        // viewModel data observing
         viewModel.isLoading.observe(viewLifecycleOwner) {
             progressBar.visibility = if (it) View.VISIBLE else View.GONE
         }
 
+        viewModel.scheduleCreationErrorMsg.observe(viewLifecycleOwner) { msg ->
+            if (msg == null) {
+                // 에러가 없다는 뜻
+                scheduleCreateDialog.cancel()
+            } else {
+                showToast(msg)
+            }
+        }
     }
 
     private fun bottomSheetSetting() {
@@ -79,12 +89,19 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             val tvStartTime = findViewById<TextView>(R.id.tv_start_time)!!
             val tvEndTime = findViewById<TextView>(R.id.tv_end_time)!!
 
-            var curStartTime: String = "00:00"
-            var curEndTime: String = "00:00"
+            var curStartTime = LocalTime.now()
+            var curEndTime = LocalTime.now()
+            var curDayOfWeek = 0 // 1 ~ 7 == 월 ~ 일
 
             tvCreate.setOnClickListener {
+                val title = etTitle.text.toString()
+                if (!validateInputData(title, curDayOfWeek, curStartTime, curEndTime))
+                    return@setOnClickListener
+
+                val dayName = dayNameList[curDayOfWeek-1]
                 viewModel.createSchedule(
-                    etTitle.text.toString(),
+                    title,
+                    dayName,
                     curStartTime,
                     curEndTime
                 )
@@ -92,51 +109,60 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
             tvStartTime.setOnClickListener {
                 showTimePickerDialog(curStartTime) { hour, minute ->
-                    curStartTime = DateFormatUtil.dateToString(hour, minute)
-                    val s = if (hour <= 12) "오전" else "오후"
-                    val h = if (hour <= 12) hour else hour - 12
-                    (it as TextView).text = String.format("%s %02d:%02d", s, h, minute)
+                    curStartTime = LocalTime.of(hour, minute)
+                    (it as TextView).text = DateFormatUtil.formatWithAmPm(hour, minute)
                 }
             }
 
             tvEndTime.setOnClickListener {
                 showTimePickerDialog(curEndTime) { hour, minute ->
-                    curEndTime = DateFormatUtil.dateToString(hour, minute)
-                    val s = if (hour <= 12) "오전" else "오후"
-                    val h = if (hour <= 12) hour else hour - 12
-                    (it as TextView).text = String.format("%s %02d:%02d", s, h, minute)
+                    curEndTime = LocalTime.of(hour, minute)
+                    (it as TextView).text = DateFormatUtil.formatWithAmPm(hour, minute)
                 }
             }
 
-            val chipDrawable = ChipDrawable.createFromAttributes(
-                requireContext(),
-                null, 0, R.style.Theme_WooManSi_ChipChoice
-            )
-            dayNameList.forEach {
-                chipGroup.addView(
-                    Chip(requireContext()).apply {
-                        text = it
-                        setChipDrawable(chipDrawable)
-                    }
-                )
+            chipGroup.invalidate()
+            chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+                val id = checkedIds.first()
+                curDayOfWeek = id
             }
         }
     }
 
+    private fun validateInputData(
+        title: String,
+        dayOfWeekIndex: Int,
+        startTime: LocalTime,
+        endTime: LocalTime
+    ): Boolean {
+        if (title.isEmpty()) {
+            showToast("제목을 입력해주세요")
+            return false
+        }
+        if (dayOfWeekIndex !in 1..7) {
+            showToast("요일을 선택해주세요")
+            return false
+        }
+        if (!startTime.isBefore(endTime)) {
+            showToast("시작 시간이 종료 시간보다 앞서 있어야 합니다")
+            return false
+        }
+        return true
+    }
+
     private fun showTimePickerDialog(
-        initialTime: String,
+        time: LocalTime,
         onTimeSelect: (Int, Int) -> Unit
     ) {
-        val (curHour, curMin) = initialTime.let {
-            val date = DateFormatUtil.stringToDate(it)
-            listOf(date.hour, date.minute)
-        }
-
         TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute -> onTimeSelect(hourOfDay, minute)},
-            curHour, curMin, false
+            time.hour, time.minute, false
         ).show()
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

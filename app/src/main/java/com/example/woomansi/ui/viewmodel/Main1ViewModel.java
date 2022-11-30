@@ -9,16 +9,23 @@ import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.data.repository.FirebaseSchedules;
 import com.example.woomansi.util.UserCache;
 
+import java.time.LocalTime;
+
 public class Main1ViewModel extends ViewModel {
 
-    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(true);
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private final MutableLiveData<String> scheduleCreationErrorMsg = new MutableLiveData<>();
     private MutableLiveData<TimeTableData> timeTableData;
 
     public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
+    public LiveData<String> getScheduleCreationErrorMsg() {
+        return scheduleCreationErrorMsg;
+    }
 
     public LiveData<TimeTableData> getTimeTableData() {
+        isLoading.setValue(true);
         if (timeTableData == null) {
             timeTableData = new MutableLiveData<>();
             loadSchedules();
@@ -26,8 +33,8 @@ public class Main1ViewModel extends ViewModel {
         return timeTableData;
     }
 
-    public void createSchedule(String title, String startTime, String endTime) {
-        // TODO: 스케줄 올리기
+    public void createSchedule(String title, String dayOfWeek, LocalTime startTime, LocalTime endTime) {
+
     }
 
     public void loadSchedules() {

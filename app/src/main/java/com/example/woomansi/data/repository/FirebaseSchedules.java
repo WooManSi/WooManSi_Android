@@ -66,8 +66,8 @@ public class FirebaseSchedules {
     }
 
     private static void initializeSchedule(String scheduleId, OnLoadSuccessListener s) {
-        // 기본: 월 ~ 금
-        String[] dayNames = new String[] {"월", "화", "수", "목", "금"};
+        // 기본: 월 ~ 일
+        String[] dayNames = new String[] {"월", "화", "수", "목", "금", "토", "일"};
         Map<String, List<ScheduleModel>> data = new HashMap<>();
         for (String dayName : dayNames)
             data.put(dayName, null);
