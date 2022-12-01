@@ -3,9 +3,17 @@ package com.example.woomansi.data.model;
 public class ScheduleModel {
     private String name;
     private String description;
-    private String startTime;   // "HH:mm" (예: "14:30")
+    private String startTime;   // format: "HH:mm" (예: "14:30")
     private String endTime;
-    private String color;
+    private String color;       // format: "#ffffff"
+
+    public ScheduleModel(String name, String description, String startTime, String endTime, String color) {
+        this.name = name;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.color = color;
+    }
 
     public String getName() {
         return name;

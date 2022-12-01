@@ -1,15 +1,20 @@
 package com.example.woomansi.ui.viewmodel;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cometj03.composetimetable.TimeTableData;
+import com.example.woomansi.data.model.ScheduleModel;
 import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.data.repository.FirebaseSchedules;
+import com.example.woomansi.util.ScheduleTypeTransform;
+import com.example.woomansi.util.TimeFormatUtil;
 import com.example.woomansi.util.UserCache;
 
 import java.time.LocalTime;
+import java.util.List;
 
 public class Main1ViewModel extends ViewModel {
 
@@ -24,28 +29,42 @@ public class Main1ViewModel extends ViewModel {
         return scheduleCreationErrorMsg;
     }
 
-    public LiveData<TimeTableData> getTimeTableData() {
+    public LiveData<TimeTableData> getTimeTableData(List<String> dayNameList) {
         isLoading.setValue(true);
         if (timeTableData == null) {
             timeTableData = new MutableLiveData<>();
-            loadSchedules();
+            loadSchedules(dayNameList);
         }
         return timeTableData;
     }
 
-    public void createSchedule(String title, String dayOfWeek, LocalTime startTime, LocalTime endTime) {
+    public void createSchedule(String title, String dayOfWeekName, LocalTime startTime, LocalTime endTime) {
+        UserModel user = UserCache.getUser(null);
+        if (user == null)
+            return;
+        ScheduleModel schedule = new ScheduleModel(title, "",
+                TimeFormatUtil.timeToString(startTime),
+                TimeFormatUtil.timeToString(endTime),
+                "#B3DCF5");
 
+        FirebaseSchedules.addSchedule(
+                user.getIdToken(),
+                dayOfWeekName,
+                schedule,
+                task -> scheduleCreationErrorMsg.setValue(null)
+        );
     }
 
-    public void loadSchedules() {
+    public void loadSchedules(List<String> dayNameList) {
         UserModel user = UserCache.getUser(null);
         if (user == null)
             return;
         FirebaseSchedules.getSchedules(
             user.getIdToken(),
             scheduleMap -> {
-                // TODO scheduleMap을 timeTableData 형식으로 변환 후 setValue
-                // timeTableData.setValue();
+                TimeTableData tableData
+                        = ScheduleTypeTransform.scheduleMapToTimeTableData(dayNameList, scheduleMap);
+                timeTableData.setValue(tableData);
                 isLoading.setValue(false);
             },
             message -> {

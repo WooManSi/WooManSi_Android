@@ -17,11 +17,8 @@ import com.cometj03.composetimetable.ScheduleDayData
 import com.cometj03.composetimetable.TimeTableData
 import com.example.woomansi.R
 import com.example.woomansi.ui.viewmodel.Main1ViewModel
-import com.example.woomansi.util.DateFormatUtil
-import com.example.woomansi.util.UserCache
+import com.example.woomansi.util.TimeFormatUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.chip.ChipGroup
 import java.time.LocalTime
 
@@ -55,12 +52,13 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
         view.findViewById<ComposeView>(R.id.cv_time_table).apply {
             setViewCompositionStrategy(DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                ComposeTimeTable(
-                    timeTableData = TimeTableData(
-                        List(dayNameList.size) { ScheduleDayData(dayNameList[it]) }
-                    ),
-                    onCellClick = {}
-                )
+                val tableData = viewModel.getTimeTableData(dayNameList.toList()).observeAsState()
+                tableData.value?.let {
+                    ComposeTimeTable(
+                        timeTableData = it,
+                        onCellClick = {}
+                    )
+                }
             }
         }
 
@@ -76,6 +74,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             } else {
                 showToast(msg)
             }
+            scheduleCreateDialog.setCancelable(true)
         }
     }
 
@@ -98,10 +97,10 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
                 if (!validateInputData(title, curDayOfWeek, curStartTime, curEndTime))
                     return@setOnClickListener
 
-                val dayName = dayNameList[curDayOfWeek-1]
+                setCancelable(false)
                 viewModel.createSchedule(
                     title,
-                    dayName,
+                    dayNameList[curDayOfWeek-1],
                     curStartTime,
                     curEndTime
                 )
@@ -110,14 +109,14 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             tvStartTime.setOnClickListener {
                 showTimePickerDialog(curStartTime) { hour, minute ->
                     curStartTime = LocalTime.of(hour, minute)
-                    (it as TextView).text = DateFormatUtil.formatWithAmPm(hour, minute)
+                    (it as TextView).text = TimeFormatUtil.formatWithAmPm(hour, minute)
                 }
             }
 
             tvEndTime.setOnClickListener {
                 showTimePickerDialog(curEndTime) { hour, minute ->
                     curEndTime = LocalTime.of(hour, minute)
-                    (it as TextView).text = DateFormatUtil.formatWithAmPm(hour, minute)
+                    (it as TextView).text = TimeFormatUtil.formatWithAmPm(hour, minute)
                 }
             }
 
