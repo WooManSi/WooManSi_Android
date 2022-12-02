@@ -1,7 +1,10 @@
 package com.example.woomansi.ui.screen.main;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.UserModel;
+import com.example.woomansi.ui.screen.SplashActivity;
+import com.example.woomansi.ui.screen.login.RegisterActivity;
 import com.example.woomansi.ui.screen.timetable.createTimeTableActivity;
 
 import android.app.Dialog;
@@ -199,11 +204,66 @@ public class Main4Fragment extends Fragment{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        AlertDialog customDialog;
+
         if (item.getItemId() == R.id.appBar_deleteAccount) {
-            //TODO : 탈퇴 및 계정 삭제 클릭 시 탈퇴화면으로 이동하는 코드. 탈퇴 화면 작성 후에 갈아끼워주기
-            Intent intent = new Intent(getActivity().getApplicationContext(), createTimeTableActivity.class);
-            startActivity(intent);
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+               builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle("알림").setMessage("정말 회원 탈퇴 하시겠습니까?");
+
+                builder.setPositiveButton("회원탈퇴", (dialog, id) ->
+                {
+                    FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+                    UserModel account = new UserModel();
+                    DocumentReference profileRef = db.collection("users").document(firebaseUser.getUid());
+                    firebaseUser.delete()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(view.getContext(),"탈퇴 완료",Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+                    profileRef
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(view.getContext(),"탈퇴 완료",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                    mFirebaseAuth.signOut();
+                    Intent intent = new Intent(view.getContext(), SplashActivity.class);
+                    startActivity(intent);
+                });
+
+                builder.setNegativeButton("취소", (dialog, id) -> {});
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        }
+
+        else if (item.getItemId() == R.id.appBar_Logout) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle("알림").setMessage("정말 로그아웃 하시겠습니까?");
+
+            builder.setPositiveButton("로그아웃", (dialog, id) ->
+            {
+                mFirebaseAuth.signOut();
+                Intent intent = new Intent(view.getContext(), SplashActivity.class);
+                startActivity(intent);
+            });
+            builder.setNegativeButton("취소", (dialog, id) -> {});
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
         return true;
     }
+
 }

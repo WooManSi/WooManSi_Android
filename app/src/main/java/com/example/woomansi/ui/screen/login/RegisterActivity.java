@@ -85,8 +85,6 @@ public class RegisterActivity extends AppCompatActivity {
         et_password = findViewById(R.id.RegisterActivity_et_Signup_Pw_Text); //비밀번호
         mBtnRegister = findViewById(R.id.RegisterActivity_et_Signup_button); //회원가입 완료 버튼
 
-        db = FirebaseFirestore.getInstance();
-
         imageView = findViewById(R.id.RegisterActivity_iv_profile);
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
 
