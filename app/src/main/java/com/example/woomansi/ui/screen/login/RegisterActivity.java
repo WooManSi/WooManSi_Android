@@ -42,6 +42,14 @@ public class RegisterActivity extends AppCompatActivity {
     private int count = 0;
     private int result = 0;
     private DatabaseReference mDatabaseRef;
+    private final int[] profiles = new int[] {
+            R.drawable.ic_profile1,
+            R.drawable.ic_profile2,
+            R.drawable.ic_profile3,
+            R.drawable.ic_profile4,
+            R.drawable.ic_profile5,
+            R.drawable.ic_profile6
+    };
 
     private void customDialog() {
         Dialog dialog = new Dialog(RegisterActivity.this);
@@ -53,17 +61,17 @@ public class RegisterActivity extends AppCompatActivity {
 
         dialog.show();
 
-        for (i = 0; i < count; i++) {
+        for(i = 0; i< count ; i++) {
+            int j = i;
             ImageView iv = (ImageView) g1.getChildAt(i);
-
             StringBuilder fileName = new StringBuilder("ic_profile");
-            fileName.append(i + 1);
+            fileName.append(j+1);
 
             iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    imageView.setImageResource(getResources().getIdentifier(fileName.toString(), "drawable", getPackageName()));
-                    result = fileName.toString().compareTo("ic_profile0");
+                    imageView.setImageResource(profiles[j]);
+                    result = j+1;
                     dialog.dismiss();
                 }
             });
