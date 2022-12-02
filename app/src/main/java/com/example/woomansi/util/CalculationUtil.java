@@ -2,6 +2,7 @@ package com.example.woomansi.util;
 
 import com.example.woomansi.data.model.ScheduleModel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +29,19 @@ public class CalculationUtil {
                 .boxed()
                 .collect(Collectors.toList());
         return result;
+    }
+
+    // origin에 scheduleModels의 값을 합치고 결과를 반환하는 함수
+    public static List<Integer> unionLists(List<Integer> origin, List<ScheduleModel> models) {
+
+        for (int i = 0; i < models.size(); i++) {
+            int startIndex = calculateIndex(models.get(i).getStartTime());
+            int endIndex = calculateIndex(models.get(i).getEndTime());
+
+            for (int k = startIndex; k <= endIndex; k++)
+                origin.set(k, origin.get(k) + 1);
+        }
+        return origin;
     }
 
     private static int calculateIndex(String time) {
