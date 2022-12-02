@@ -1,11 +1,14 @@
 package com.example.woomansi.ui.screen.login;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,10 +18,13 @@ import com.example.woomansi.R;
 import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.ui.screen.main.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -29,6 +35,41 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText et_emailId, et_password, et_name;          //회원가입 입력필드
     private Button mBtnRegister;            //회원가입 버튼
     private String strName, strEmail, strPwd;
+
+    private ImageView imageView;
+    private Button btn;
+    private int i = 0;
+    private int count = 0;
+    private int result = 0;
+    private DatabaseReference mDatabaseRef;
+
+    private void customDialog() {
+        Dialog dialog = new Dialog(RegisterActivity.this);
+        dialog.setContentView(R.layout.dialog_profile);
+        dialog.setTitle("custom dialog !!");
+        GridLayout g1 = dialog.findViewById(R.id.g_view);
+
+        count = g1.getChildCount();
+
+        dialog.show();
+
+        for (i = 0; i < count; i++) {
+            ImageView iv = (ImageView) g1.getChildAt(i);
+
+            StringBuilder fileName = new StringBuilder("ic_profile");
+            fileName.append(i + 1);
+
+            iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    imageView.setImageResource(getResources().getIdentifier(fileName.toString(), "drawable", getPackageName()));
+                    result = fileName.toString().compareTo("ic_profile0");
+                    dialog.dismiss();
+                }
+            });
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +84,19 @@ public class RegisterActivity extends AppCompatActivity {
         et_emailId = findViewById(R.id.RegisterActivity_et_Signup_Id_Text); //이메일 아이디
         et_password = findViewById(R.id.RegisterActivity_et_Signup_Pw_Text); //비밀번호
         mBtnRegister = findViewById(R.id.RegisterActivity_et_Signup_button); //회원가입 완료 버튼
+
+        db = FirebaseFirestore.getInstance();
+
+        imageView = findViewById(R.id.RegisterActivity_iv_profile);
+        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customDialog();
+            }
+        });
+
 
 
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
@@ -79,9 +133,17 @@ public class RegisterActivity extends AppCompatActivity {
                                 //Uid를 키값으로 UserAccount의 데이터를 set
                                 //collection-document
                                 db.collection("users").document(firebaseUser.getUid()).set(account);
-
+                                DocumentReference profileRef = db.collection("users").document(firebaseUser.getUid());
+                                profileRef
+                                        .update("profile", getString(R.string.profile,result))
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                Toast.makeText(RegisterActivity.this,"프로필 설정 완료",Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                 Toast.makeText(RegisterActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
+                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(RegisterActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
@@ -91,6 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(RegisterActivity.this, "모두 입력하세요", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }
