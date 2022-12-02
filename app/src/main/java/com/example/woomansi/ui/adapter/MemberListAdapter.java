@@ -40,7 +40,6 @@ public class MemberListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View converView, ViewGroup parent) {
         View view = mLayoutInflater.inflate(R.layout.list_item_member, null);
-
         TextView memberName = view.findViewById(R.id.listItemMember_tv_name);
         memberName.setText(memberList.get(position).getNickname());
 
