@@ -1,11 +1,9 @@
 package com.example.woomansi.data.repository;
 
-import android.util.Log;
-
 import com.example.woomansi.data.model.ScheduleDataWrapper;
 import com.example.woomansi.data.model.ScheduleModel;
-import com.example.woomansi.util.UserScheduleCache;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
@@ -33,12 +31,11 @@ public class FirebaseSchedules {
             OnLoadSuccessListener s,
             OnLoadFailedListener f
     ) {
-        FirebaseFirestore
-            .getInstance()
-            .collection(COLLECTION_NAME)
-            .document(scheduleId)
-            .get()
-            .addOnCompleteListener(task -> {
+        DocumentReference ref = FirebaseFirestore.getInstance()
+                .collection(COLLECTION_NAME).document(scheduleId);
+
+        // 데이터 가져오는 코드
+        ref.get().addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
                     f.onLoadFailed("스케줄 데이터를 가져오는 과정에서 문제가 발생했습니다.\n" + task.getException());
                     return;
@@ -57,6 +54,20 @@ public class FirebaseSchedules {
                     f.onLoadFailed("스케줄 데이터 형식이 잘못되어 불러올 수 없습니다.");
                 }
             });
+
+        // 데이터 변경사항 리스너 달아주는 코드
+        ref.addSnapshotListener((snapshot, error) -> {
+            if (error != null) {
+                f.onLoadFailed("Data Listen Failed\n" + error.getMessage());
+                return;
+            }
+            if (snapshot != null && snapshot.exists()) {
+                ScheduleDataWrapper wrapper = snapshot.toObject(ScheduleDataWrapper.class);
+                if (wrapper != null) s.onLoadSuccess(wrapper.getSchedules());
+            } else {
+                f.onLoadFailed("Current Data: null");
+            }
+        });
     }
 
     public static void addSchedule(
