@@ -7,14 +7,15 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
-import com.cometj03.composetimetable.ScheduleDayData
-import com.cometj03.composetimetable.TimeTableData
 import com.example.woomansi.R
 import com.example.woomansi.ui.viewmodel.Main1ViewModel
 import com.example.woomansi.util.TimeFormatUtil
@@ -53,10 +54,13 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             setViewCompositionStrategy(DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 val tableData = viewModel.getTimeTableData(dayNameList.toList()).observeAsState()
+                val scrollState = rememberScrollState()
+
                 tableData.value?.let {
                     ComposeTimeTable(
                         timeTableData = it,
-                        onCellClick = {}
+                        onCellClick = {},
+                        modifier = Modifier.verticalScroll(scrollState)
                     )
                 }
             }
@@ -67,7 +71,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             progressBar.visibility = if (it) View.VISIBLE else View.GONE
         }
 
-        viewModel.scheduleCreationErrorMsg.observe(viewLifecycleOwner) { msg ->
+        viewModel.errorMessage.observe(viewLifecycleOwner) { msg ->
             if (msg == null) {
                 // 에러가 없다는 뜻
                 scheduleCreateDialog.cancel()

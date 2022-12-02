@@ -7,12 +7,13 @@ import com.example.woomansi.data.model.ScheduleModel
 
 class ScheduleTypeTransform {
     companion object {
+        // 스케줄 데이터 -> TimeTableData로 변환하는 함수
         @JvmStatic
         fun scheduleMapToTimeTableData(
-            keyList: List<String>,
-            scheduleModelMap: Map<String, List<ScheduleModel>?>
+            dayNameList: List<String>, // 요일 이름
+            scheduleModelMap: Map<String, List<ScheduleModel>?> // 스케줄 데이터
         ) = TimeTableData(
-            keyList.map { key ->
+            dayNameList.map { key ->
                 val scheduleModel = scheduleModelMap[key]
                 ScheduleDayData(
                     key,

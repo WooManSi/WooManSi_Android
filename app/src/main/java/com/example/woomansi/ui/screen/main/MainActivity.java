@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+        bottomNav.setOnItemReselectedListener(item -> {});
+
         //그룹 탈퇴 시 바로 그룹 메인화면으로 보여주기 위함
         if(getIntent().getStringExtra("group") != null)
             bottomNav.setSelectedItemId(R.id.item_group);
@@ -65,31 +67,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //appBar별로 타이틀 및 배경색 변경
-    private boolean setAppBarTitleAndBackGroundColorByItemId(int itemId) {
+    private void setAppBarTitleAndBackGroundColorByItemId(int itemId) {
         switch (itemId) {
             case R.id.item_home: {
                 topAppBar.setTitle("내 시간표");
                 topAppBar.setTitleTextAppearance(topAppBar.getContext(), R.style.black_bold_title);
 
                 appBarLayout.setBackgroundColor(Color.parseColor("#F3F2F2"));
-                return true;
+                return;
             }
             case R.id.item_group: {
                 topAppBar.setTitle("나의 그룹들");
                 topAppBar.setTitleTextAppearance(topAppBar.getContext(), R.style.text_white_bold_title);
 
                 appBarLayout.setBackgroundColor(Color.parseColor("#FF8E2B"));
-                return true;
+                return;
             }
-
             case R.id.item_account: {
                 topAppBar.setTitle("프로필 편집");
                 topAppBar.setTitleTextAppearance(topAppBar.getContext(), R.style.black_bold_title);
 
                 appBarLayout.setBackgroundColor(Color.parseColor("#F3F2F2"));
-                return true;
+                return;
             }
         }
-        return true;
+        return;
     }
 }
