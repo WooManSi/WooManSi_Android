@@ -238,6 +238,7 @@ public class Main4Fragment extends Fragment{
                     mFirebaseAuth.signOut();
                     Intent intent = new Intent(view.getContext(), SplashActivity.class);
                     startActivity(intent);
+                    getActivity().finish();
                 });
 
                 builder.setNegativeButton("취소", (dialog, id) -> {});
@@ -257,6 +258,7 @@ public class Main4Fragment extends Fragment{
                 mFirebaseAuth.signOut();
                 Intent intent = new Intent(view.getContext(), SplashActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             });
             builder.setNegativeButton("취소", (dialog, id) -> {});
             AlertDialog alertDialog = builder.create();
