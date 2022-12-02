@@ -10,13 +10,13 @@
     <menu>
 
       <item
-        android:id="@+id/appBar_groupInfo"
+        android:id="@+id/item_group_info"
         android:icon="@drawable/ic_group_info_no_text"
         android:title="그룹정보"
         app:showAsAction="ifRoom" />
 
       <item
-        android:id="@+id/appBar_vote"
+        android:id="@+id/item_group_vote"
         android:icon="@drawable/ic_vote_no_text"
         android:title="투표"
         app:showAsAction="always" />
