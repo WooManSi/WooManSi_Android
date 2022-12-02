@@ -9,4 +9,10 @@
     app:showAsAction="collapseActionView">
   </item>
 
+  <item
+      android:id="@+id/appBar_Logout"
+      android:icon="@drawable/ic_three_dots"
+      android:title="로그아웃"
+      app:showAsAction="collapseActionView">
+  </item>
 </menu>

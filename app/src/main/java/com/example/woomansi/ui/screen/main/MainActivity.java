@@ -60,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
                 return Main1Fragment.newInstance();
             case R.id.item_group:
                 return Main2Fragment.newInstance();
-            case R.id.item_notification:
-                return Main3Fragment.newInstance();
             case R.id.item_account:
                 return Main4Fragment.newInstance();
         }
@@ -83,13 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 topAppBar.setTitleTextAppearance(topAppBar.getContext(), R.style.text_white_bold_title);
 
                 appBarLayout.setBackgroundColor(Color.parseColor("#FF8E2B"));
-                return;
-            }
-            case R.id.item_notification: {
-                topAppBar.setTitle("알림");
-                topAppBar.setTitleTextAppearance(topAppBar.getContext(), R.style.black_bold_title);
-
-                appBarLayout.setBackgroundColor(Color.parseColor("#F3F2F2"));
                 return;
             }
             case R.id.item_account: {

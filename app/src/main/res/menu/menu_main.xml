@@ -14,12 +14,6 @@
         android:title="그룹" />
 
     <item
-        android:id="@+id/item_notification"
-        android:icon="@drawable/ic_notifications"
-        android:enabled="true"
-        android:title="알림" />
-
-    <item
         android:id="@+id/item_account"
         android:icon="@drawable/ic_account_circle"
         android:enabled="true"

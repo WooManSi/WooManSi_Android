@@ -21,10 +21,24 @@
       app:layout_constraintTop_toTopOf="parent" />
 
 
-    <LinearLayout
+  <ImageView
+      android:id="@+id/RegisterActivity_iv_profile"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:scaleType="center"
+      android:src="@drawable/ic_profile2"
+      app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+  <LinearLayout
+      android:id="@+id/linearLayout4"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:orientation="vertical"
+      android:layout_marginHorizontal="64dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.5"
@@ -32,48 +46,46 @@
       app:layout_constraintTop_toBottomOf="@+id/textView2"
       app:layout_constraintVertical_bias="0.5">
 
-      <EditText
-          android:id="@+id/RegisterActivity_et_Signup_Id_Text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp"
-          android:background="@drawable/round_border"
-          android:ems="12"
-          android:hint="test@example.com"
-          android:imeOptions="actionDone"
-          android:inputType="textEmailAddress"
-          android:padding="8dp" />
+    <EditText
+        android:id="@+id/RegisterActivity_et_Signup_Id_Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        style="@style/Theme.WooManSi.EditText"
+        android:hint="test@example.com"
+        android:imeOptions="actionDone"
+        android:inputType="textEmailAddress"
+        android:padding="8dp" />
 
-      <EditText
-          android:id="@+id/RegisterActivity_et_Signup_Pw_Text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="16dp"
-          android:background="@drawable/round_border"
-          android:ems="12"
-          android:hint="password"
-          android:imeOptions="actionDone"
-          android:inputType="textPassword"
-          android:padding="8dp" />
-      <EditText
-          android:id="@+id/RegisterActivity_et_Nickname_Text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="16dp"
-          android:background="@drawable/round_border"
-          android:ems="12"
-          android:hint="닉네임"
-          android:imeOptions="actionDone"
-          android:inputType="text"
-          android:padding="8dp" />
+    <EditText
+        android:id="@+id/RegisterActivity_et_Signup_Pw_Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        style="@style/Theme.WooManSi.EditText"
+        android:hint="password"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:padding="8dp" />
 
-      <Button
-          android:id="@+id/RegisterActivity_et_Signup_button"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:backgroundTint="?attr/colorPrimary"
-          android:text="등록" />
+    <EditText
+        android:id="@+id/RegisterActivity_et_Nickname_Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        style="@style/Theme.WooManSi.EditText"
+        android:hint="닉네임"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:padding="8dp" />
+
+    <Button
+        android:id="@+id/RegisterActivity_et_Signup_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Theme.WooManSi.Button.Round"
+        android:layout_gravity="center"
+        android:text="등록" />
 
   </LinearLayout>
 
