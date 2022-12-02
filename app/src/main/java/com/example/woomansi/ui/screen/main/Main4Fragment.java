@@ -215,7 +215,6 @@ public class Main4Fragment extends Fragment{
                 builder.setPositiveButton("회원탈퇴", (dialog, id) ->
                 {
                     FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                    UserModel account = new UserModel();
                     DocumentReference profileRef = db.collection("users").document(firebaseUser.getUid());
                     firebaseUser.delete()
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
