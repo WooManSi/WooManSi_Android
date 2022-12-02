@@ -4,16 +4,18 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.GroupModel;
 import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.ui.adapter.MemberListAdapter;
+import com.example.woomansi.util.SetProfileImageUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -21,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 
 public class MemberListActivity extends AppCompatActivity {
@@ -34,6 +37,7 @@ public class MemberListActivity extends AppCompatActivity {
 
     private TextView memberCount;
     private TextView leaderName;
+    private ImageView leaderProfile;
 
     private FirebaseAuth auth;
     private FirebaseFirestore fireStore;
@@ -68,6 +72,7 @@ public class MemberListActivity extends AppCompatActivity {
 
         //리더 닉네임 셋팅
         leaderName = findViewById(R.id.memberList_tv_leaderName);
+        leaderProfile = findViewById(R.id.memberList_iv_leaderProfile);
         fireStore.collection("users")
             .whereEqualTo("idToken", group.getLeaderUid())
             .get()
@@ -79,6 +84,7 @@ public class MemberListActivity extends AppCompatActivity {
                         DocumentSnapshot document =  task.getResult().getDocuments().get(0);
                         UserModel userModel = document.toObject(UserModel.class);
                         leaderName.setText(userModel.getNickname());
+                        leaderProfile.setImageResource(SetProfileImageUtil.getImageFile(userModel.getProfile()));
                     }
                 }
             });
