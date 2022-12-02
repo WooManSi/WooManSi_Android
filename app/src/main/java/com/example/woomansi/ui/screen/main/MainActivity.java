@@ -2,6 +2,8 @@ package com.example.woomansi.ui.screen.main;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.example.woomansi.R;
@@ -34,10 +36,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnItemReselectedListener(item -> {});
 
         //그룹 탈퇴 시 바로 그룹 메인화면으로 보여주기 위함
-        if(getIntent().getStringExtra("group") != null)
-            bottomNav.setSelectedItemId(R.id.item_group);
-        else
-            bottomNav.setSelectedItemId(R.id.item_home);
+        if(getIntent().getStringExtra("group") != null) {
+            changeFragment(R.id.item_group);
+        } else {
+            changeFragment(R.id.item_home);
+        }
     }
 
     private void changeFragment(int itemId) {
