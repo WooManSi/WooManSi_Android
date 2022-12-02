@@ -1,6 +1,5 @@
 package com.example.woomansi.ui.viewmodel;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -19,18 +18,17 @@ import java.util.List;
 public class Main1ViewModel extends ViewModel {
 
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    private final MutableLiveData<String> scheduleCreationErrorMsg = new MutableLiveData<>();
+    private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private MutableLiveData<TimeTableData> timeTableData;
 
     public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
-    public LiveData<String> getScheduleCreationErrorMsg() {
-        return scheduleCreationErrorMsg;
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
     }
 
     public LiveData<TimeTableData> getTimeTableData(List<String> dayNameList) {
-        isLoading.setValue(true);
         if (timeTableData == null) {
             timeTableData = new MutableLiveData<>();
             loadSchedules(dayNameList);
@@ -51,7 +49,7 @@ public class Main1ViewModel extends ViewModel {
                 user.getIdToken(),
                 dayOfWeekName,
                 schedule,
-                task -> scheduleCreationErrorMsg.setValue(null)
+                task -> errorMessage.setValue(null)
         );
     }
 
@@ -59,8 +57,11 @@ public class Main1ViewModel extends ViewModel {
         UserModel user = UserCache.getUser(null);
         if (user == null)
             return;
+
+        isLoading.setValue(true);
         FirebaseSchedules.getSchedules(
             user.getIdToken(),
+            dayNameList,
             scheduleMap -> {
                 TimeTableData tableData
                         = ScheduleTypeTransform.scheduleMapToTimeTableData(dayNameList, scheduleMap);
@@ -68,6 +69,7 @@ public class Main1ViewModel extends ViewModel {
                 isLoading.setValue(false);
             },
             message -> {
+                errorMessage.setValue(message);
                 isLoading.setValue(false);
             });
     }

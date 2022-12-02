@@ -7,6 +7,8 @@ public class ScheduleModel {
     private String endTime;
     private String color;       // format: "#ffffff"
 
+    public ScheduleModel() {}
+
     public ScheduleModel(String name, String description, String startTime, String endTime, String color) {
         this.name = name;
         this.description = description;
