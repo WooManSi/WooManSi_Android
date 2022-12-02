@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/bottom_sheet_create_schedule"
   android:layout_width="match_parent"
-  android:layout_height="400dp"
+  android:layout_height="480dp"
   android:background="@color/gray100"
   app:behavior_draggable="true"
   app:behavior_hideable="true"
@@ -134,6 +134,7 @@
           android:focusableInTouchMode="false"
           android:padding="10dp"
           android:text="시작 시간"
+          android:textColor="@color/black"
           android:textSize="16sp"
           android:textStyle="bold"
           app:drawableStartCompat="@drawable/ic_arrow_bar_right" />
@@ -143,11 +144,12 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginEnd="8dp"
-          android:background="@android:color/transparent"
           android:focusableInTouchMode="false"
           android:hint="일정 시작시간"
+          android:gravity="end"
+          android:textColor="@color/black"
           android:textSize="16sp"
-          android:textStyle="bold" />
+          android:textStyle="bold"/>
 
     </LinearLayout>
 
@@ -165,6 +167,7 @@
           android:focusableInTouchMode="false"
           android:padding="10dp"
           android:text="종료 시간"
+          android:textColor="@color/black"
           android:textSize="16sp"
           android:textStyle="bold"
           app:drawableStartCompat="@drawable/ic_arrow_bar_left" />
@@ -174,9 +177,10 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginEnd="8dp"
-          android:background="@android:color/transparent"
           android:focusableInTouchMode="false"
           android:hint="일정 종료시간"
+          android:gravity="end"
+          android:textColor="@color/black"
           android:textSize="16sp"
           android:textStyle="bold" />
 
