@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.UserModel;
+import com.example.woomansi.util.SetProfileImageUtil;
+
 import java.util.List;
 
 public class MemberListAdapter extends BaseAdapter {
@@ -43,6 +46,9 @@ public class MemberListAdapter extends BaseAdapter {
 
         TextView memberName = view.findViewById(R.id.listItemMember_tv_name);
         memberName.setText(memberList.get(position).getNickname());
+
+        ImageView memberProfile = view.findViewById(R.id.listItemMember_iv_profile);
+        memberProfile.setImageResource(SetProfileImageUtil.getImageFile(memberList.get(position).getProfile()));
 
         return view;
     }
