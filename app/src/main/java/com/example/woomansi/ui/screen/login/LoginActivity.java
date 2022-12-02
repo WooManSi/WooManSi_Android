@@ -10,7 +10,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.woomansi.R;
+import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.ui.screen.main.MainActivity;
+import com.example.woomansi.util.UserCache;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -52,9 +54,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             //로그인성공
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish(); //현재 액티비티 파괴
+                            String uid = task.getResult().getUser().getUid();
+                            setUserCache(uid);
                         }
                         else {
                             Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
@@ -77,4 +78,21 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void setUserCache(String uid) {
+        FirebaseFirestore
+                .getInstance()
+                .collection("users")
+                .document(uid)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        UserModel user = task.getResult().toObject(UserModel.class);
+                        UserCache.setUser(this, user);
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish(); //현재 액티비티 파괴
+                    }
+                });
+    }
 }

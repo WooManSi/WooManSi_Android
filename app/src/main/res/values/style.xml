@@ -100,4 +100,8 @@
 
     </style>
 
+    <style name="Theme.WooManSi.ChipChoice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:layout_margin">0dp</item>
+    </style>
+
 </resources>
