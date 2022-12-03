@@ -106,7 +106,8 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
                     title,
                     dayNameList[curDayOfWeek-1],
                     curStartTime,
-                    curEndTime
+                    curEndTime,
+                    dayNameList.toMutableList()
                 )
             }
 
