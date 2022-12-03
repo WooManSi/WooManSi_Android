@@ -10,6 +10,16 @@ public class GroupModel implements Serializable {
   private String leaderUid;
   private ArrayList<String> memberList; //리더포함
 
+  public GroupModel() {}
+
+  public GroupModel(String groupName, String groupPassword, String groupCreateDate, String leaderUid, ArrayList<String> memberList) {
+    this.groupName = groupName;
+    this.groupPassword = groupPassword;
+    this.groupCreateDate = groupCreateDate;
+    this.leaderUid = leaderUid;
+    this.memberList = memberList;
+  }
+
   public String getGroupName() {
     return groupName;
   }

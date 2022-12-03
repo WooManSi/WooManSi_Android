@@ -173,8 +173,8 @@ public class Main2Fragment extends Fragment {
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String groupName = editGroupName.getText().toString();
-                String groupPassword = editGroupPassword.getText().toString();
+                String groupName = editGroupName.getText().toString().trim();
+                String groupPassword = editGroupPassword.getText().toString().trim();
                 Log.d(TAG, "그룹 네임 : " + groupName);
                 Log.d(TAG, "그룹 패스워드 : " + groupPassword);
 
