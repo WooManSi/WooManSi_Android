@@ -56,7 +56,7 @@ public class FirebaseGroupSchedule {
                         return;
                     }
                     DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
+                    if (!document.exists()) {
                         // document가 존재하지 않을 때 초기화해주기
                         setEmptySchedule(groupId, dayNames, s);
                         return;

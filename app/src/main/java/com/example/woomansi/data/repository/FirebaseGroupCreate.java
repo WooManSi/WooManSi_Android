@@ -11,7 +11,7 @@ public class FirebaseGroupCreate {
     }
 
     public interface OnCreateSuccessListener {
-        void onSuccess(String documentPath);
+        void onSuccess(String documentId);
     }
 
     public static void checkAndCreateGroup(GroupModel groupModel, OnCreateSuccessListener s, OnFailedListener f) {
