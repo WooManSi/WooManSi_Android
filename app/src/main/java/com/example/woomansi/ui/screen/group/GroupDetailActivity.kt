@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.woomansi.R
 import com.example.woomansi.data.model.GroupModel
+import com.example.woomansi.ui.screen.vote.VoteResultActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -90,7 +91,9 @@ class GroupDetailActivity : AppCompatActivity() {
             // 투표 결과 확인 버튼
             findViewById<Button>(R.id.bottomSheet_vote_btn_voteResult)?.apply {
                 setOnClickListener {
-                    // TODO
+                    Intent(this@GroupDetailActivity, VoteResultActivity::class.java).also {
+                        startActivity(it)
+                    }
                     cancel()
                 }
             }
