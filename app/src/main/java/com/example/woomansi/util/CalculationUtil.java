@@ -77,7 +77,7 @@ public class CalculationUtil {
                 String startTime = TimeFormatUtil.timeToString(startHour, startMinute);
                 String endTime = TimeFormatUtil.timeToString(endHour, endMinute);
 
-                if(endIndex - startIndex > 4) { // 너무 짧은 시간은 넣어주지 않기위함 (ex. 1시간 미만)
+                if(endIndex - startIndex >= 4) { // 너무 짧은 시간은 넣어주지 않기위함 (ex. 1시간 미만)
                     VoteScheduleModel newVoteSchedule = new VoteScheduleModel(startTime, endTime, 0);
                     result.add(newVoteSchedule);
                 }
@@ -92,7 +92,7 @@ public class CalculationUtil {
                 String startTime = TimeFormatUtil.timeToString(startHour, startMinute);
                 String endTime = TimeFormatUtil.timeToString(endHour, endMinute);
 
-                if(endIndex - startIndex > 4) {
+                if(endIndex - startIndex >= 4) {
                     VoteScheduleModel newVoteSchedule = new VoteScheduleModel(startTime, endTime, 0);
                     result.add(newVoteSchedule);
                 }
