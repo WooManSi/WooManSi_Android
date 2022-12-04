@@ -14,7 +14,6 @@ class GroupScheduleTypeTransform {
         ) = TimeTableData(
             dayNameList.map { key ->
                 val intList = groupScheduleMap[key]
-                println(intList)
                 val groupScheduleModel = CalculationUtil.calculateIndexToTime(intList)
                 ScheduleDayData(
                     key,

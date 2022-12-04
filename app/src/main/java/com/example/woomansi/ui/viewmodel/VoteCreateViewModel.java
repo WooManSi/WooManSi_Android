@@ -49,7 +49,6 @@ public class VoteCreateViewModel extends ViewModel {
                     DocumentSnapshot document = task.getResult().getDocuments().get(0);
                     DocumentReference group = document.getReference();
                     group.getId();
-                    System.out.println(group.getId());
 
                     isLoading.setValue(true);
                     FirebaseGroupSchedule.fetchGroupSchedule(

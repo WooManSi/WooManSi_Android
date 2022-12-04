@@ -45,8 +45,6 @@ class VoteCreateActivity : AppCompatActivity() {
 
         spinner = findViewById(R.id.voteCreate_spinner)
 
-        println("그룹데이터 : " + groupData.groupName)
-
         viewModel = ViewModelProvider(this).get(VoteCreateViewModel::class.java)
 
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
