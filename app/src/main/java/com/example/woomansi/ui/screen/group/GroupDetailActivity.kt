@@ -76,7 +76,9 @@ class GroupDetailActivity : AppCompatActivity() {
             // 투표 생성하기 버튼
             findViewById<Button>(R.id.bottomSheet_vote_btn_createVote)?.apply {
                 setOnClickListener {
-                    // TODO
+                    Intent(this@GroupDetailActivity, VoteCreateActivity::class.java).also {
+                        startActivity(it)
+                    }
                     cancel()
                 }
             }
