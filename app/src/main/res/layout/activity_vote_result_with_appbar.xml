@@ -5,6 +5,22 @@
   android:layout_height="match_parent"
   android:background="#F3F2F2">
 
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/voteResult_appBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F3F2F2">
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/voteResult_topAppBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:navigationIcon="@drawable/ic_arrow_back_black"
+      app:title="투표 결과"
+      app:titleTextAppearance="@style/black_bold_title" />
+
+  </com.google.android.material.appbar.AppBarLayout>
+
   <Button
     android:id="@+id/voteResult_btn_return"
     android:layout_width="250dp"
@@ -41,23 +57,5 @@
     android:text="최종안"
     android:textAppearance="@style/black_bold"
     android:textSize="30sp" />
-
-
-  <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/voteResult_appBar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#F3F2F2">
-
-    <com.google.android.material.appbar.MaterialToolbar
-      android:id="@+id/voteResult_topAppBar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:navigationIcon="@drawable/ic_arrow_back_black"
-      app:title="투표 결과"
-      app:titleTextAppearance="@style/black_bold_title" />
-
-  </com.google.android.material.appbar.AppBarLayout>
-
 
 </RelativeLayout>

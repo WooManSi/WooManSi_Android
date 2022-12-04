@@ -27,12 +27,13 @@
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.compose.ui.platform.ComposeView
-    android:id="@+id/voteJoin_time_table"
+    android:id="@+id/voteJoin_cv_time_table"
     android:layout_width="match_parent"
     android:layout_height="550dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/voteJoin_appBar"
     app:layout_constraintVertical_bias="0.300" />
+
   <Button
     android:id="@+id/voteJoin_btn_vote"
     style="@style/Theme.WooManSi.Button.Round"
@@ -44,7 +45,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.5"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/voteJoin_time_table" />
+    app:layout_constraintTop_toBottomOf="@+id/voteJoin_cv_time_table" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
