@@ -5,11 +5,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.lifecycle.ViewModelProvider
+import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
 import com.example.woomansi.data.model.GroupModel
 import com.example.woomansi.ui.screen.vote.VoteCreateActivity
 import com.example.woomansi.ui.screen.vote.VoteJoinActivity
 import com.example.woomansi.ui.screen.vote.VoteResultActivity
+import com.example.woomansi.ui.viewmodel.GroupDetailViewModel
+import com.example.woomansi.ui.viewmodel.VoteCreateViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -17,6 +26,9 @@ class GroupDetailActivity : AppCompatActivity() {
 
     private lateinit var groupInfoBottomSheet: BottomSheetDialog
     private lateinit var voteInfoBottomSheet: BottomSheetDialog
+
+    private lateinit var viewModel: GroupDetailViewModel
+    private val dayNameList by lazy { resources.getStringArray(R.array.day_name) }
 
     private val groupData by lazy {
         intent.getSerializableExtra("group") as GroupModel
@@ -28,7 +40,7 @@ class GroupDetailActivity : AppCompatActivity() {
 
         initializeBottomSheets()
 
-        findViewById<MaterialToolbar>(R.id.toolbar).apply {
+        findViewById<MaterialToolbar>(R.id.groupDetail_topAppBar).apply {
             title = groupData.groupName
             setNavigationOnClickListener { finish() }
             setOnMenuItemClickListener { item ->
@@ -43,6 +55,22 @@ class GroupDetailActivity : AppCompatActivity() {
                     }
                     else -> false
                 }
+            }
+        }
+
+        viewModel = ViewModelProvider(this).get(GroupDetailViewModel::class.java)
+
+        val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
+        composeView.setContent {
+            val tableData = viewModel.getTimeTableData(dayNameList.toList(), groupData).observeAsState()
+            val scrollState = rememberScrollState()
+
+            tableData.value?.let {
+                ComposeTimeTable(
+                        timeTableData = it,
+                        onCellClick = {},
+                        modifier = Modifier.verticalScroll(scrollState)
+                )
             }
         }
     }
