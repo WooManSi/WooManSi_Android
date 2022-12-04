@@ -5,7 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="#F3F2F2"
-  tools:context=".ui.screen.vote.VoteCreateActivityKtn">
+  tools:context=".ui.screen.vote.VoteCreateActivity">
 
     <com.google.android.material.appbar.AppBarLayout
       android:id="@+id/voteCreate_appBar"
@@ -24,7 +24,7 @@
           app:titleTextAppearance="@style/black_bold_title" />
 
     </com.google.android.material.appbar.AppBarLayout>
-<!--
+
     <Spinner
       android:id="@+id/voteCreate_spinner"
       android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
       android:layout_marginStart="4dp"
       android:layout_centerHorizontal="true"
       app:layout_constraintStart_toEndOf="@+id/voteCreate_tv_overlapMembers"
-      app:layout_constraintTop_toBottomOf="@+id/voteCreate_appBar" />-->
+      app:layout_constraintTop_toBottomOf="@+id/voteCreate_appBar" />
 
     <TextView
       android:id="@+id/voteCreate_tv_overlapMembers"
@@ -68,15 +68,5 @@
       app:layout_constraintHorizontal_bias="0.5"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/voteCreate_cv_time_table" />
-
-<!--    <ProgressBar
-      android:id="@+id/voteCreate_pb_loading"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
