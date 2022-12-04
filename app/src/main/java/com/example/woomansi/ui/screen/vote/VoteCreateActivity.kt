@@ -49,7 +49,7 @@ class VoteCreateActivity : AppCompatActivity() {
 
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
         composeView.setContent {
-                val tableData = viewModel.getTimeTableData(dayNameList.toList(), groupData).observeAsState()
+                val tableData = viewModel.getTimeTableData(dayNameList.toList(), groupData, 0).observeAsState()
                 val scrollState = rememberScrollState()
 
                 tableData.value?.let {

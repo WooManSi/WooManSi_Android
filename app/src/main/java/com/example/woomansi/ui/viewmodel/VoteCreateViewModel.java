@@ -25,15 +25,23 @@ public class VoteCreateViewModel extends ViewModel {
         return errorMessage;
     }
 
-    public LiveData<TimeTableData> getTimeTableData(List<String> dayNameList, GroupModel groupModel) {
+    public LiveData<TimeTableData> getTimeTableData(
+        List<String> dayNameList,
+        GroupModel groupModel,
+        int overlapPeople
+    ) {
         if (timeTableData == null) {
             timeTableData = new MutableLiveData<>();
-            loadSchedules(dayNameList, groupModel);
+            loadSchedules(dayNameList, groupModel, overlapPeople);
         }
         return timeTableData;
     }
 
-    public void loadSchedules(List<String> dayNameList, GroupModel groupModel) {
+    public void loadSchedules(
+        List<String> dayNameList,
+        GroupModel groupModel,
+        int overlapPeople
+    ) {
         if (groupModel == null)
             return;
 
@@ -56,7 +64,7 @@ public class VoteCreateViewModel extends ViewModel {
                         dayNameList,
                         groupSchedule-> {
                             TimeTableData tableData
-                                = GroupScheduleTypeTransform.groupScheduleMapToTimeTableData(dayNameList, groupSchedule);
+                                = GroupScheduleTypeTransform.groupScheduleMapToTimeTableData(dayNameList, groupSchedule, overlapPeople);
                             timeTableData.setValue(tableData);
                             isLoading.setValue(false);
                         },

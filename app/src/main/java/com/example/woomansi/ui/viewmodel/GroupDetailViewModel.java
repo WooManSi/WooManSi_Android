@@ -56,7 +56,7 @@ public class GroupDetailViewModel extends ViewModel {
                         dayNameList,
                         groupSchedule-> {
                             TimeTableData tableData
-                                = GroupScheduleTypeTransform.groupScheduleMapToTimeTableData(dayNameList, groupSchedule);
+                                = GroupScheduleTypeTransform.groupScheduleMapToTimeTableData(dayNameList, groupSchedule, 0);
                             timeTableData.setValue(tableData);
                             isLoading.setValue(false);
                         },

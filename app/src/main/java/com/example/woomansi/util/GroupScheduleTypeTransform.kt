@@ -9,12 +9,13 @@ class GroupScheduleTypeTransform {
         // 그룹 스케줄 데이터 -> 비는 시간 TimeTableData로 변환하는 함수
         @JvmStatic
         fun groupScheduleMapToTimeTableData(
-            dayNameList: List<String>, // 요일 이름
-            groupScheduleMap: Map<String, List<Int>> // 그룹 스케줄 데이터
+                dayNameList: List<String>, // 요일 이름
+                groupScheduleMap: Map<String, List<Int>>, // 그룹 스케줄 데이터
+                overlapPeople: Int
         ) = TimeTableData(
             dayNameList.map { key ->
                 val intList = groupScheduleMap[key]
-                val groupScheduleModel = CalculationUtil.calculateIndexToTime(intList)
+                val groupScheduleModel = CalculationUtil.calculateIndexToTime(intList, overlapPeople)
                 ScheduleDayData(
                     key,
                         groupScheduleModel.map { model ->
