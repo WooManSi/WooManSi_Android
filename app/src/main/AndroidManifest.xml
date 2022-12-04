@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.screen.group.GroupVoteActivity"
+            android:name=".ui.screen.group.VoteCreateActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
