@@ -1,4 +1,4 @@
-package com.example.woomansi.ui.screen.group;
+package com.example.woomansi.ui.screen.vote;
 
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +16,7 @@ public class VoteCreateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vote_create);
+        setContentView(R.layout.activity_vote_create_with_appbar);
 
         topAppBar = findViewById(R.id.voteCreate_topAppBar);
         topAppBar.setNavigationOnClickListener(view -> finish());

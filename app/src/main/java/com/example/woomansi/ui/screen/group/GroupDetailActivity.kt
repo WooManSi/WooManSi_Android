@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.woomansi.R
 import com.example.woomansi.data.model.GroupModel
+import com.example.woomansi.ui.screen.vote.VoteCreateActivity
 import com.example.woomansi.ui.screen.vote.VoteJoinActivity
 import com.example.woomansi.ui.screen.vote.VoteResultActivity
 import com.google.android.material.appbar.MaterialToolbar
@@ -79,6 +80,7 @@ class GroupDetailActivity : AppCompatActivity() {
             findViewById<Button>(R.id.bottomSheet_vote_btn_createVote)?.apply {
                 setOnClickListener {
                     Intent(this@GroupDetailActivity, VoteCreateActivity::class.java).also {
+                        it.putExtra("group", groupData)
                         startActivity(it)
                     }
                     cancel()
