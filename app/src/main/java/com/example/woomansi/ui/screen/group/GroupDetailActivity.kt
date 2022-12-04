@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.woomansi.R
 import com.example.woomansi.data.model.GroupModel
+import com.example.woomansi.ui.screen.vote.VoteJoinActivity
 import com.example.woomansi.ui.screen.vote.VoteResultActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -84,7 +85,10 @@ class GroupDetailActivity : AppCompatActivity() {
             // 투표 참여하기 버튼
             findViewById<Button>(R.id.bottomSheet_vote_btn_joinVote)?.apply {
                 setOnClickListener {
-                    // TODO
+                    Intent(this@GroupDetailActivity, VoteJoinActivity::class.java).also {
+                        it.putExtra("group", groupData)
+                        startActivity(it)
+                    }
                     cancel()
                 }
             }
@@ -92,6 +96,7 @@ class GroupDetailActivity : AppCompatActivity() {
             findViewById<Button>(R.id.bottomSheet_vote_btn_voteResult)?.apply {
                 setOnClickListener {
                     Intent(this@GroupDetailActivity, VoteResultActivity::class.java).also {
+                        it.putExtra("group", groupData)
                         startActivity(it)
                     }
                     cancel()
