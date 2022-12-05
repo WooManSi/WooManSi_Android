@@ -44,14 +44,15 @@ public class Main1ViewModel extends ViewModel {
         return timeTableData;
     }
 
-    public void createSchedule(String title, String dayOfWeekName, LocalTime startTime, LocalTime endTime, List<String> dayNameList) {
+    public void createSchedule(String title, String description, String dayOfWeekName, LocalTime startTime, LocalTime endTime, String color, List<String> dayNameList) {
         UserModel user = UserCache.getUser(null);
         if (user == null)
             return;
-        ScheduleModel schedule = new ScheduleModel(title, "",
+        ScheduleModel schedule = new ScheduleModel(
+                title, description,
                 TimeFormatUtil.timeToString(startTime),
                 TimeFormatUtil.timeToString(endTime),
-                "#B3DCF5");
+                color);
 
         FirebaseSchedules.addSchedule(
                 user.getIdToken(),

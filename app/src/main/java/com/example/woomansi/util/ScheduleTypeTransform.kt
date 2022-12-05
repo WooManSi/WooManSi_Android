@@ -1,5 +1,6 @@
 package com.example.woomansi.util
 
+import androidx.compose.ui.graphics.Color
 import com.cometj03.composetimetable.ScheduleDayData
 import com.cometj03.composetimetable.ScheduleEntity
 import com.cometj03.composetimetable.TimeTableData
@@ -23,7 +24,7 @@ class ScheduleTypeTransform {
                             model.description,
                             TimeFormatUtil.stringToTime(model.startTime),
                             TimeFormatUtil.stringToTime(model.endTime),
-                            // TODO: Color parse
+                            Color(android.graphics.Color.parseColor(model.color))
                         )
                     } ?: emptyList()
                 )

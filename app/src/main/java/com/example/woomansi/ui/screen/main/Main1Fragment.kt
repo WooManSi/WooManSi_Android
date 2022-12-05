@@ -22,6 +22,7 @@ import com.example.woomansi.util.TimeFormatUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.ChipGroup
 import java.time.LocalTime
+import kotlin.random.Random
 
 class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
@@ -87,6 +88,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             setContentView(R.layout.bottom_sheet_create_schedule)
 
             val etTitle = findViewById<EditText>(R.id.et_title)!!
+            val etDescription = findViewById<TextView>(R.id.et_description)!!
             val tvCreate = findViewById<TextView>(R.id.tv_create)!!
             val chipGroup = findViewById<ChipGroup>(R.id.cg_days)!!
             val tvStartTime = findViewById<TextView>(R.id.tv_start_time)!!
@@ -98,15 +100,20 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
             tvCreate.setOnClickListener {
                 val title = etTitle.text.toString()
+                val description = etDescription.text.toString()
                 if (!validateInputData(title, curDayOfWeek, curStartTime, curEndTime))
                     return@setOnClickListener
 
+                val colorArray = resources.getStringArray(R.array.timetable_color_array)
+                val randInt = Random.nextInt(colorArray.size)
+
                 setCancelable(false)
                 viewModel.createSchedule(
-                    title,
+                    title, description,
                     dayNameList[curDayOfWeek-1],
                     curStartTime,
                     curEndTime,
+                    colorArray[randInt],
                     dayNameList.toMutableList()
                 )
             }
@@ -126,6 +133,9 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             }
 
             chipGroup.invalidate()
+            (0 until chipGroup.childCount).forEach {
+                chipGroup.getChildAt(it).id = it + 1
+            }
             chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
                 val id = checkedIds.first()
                 curDayOfWeek = id
