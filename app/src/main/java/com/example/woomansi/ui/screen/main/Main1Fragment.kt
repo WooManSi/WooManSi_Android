@@ -113,7 +113,8 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
                     dayNameList[curDayOfWeek-1],
                     curStartTime,
                     curEndTime,
-                    colorArray[randInt]
+                    colorArray[randInt],
+                    dayNameList.toMutableList()
                 )
             }
 
