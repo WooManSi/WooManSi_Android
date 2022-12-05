@@ -1,6 +1,7 @@
 package com.example.woomansi.ui.screen.group
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Button
@@ -18,7 +19,6 @@ import com.example.woomansi.ui.screen.vote.VoteCreateActivity
 import com.example.woomansi.ui.screen.vote.VoteJoinActivity
 import com.example.woomansi.ui.screen.vote.VoteResultActivity
 import com.example.woomansi.ui.viewmodel.GroupDetailViewModel
-import com.example.woomansi.ui.viewmodel.VoteCreateViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -38,12 +38,14 @@ class GroupDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_detail_with_appbar)
 
+        viewModel = ViewModelProvider(this).get(GroupDetailViewModel::class.java)
         initializeBottomSheets()
 
         findViewById<MaterialToolbar>(R.id.groupDetail_topAppBar).apply {
             title = groupData.groupName
             setNavigationOnClickListener { finish() }
             setOnMenuItemClickListener { item ->
+                initializeBottomSheets()
                 when (item.itemId) {
                     R.id.item_group_info -> {
                         groupInfoBottomSheet.show()
@@ -57,8 +59,6 @@ class GroupDetailActivity : AppCompatActivity() {
                 }
             }
         }
-
-        viewModel = ViewModelProvider(this).get(GroupDetailViewModel::class.java)
 
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
         composeView.setContent {
@@ -115,7 +115,7 @@ class GroupDetailActivity : AppCompatActivity() {
                 }
             }
             // 투표 참여하기 버튼
-            findViewById<Button>(R.id.bottomSheet_vote_btn_joinVote)?.apply {
+            val joinBtn = findViewById<Button>(R.id.bottomSheet_vote_btn_joinVote)?.apply {
                 setOnClickListener {
                     Intent(this@GroupDetailActivity, VoteJoinActivity::class.java).also {
                         it.putExtra("group", groupData)
@@ -125,13 +125,33 @@ class GroupDetailActivity : AppCompatActivity() {
                 }
             }
             // 투표 결과 확인 버튼
-            findViewById<Button>(R.id.bottomSheet_vote_btn_voteResult)?.apply {
+            val resultBtn = findViewById<Button>(R.id.bottomSheet_vote_btn_voteResult)?.apply {
                 setOnClickListener {
                     Intent(this@GroupDetailActivity, VoteResultActivity::class.java).also {
                         it.putExtra("group", groupData)
                         startActivity(it)
                     }
                     cancel()
+                }
+            }
+
+            viewModel.getCanVoteJoin(groupData).observe(this) { canVoteJoin ->
+                if (canVoteJoin) {
+                    joinBtn!!.isClickable = true
+                    joinBtn.setTextColor(Color.BLACK)
+                } else {
+                    joinBtn!!.isClickable = false
+                    joinBtn.setTextColor(Color.parseColor("#c0c0c0"))
+                }
+            }
+
+            viewModel.getCanVoteResult(groupData).observe(this) { canVoteResult ->
+                if (canVoteResult) {
+                    resultBtn!!.isClickable = true
+                    resultBtn.setTextColor(Color.BLACK)
+                } else {
+                    resultBtn!!.isClickable = false
+                    resultBtn.setTextColor(Color.parseColor("#c0c0c0"))
                 }
             }
         }
