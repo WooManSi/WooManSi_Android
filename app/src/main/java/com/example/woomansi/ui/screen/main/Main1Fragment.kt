@@ -88,6 +88,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             setContentView(R.layout.bottom_sheet_create_schedule)
 
             val etTitle = findViewById<EditText>(R.id.et_title)!!
+            val etDescription = findViewById<TextView>(R.id.et_description)!!
             val tvCreate = findViewById<TextView>(R.id.tv_create)!!
             val chipGroup = findViewById<ChipGroup>(R.id.cg_days)!!
             val tvStartTime = findViewById<TextView>(R.id.tv_start_time)!!
@@ -99,6 +100,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
             tvCreate.setOnClickListener {
                 val title = etTitle.text.toString()
+                val description = etDescription.text.toString()
                 if (!validateInputData(title, curDayOfWeek, curStartTime, curEndTime))
                     return@setOnClickListener
 
@@ -107,7 +109,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
                 setCancelable(false)
                 viewModel.createSchedule(
-                    title,
+                    title, description,
                     dayNameList[curDayOfWeek-1],
                     curStartTime,
                     curEndTime,
