@@ -4,31 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screen.group.GroupVoteActivity">
+    android:background="#F3F2F2"
+    tools:context=".ui.screen.group.VoteCreateActivity">
 
+
+    <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/voteCreate_appBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="#F3F2F2"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+          android:id="@+id/voteCreate_topAppBar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:navigationIcon="@drawable/ic_arrow_back_black"
+          app:title="투표할 시간을 선택 해주세요."
+          app:titleTextAppearance="@style/black_bold_title" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="투표할 시간을 정해주세요"
-        android:textAppearance="@style/black_bold"
-        android:textSize="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.073"
-        app:layout_constraintStart_toEndOf="@+id/groupvote_ib_backbutton"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.608" />
-
-    <TextView
-        android:id="@+id/textView"
+        android:id="@+id/voteCreate_tv_overlapMembers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="최대 겹칠 수 있는 인원 수"
         android:textAppearance="@style/black_bold"
         android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@+id/cv_time_table"
-        app:layout_constraintEnd_toStartOf="@+id/spinner"
+        app:layout_constraintEnd_toStartOf="@+id/voteCreate_spinner"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,31 +42,17 @@
         app:layout_constraintVertical_bias="0.85" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/voteCreate_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         app:layout_constraintBottom_toTopOf="@+id/cv_time_table"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/voteCreate_tv_overlapMembers"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.85" />
 
-
-    <ImageButton
-        android:id="@+id/groupvote_ib_backbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/transparent"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:src="@drawable/ic_arrow_back_black"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.compose.ui.platform.ComposeView
         android:id="@+id/cv_time_table"
@@ -72,7 +64,7 @@
         tools:layout_editor_absoluteX="64dp" />
 
     <Button
-        android:id="@+id/GroupvoteActivity_btn"
+        android:id="@+id/voteCreate_btn_complete"
         style="@style/Theme.WooManSi.Button.Round"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
