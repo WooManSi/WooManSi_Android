@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.woomansi.R;
+import com.example.woomansi.data.model.GroupModel;
 import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.ui.screen.SplashActivity;
 import com.example.woomansi.ui.screen.login.RegisterActivity;
@@ -40,6 +41,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
 
 
 public class Main4Fragment extends Fragment{
@@ -67,6 +70,7 @@ public class Main4Fragment extends Fragment{
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
     private View view;
+    private GroupModel group;
 
     private final int[] profiles = new int[] {
             R.drawable.ic_profile1,
@@ -119,7 +123,7 @@ public class Main4Fragment extends Fragment{
         ivProfile = view.findViewById(R.id.ProfileActivity_iv_image);
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-
+        group = (GroupModel) getActivity().getIntent().getSerializableExtra("group");
         tvprofile.setVisibility(View.INVISIBLE);
         ivProfile.setVisibility(View.INVISIBLE);
 
@@ -216,6 +220,8 @@ public class Main4Fragment extends Fragment{
                 {
                     FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                     DocumentReference profileRef = db.collection("users").document(firebaseUser.getUid());
+                    String currentID = mFirebaseAuth.getCurrentUser().getUid();
+
                     firebaseUser.delete()
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -235,10 +241,54 @@ public class Main4Fragment extends Fragment{
                                 }
                             });
 
-                    mFirebaseAuth.signOut();
-                    Intent intent = new Intent(view.getContext(), SplashActivity.class);
-                    startActivity(intent);
-                    getActivity().finish();
+
+                    // 내가 방장으로 있는 모든 방들 삭제
+                    db.collection("groups")
+                            .whereEqualTo("leaderUid", currentID)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for(DocumentSnapshot documentSnapshot : task.getResult()) {
+                                            DocumentReference documentReference = documentSnapshot.getReference();
+
+                                            documentReference.delete();
+                                        }
+
+                                    }
+                                }
+                            });
+
+                    // 내가 들어가 있는 모든 방들에서의 내 정보 삭제
+                    db.collection("groups")
+                            .whereArrayContains("memberList", currentID)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                            DocumentReference documentReference = documentSnapshot.getReference();
+
+                                            GroupModel groupModel = documentSnapshot.toObject(GroupModel.class);
+                                            ArrayList<String> list = groupModel.getMemberList();
+                                            list.remove(currentID);
+
+                                            documentReference.update("memberList", list);
+
+                                        }
+                                    } else {
+                                        //empty
+                                    }
+
+                                    mFirebaseAuth.signOut();
+                                            Intent intent = new Intent(view.getContext(), SplashActivity.class);
+                                            startActivity(intent);
+                                            getActivity().finish();
+                                        }
+                                    });
+
                 });
 
                 builder.setNegativeButton("취소", (dialog, id) -> {});
