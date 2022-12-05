@@ -125,6 +125,9 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             }
 
             chipGroup.invalidate()
+            (0 until chipGroup.childCount).forEach {
+                chipGroup.getChildAt(it).id = it
+            }
             chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
                 val id = checkedIds.first()
                 curDayOfWeek = id
