@@ -25,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.GroupModel;
+import com.example.woomansi.data.repository.FirebaseGroupSchedule;
+import com.example.woomansi.data.repository.FirebaseSchedules;
 import com.example.woomansi.ui.adapter.GroupListAdapter;
 import com.example.woomansi.ui.screen.group.GroupCreateActivity;
 import com.example.woomansi.ui.screen.group.GroupDetailActivity;
@@ -37,6 +39,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main2Fragment extends Fragment {
 
@@ -182,34 +185,54 @@ public class Main2Fragment extends Fragment {
                     .whereEqualTo("groupName", groupName)
                     .whereEqualTo("groupPassword", groupPassword)
                     .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                if(!task.getResult().isEmpty()) {
-                                    Log.d(TAG, "그룹 참여하기 성공.", task.getException());
-                                    DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                                    DocumentReference ref = document.getReference();
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if(!task.getResult().isEmpty()) {
+                                Log.d(TAG, "그룹 참여하기 성공.", task.getException());
+                                DocumentSnapshot document = task.getResult().getDocuments().get(0);
+                                DocumentReference ref = document.getReference();
+                                GroupModel groupModel = document.toObject(GroupModel.class);
 
-                                    GroupModel groupModel = document.toObject(GroupModel.class);
-                                    ArrayList<String> list = groupModel.getMemberList();
-                                    list.add(auth.getCurrentUser().getUid());
-                                    ref.update("memberList", list);
+                                String userId = auth.getCurrentUser().getUid();
+                                List<String> dayNameList = List.of(getResources().getStringArray(R.array.day_name));
 
-                                    Toast.makeText(v.getContext(), "그룹 참여하기 성공", Toast.LENGTH_SHORT).show();
-                                    //어뎁터 새로고침
-                                    refreshAdapter();
-                                    dialog_joinGroup.dismiss();
-                                }
-                                else{
-                                    Toast.makeText(v.getContext(), "해당 그룹이 존재하지 않습니다", Toast.LENGTH_SHORT).show();
-                                    dialog_joinGroup.dismiss();
-                                    showFailToJoinGroupDialog();
-                                }
-                            } else {
+                                ArrayList<String> list = groupModel.getMemberList();
+                                list.add(userId);
+
+
+                                //멤버 스케쥴 불러오기
+                                FirebaseSchedules.getSchedules(
+                                    userId,
+                                    dayNameList,
+                                    scheduleMap -> {
+                                        // 스케줄 불러오는 것을 성공했으면
+                                        // 해당 documentId로 그룹 스케줄 데이터 불러온 후 업데이트
+                                        FirebaseGroupSchedule.unionSchedules(
+                                            ref.getId(),
+                                            scheduleMap,
+                                            () -> {
+                                                //성공 시
+                                            },
+                                            errorMsg -> Toast.makeText(v.getContext(), errorMsg, Toast.LENGTH_SHORT).show());
+                                    },
+                                    errorMsg -> Toast.makeText(v.getContext(), errorMsg, Toast.LENGTH_SHORT).show());
+
+                                //멤버리스트 갱신
+                                ref.update("memberList", list);
+                                Toast.makeText(v.getContext(), "그룹 참여하기 성공", Toast.LENGTH_SHORT).show();
+
+                                //어뎁터 새로고침
+                                refreshAdapter();
+                                dialog_joinGroup.dismiss();
+                            }
+                            else{
+                                Toast.makeText(v.getContext(), "해당 그룹이 존재하지 않습니다", Toast.LENGTH_SHORT).show();
                                 dialog_joinGroup.dismiss();
                                 showFailToJoinGroupDialog();
                             }
+                        } else {
+                            dialog_joinGroup.dismiss();
+                            showFailToJoinGroupDialog();
                         }
                     });
             }

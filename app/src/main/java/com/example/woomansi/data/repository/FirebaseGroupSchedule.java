@@ -33,7 +33,22 @@ public class FirebaseGroupSchedule {
         List<String> dayNames = new ArrayList<>(scheduleData.keySet());
 
         fetchGroupSchedule(groupId, dayNames, groupSchedule -> {
-            Map<String, List<Integer>> result = calculateWith(groupSchedule, scheduleData);
+            Map<String, List<Integer>> result = calculateWith(groupSchedule, scheduleData, true);
+            updateGroupSchedule(groupId, result, s, f);
+        }, f);
+    }
+
+    // 기존의 그룹 시간표를 불러와서 scheduleData를 계산하여 빼고, 업데이트하는 함수
+    public static void minusSchedules(
+        String groupId,
+        Map<String, List<ScheduleModel>> scheduleData,
+        OnUnionSuccessListener s,
+        OnFailedListener f
+    ) {
+        List<String> dayNames = new ArrayList<>(scheduleData.keySet());
+
+        fetchGroupSchedule(groupId, dayNames, groupSchedule -> {
+            Map<String, List<Integer>> result = calculateWith(groupSchedule, scheduleData, false);
             updateGroupSchedule(groupId, result, s, f);
         }, f);
     }
@@ -113,17 +128,31 @@ public class FirebaseGroupSchedule {
 
     private static Map<String, List<Integer>> calculateWith(
             Map<String, List<Integer>> groupSchedule, Map<String,
-            List<ScheduleModel>> scheduleData
+            List<ScheduleModel>> scheduleData,
+            Boolean isUnion
     ) {
         Map<String, List<Integer>> result = new HashMap<>();
 
         scheduleData.forEach((key, value) -> {
             List<Integer> origin = groupSchedule.get(key); // 원래 있던 그룹 스케줄 데이터
             if (origin != null) {
-                List<Integer> column = CalculationUtil.unionLists(origin, value);
+                List<Integer> column;
+                if(isUnion) {
+                    column = CalculationUtil.unionLists(origin, value);
+                } else {
+                    column = CalculationUtil.minusLists(origin, value);
+                }
                 result.put(key, column);
             }
         });
         return result;
+    }
+
+    //그룹 시간표를 서버에서 삭제하는 함수
+    public static void deleteGroupSchedule(String groupId) {
+        FirebaseFirestore
+            .getInstance()
+            .collection("group_schedules").document(groupId)
+            .delete();
     }
 }
