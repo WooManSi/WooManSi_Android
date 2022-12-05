@@ -22,6 +22,7 @@ import com.example.woomansi.util.TimeFormatUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.ChipGroup
 import java.time.LocalTime
+import kotlin.random.Random
 
 class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
@@ -101,12 +102,16 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
                 if (!validateInputData(title, curDayOfWeek, curStartTime, curEndTime))
                     return@setOnClickListener
 
+                val colorArray = resources.getStringArray(R.array.timetable_color_array)
+                val randInt = Random.nextInt(colorArray.size)
+
                 setCancelable(false)
                 viewModel.createSchedule(
                     title,
                     dayNameList[curDayOfWeek-1],
                     curStartTime,
-                    curEndTime
+                    curEndTime,
+                    colorArray[randInt]
                 )
             }
 
@@ -126,7 +131,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
             chipGroup.invalidate()
             (0 until chipGroup.childCount).forEach {
-                chipGroup.getChildAt(it).id = it
+                chipGroup.getChildAt(it).id = it + 1
             }
             chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
                 val id = checkedIds.first()

@@ -19,4 +19,13 @@
         <item>토</item>
         <item>일</item>
     </string-array>
+
+    <string-array name="timetable_color_array">
+        <item>#8FAB44</item>
+        <item>#94B9F7</item>
+        <item>#D6F77C</item>
+        <item>#F77763</item>
+        <item>#AD6C62</item>
+        <item>#FFAE34</item>
+    </string-array>
 </resources>
