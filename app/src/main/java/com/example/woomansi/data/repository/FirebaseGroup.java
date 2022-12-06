@@ -25,8 +25,10 @@ public class FirebaseGroup {
                         f.onFailed("그룹 정보를 가져오는 도중 오류가 발생했습니다.");
                         return;
                     }
-                    if (task.getResult().isEmpty())
+                    if (task.getResult().isEmpty()) {
+                        s.onSuccess(List.of());
                         return;
+                    }
                     List<String> groupIdList = new ArrayList<>();
                     for (DocumentSnapshot doc : task.getResult())
                         groupIdList.add(doc.getReference().getId());
