@@ -93,8 +93,9 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
     private fun showScheduleDialog(dayName: String, scheduleModel: ScheduleModel) {
         AlertDialog.Builder(requireContext())
-            .setTitle("일정 정보")
-            .setMessage("${scheduleModel.name}\n\n${scheduleModel.description}")
+            .setTitle(scheduleModel.name)
+            .setMessage("${scheduleModel.startTime} ~ ${scheduleModel.endTime}\n\n" +
+                    scheduleModel.description)
             .setPositiveButton("확인", null)
             .setNegativeButton("삭제하기") { _, _ -> showDeleteDialog(dayName, scheduleModel)}
             .create()
