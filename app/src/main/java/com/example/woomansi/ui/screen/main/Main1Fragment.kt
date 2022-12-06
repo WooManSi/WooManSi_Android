@@ -189,6 +189,10 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             showToast("요일을 선택해주세요")
             return false
         }
+        if (startTime.isBefore(LocalTime.of(6, 0))) {
+            showToast("오전 6시 이후로 설정해주세요")
+            return false
+        }
         if (!startTime.isBefore(endTime)) {
             showToast("시작 시간이 종료 시간보다 앞서 있어야 합니다")
             return false
