@@ -9,8 +9,10 @@ import androidx.lifecycle.ViewModel;
 import com.cometj03.composetimetable.TimeTableData;
 import com.example.woomansi.data.model.ScheduleModel;
 import com.example.woomansi.data.model.UserModel;
+import com.example.woomansi.data.repository.FirebaseGroup;
 import com.example.woomansi.data.repository.FirebaseGroupSchedule;
 import com.example.woomansi.data.repository.FirebaseUserSchedule;
+import com.example.woomansi.util.DayNameList;
 import com.example.woomansi.util.ScheduleTypeTransform;
 import com.example.woomansi.util.TimeFormatUtil;
 import com.example.woomansi.util.UserCache;
@@ -22,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 public class Main1ViewModel extends ViewModel {
 
@@ -114,13 +118,30 @@ public class Main1ViewModel extends ViewModel {
                 dayName,
                 schedule,
                 a -> {
-                    errorMessage.setValue(null);
-                    isLoading.setValue(false);
+                    FirebaseGroup.getGroups(
+                            user.getIdToken(),
+                            groupIdList -> {
+                                // 현재 유저가 가입되어 있는 그룹이 여러 개일 수 있으므로
+                                // 해당 일정을 몇 개의 그룹에서 빼는 과정을 몇 번 성공했는지 저장하는 변수입니다.
+                                // int 변수는 익명함수 내에서 수정하려고 하면 오류가 생겨서 길이 1짜리 배열을 사용했습니다.
+                                final int[] successCount = {0};
+                                int groupCount = groupIdList.size();
+
+                                for (String groupId : groupIdList) {
+                                    FirebaseGroupSchedule.minusSchedule(
+                                            groupId, dayName, schedule,
+                                            () -> {
+                                                if (successCount[0]++ >= groupCount)
+                                                    setError(null);
+                                            },
+                                            errorMsg -> setError(errorMsg)
+                                    );
+                                }
+                            },
+                            errorMsg -> setError(errorMsg)
+                    );
                 },
-                errorMsg -> {
-                    errorMessage.setValue(errorMsg);
-                    isLoading.setValue(false);
-                }
+                errorMsg -> setError(errorMsg)
         );
         // TODO: 그룹 스케줄에서 빼주기
     }
@@ -141,9 +162,12 @@ public class Main1ViewModel extends ViewModel {
                 timeTableData.setValue(tableData);
                 isLoading.setValue(false);
             },
-            message -> {
-                errorMessage.setValue(message);
-                isLoading.setValue(false);
-            });
+            message -> setError(message));
+    }
+
+    private void setError(@Nullable String errorMsg) {
+        // if errorMsg is null -> success
+        errorMessage.setValue(errorMsg);
+        isLoading.setValue(false);
     }
 }
