@@ -31,6 +31,11 @@ public class GroupListAdapter extends BaseAdapter {
         void onImageItemClick(int a_imageResId) ;
     }
 
+    public void setGroupModelList(ArrayList<GroupModel> groupModelList) {
+        this.group = groupModelList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
       return group.size();

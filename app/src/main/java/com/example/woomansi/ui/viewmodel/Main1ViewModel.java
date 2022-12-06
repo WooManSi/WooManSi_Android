@@ -1,8 +1,5 @@
 package com.example.woomansi.ui.viewmodel;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
-import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,16 +9,11 @@ import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.data.repository.FirebaseGroup;
 import com.example.woomansi.data.repository.FirebaseGroupSchedule;
 import com.example.woomansi.data.repository.FirebaseUserSchedule;
-import com.example.woomansi.util.DayNameList;
 import com.example.woomansi.util.ScheduleTypeTransform;
 import com.example.woomansi.util.TimeFormatUtil;
 import com.example.woomansi.util.UserCache;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +63,7 @@ public class Main1ViewModel extends ViewModel {
                 schedule,
                 a -> {
                     // 현재 유저가 가입되어 있는 그룹을 찾고 그룹 document id 리스트를 반환함
-                    FirebaseGroup.getGroups(
+                    FirebaseGroup.getGroupIds(
                             user.getIdToken(),
                             groupIdList -> {
                                 final int[] successCount = {0}; // 아래 deleteSchedule()에서 주석 확인
@@ -109,7 +101,7 @@ public class Main1ViewModel extends ViewModel {
                 schedule,
                 a -> {
                     // 현재 유저가 가입되어 있는 그룹을 찾고 그룹 document id 리스트를 반환함
-                    FirebaseGroup.getGroups(
+                    FirebaseGroup.getGroupIds(
                             user.getIdToken(),
                             groupIdList -> {
                                 // 현재 유저가 가입되어 있는 그룹이 여러 개일 수 있으므로
