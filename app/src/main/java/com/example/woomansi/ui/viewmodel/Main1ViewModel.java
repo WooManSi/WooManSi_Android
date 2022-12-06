@@ -28,12 +28,16 @@ public class Main1ViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private MutableLiveData<TimeTableData> timeTableData;
+    private Map<String, List<ScheduleModel>> scheduleMap;
 
     public LiveData<Boolean> getIsLoading() {
         return isLoading;
     }
     public LiveData<String> getErrorMessage() {
         return errorMessage;
+    }
+    public Map<String, List<ScheduleModel>> getScheduleMap() {
+        return scheduleMap;
     }
 
     public LiveData<TimeTableData> getTimeTableData(List<String> dayNameList) {
@@ -44,7 +48,9 @@ public class Main1ViewModel extends ViewModel {
         return timeTableData;
     }
 
-    public void createSchedule(String title, String description, String dayOfWeekName, LocalTime startTime, LocalTime endTime, String color, List<String> dayNameList) {
+
+    public void createSchedule(String title, String description, String dayName,
+                               LocalTime startTime, LocalTime endTime, String color, List<String> dayNameList) {
         UserModel user = UserCache.getUser(null);
         if (user == null)
             return;
@@ -56,7 +62,7 @@ public class Main1ViewModel extends ViewModel {
 
         FirebaseUserSchedule.addSchedule(
                 user.getIdToken(),
-                dayOfWeekName,
+                dayName,
                 schedule,
                 task -> errorMessage.setValue(null),
                 errorMsg -> errorMessage.setValue(errorMsg)
@@ -76,10 +82,10 @@ public class Main1ViewModel extends ViewModel {
                             DocumentReference groupRef = document.getReference();
 
                             Map<String, List<ScheduleModel>> scheduleDate = new HashMap<>();
-                            for (String dayName : dayNameList)
-                                scheduleDate.put(dayName, new ArrayList<>());
+                            for (String day : dayNameList)
+                                scheduleDate.put(day, new ArrayList<>());
 
-                            scheduleDate.put(dayOfWeekName, List.of(schedule));
+                            scheduleDate.put(dayName, List.of(schedule));
 
                             FirebaseGroupSchedule.unionSchedules(
                                 groupRef.getId(),
@@ -97,8 +103,26 @@ public class Main1ViewModel extends ViewModel {
             });
     }
 
-    public void deleteSchedule(String dayName, ScheduleModel scheduleModel) {
-        // FirebaseUserSchedule.deleteSchedule();
+    public void deleteSchedule(String dayName, ScheduleModel schedule) {
+        UserModel user = UserCache.getUser(null);
+        if (user == null)
+            return;
+
+        isLoading.setValue(true);
+        FirebaseUserSchedule.deleteSchedule(
+                user.getIdToken(),
+                dayName,
+                schedule,
+                a -> {
+                    errorMessage.setValue(null);
+                    isLoading.setValue(false);
+                },
+                errorMsg -> {
+                    errorMessage.setValue(errorMsg);
+                    isLoading.setValue(false);
+                }
+        );
+        // TODO: 그룹 스케줄에서 빼주기
     }
 
     private void loadSchedules(List<String> dayNameList) {
@@ -113,6 +137,7 @@ public class Main1ViewModel extends ViewModel {
             scheduleMap -> {
                 TimeTableData tableData
                         = ScheduleTypeTransform.scheduleMapToTimeTableData(dayNameList, scheduleMap);
+                this.scheduleMap = scheduleMap;
                 timeTableData.setValue(tableData);
                 isLoading.setValue(false);
             },

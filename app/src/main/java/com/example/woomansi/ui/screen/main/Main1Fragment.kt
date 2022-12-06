@@ -1,12 +1,14 @@
 package com.example.woomansi.ui.screen.main
 
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.livedata.observeAsState
@@ -61,7 +63,12 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
                 tableData.value?.let {
                     ComposeTimeTable(
                         timeTableData = it,
-                        onCellClick = { _, _ -> Unit },
+                        onCellClick = { column, row, _ ->
+                            val key = dayNameList[column]
+                            viewModel.scheduleMap[key]?.get(row)?.let { scheduleModel ->
+                                showScheduleDialog(key, scheduleModel)
+                            }
+                        },
                         modifier = Modifier.verticalScroll(scrollState)
                     )
                 }
@@ -84,8 +91,27 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
         }
     }
 
-    private fun showDeleteDialog(scheduleModel: ScheduleModel) {
+    private fun showScheduleDialog(dayName: String, scheduleModel: ScheduleModel) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("일정 정보")
+            .setMessage("${scheduleModel.name}\n\n${scheduleModel.description}")
+            .setPositiveButton("확인", null)
+            .setNegativeButton("삭제하기") { _, _ -> showDeleteDialog(dayName, scheduleModel)}
+            .create()
+            .show()
+    }
 
+    private fun showDeleteDialog(dayName: String, scheduleModel: ScheduleModel) {
+        AlertDialog.Builder(requireContext())
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle("알림")
+            .setMessage("정말 \"${scheduleModel.name}\" 일정을 삭제하시겠습니까?")
+            .setPositiveButton("확인") { _, _, ->
+                viewModel.deleteSchedule(dayName, scheduleModel)
+            }
+            .setNegativeButton("취소", null)
+            .create()
+            .show()
     }
 
     private fun bottomSheetSetting() {
