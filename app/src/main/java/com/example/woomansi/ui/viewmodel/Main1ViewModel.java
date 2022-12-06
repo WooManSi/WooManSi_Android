@@ -64,47 +64,37 @@ public class Main1ViewModel extends ViewModel {
                 TimeFormatUtil.timeToString(endTime),
                 color);
 
+        // 개인 시간표에 일정을 먼저 추가함
         FirebaseUserSchedule.addSchedule(
                 user.getIdToken(),
                 dayName,
                 schedule,
-                task -> errorMessage.setValue(null),
+                a -> {
+                    // 현재 유저가 가입되어 있는 그룹을 찾고 그룹 document id 리스트를 반환함
+                    FirebaseGroup.getGroups(
+                            user.getIdToken(),
+                            groupIdList -> {
+                                final int[] successCount = {0}; // 아래 deleteSchedule()에서 주석 확인
+                                int groupCount = groupIdList.size();
+
+                                for (String groupId : groupIdList) {
+                                    // 각각의 그룹 시간표에서 일정을 제외함
+                                    FirebaseGroupSchedule.unionSchedule(
+                                            groupId, dayName, schedule,
+                                            () -> {
+                                                successCount[0]++;
+                                                if (successCount[0] >= groupCount)
+                                                    errorMessage.setValue(null);
+                                            },
+                                            errorMsg -> errorMessage.setValue(errorMsg)
+                                    );
+                                }
+                            },
+                            errorMsg -> errorMessage.setValue(errorMsg)
+                    );
+                },
                 errorMsg -> errorMessage.setValue(errorMsg)
         );
-
-        //현재 유저가 들어있는 그룹을 찾음
-        FirebaseFirestore
-            .getInstance()
-            .collection("groups")
-            .whereArrayContains("memberList", user.getIdToken())
-            .get()
-            .addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    //그룹이 존재할 시
-                    if(!task.getResult().isEmpty()) {
-                        for (DocumentSnapshot document : task.getResult()) {
-                            DocumentReference groupRef = document.getReference();
-
-                            Map<String, List<ScheduleModel>> scheduleDate = new HashMap<>();
-                            for (String day : dayNameList)
-                                scheduleDate.put(day, new ArrayList<>());
-
-                            scheduleDate.put(dayName, List.of(schedule));
-
-                            FirebaseGroupSchedule.unionSchedules(
-                                groupRef.getId(),
-                                scheduleDate,
-                                () -> {
-                                    Log.d(TAG, "개인시간표 추가 -> 그룹시간표 변경 성공");
-                                },
-                                errorMsg -> Log.d(TAG, errorMsg));
-                        }
-                    }
-                    else {
-                        Log.d(TAG, "해당 유저는 속한 그룹이 없음");
-                    }
-                }
-            });
     }
 
     public void deleteSchedule(String dayName, ScheduleModel schedule) {
@@ -118,6 +108,7 @@ public class Main1ViewModel extends ViewModel {
                 dayName,
                 schedule,
                 a -> {
+                    // 현재 유저가 가입되어 있는 그룹을 찾고 그룹 document id 리스트를 반환함
                     FirebaseGroup.getGroups(
                             user.getIdToken(),
                             groupIdList -> {
@@ -128,10 +119,12 @@ public class Main1ViewModel extends ViewModel {
                                 int groupCount = groupIdList.size();
 
                                 for (String groupId : groupIdList) {
+                                    // 각각의 그룹 시간표에서 일정을 제외함
                                     FirebaseGroupSchedule.minusSchedule(
                                             groupId, dayName, schedule,
                                             () -> {
-                                                if (successCount[0]++ >= groupCount)
+                                                successCount[0]++;
+                                                if (successCount[0] >= groupCount)
                                                     setError(null);
                                             },
                                             errorMsg -> setError(errorMsg)

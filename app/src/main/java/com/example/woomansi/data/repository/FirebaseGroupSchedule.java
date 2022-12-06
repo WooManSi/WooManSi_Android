@@ -41,6 +41,28 @@ public class FirebaseGroupSchedule {
         }, f);
     }
 
+    // 추가된 시간표만 그룹 시간표에 합쳐주고, 업데이트하는 함수
+    public static void unionSchedule(
+            String groupId,
+            String dayName,
+            ScheduleModel scheduleModel,
+            OnUnionSuccessListener s,
+            OnFailedListener f
+    ) {
+        fetchGroupSchedule(groupId, null, groupSchedule -> {
+            // 해당 요일에 맞는 데이터를 불러와서 계산
+            List<Integer> result = CalculationUtil.unionLists(
+                    groupSchedule.get(dayName), List.of(scheduleModel));
+
+            FieldPath path = FieldPath.of(PATH_WRAPPER, dayName);
+            // 해당 요일의 값을 업데이트
+            FirebaseFirestore.getInstance()
+                    .collection(COLLECTION_NAME).document(groupId).update(path, result)
+                    .addOnSuccessListener(a -> s.onSuccess())
+                    .addOnFailureListener(e -> f.onFailed(e.getMessage()));
+        }, f);
+    }
+
     // 기존의 그룹 시간표를 불러와서 scheduleData를 계산하여 빼고, 업데이트하는 함수
     public static void minusSchedules(
         String groupId,
