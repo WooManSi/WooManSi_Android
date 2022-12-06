@@ -136,7 +136,6 @@ public class Main1ViewModel extends ViewModel {
                 },
                 errorMsg -> setError(errorMsg)
         );
-        // TODO: 그룹 스케줄에서 빼주기
     }
 
     private void loadSchedules(List<String> dayNameList) {
@@ -145,7 +144,7 @@ public class Main1ViewModel extends ViewModel {
             return;
 
         isLoading.setValue(true);
-        FirebaseUserSchedule.getSchedules(
+        FirebaseUserSchedule.getSchedulesWithChangeListener(
             user.getIdToken(),
             dayNameList,
             scheduleMap -> {

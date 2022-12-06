@@ -53,6 +53,20 @@ public class FirebaseUserSchedule {
                 }
             });
 
+
+    }
+
+    public static void getSchedulesWithChangeListener(
+            String scheduleId,
+            List<String> dayNameList, // 기본: 월 ~ 일
+            OnLoadSuccessListener s,
+            OnFailedListener f
+    ) {
+        getSchedules(scheduleId, dayNameList, s, f);
+
+        DocumentReference ref = FirebaseFirestore.getInstance()
+                .collection(COLLECTION_NAME).document(scheduleId);
+
         // 데이터 변경사항 리스너 달아주는 코드
         ref.addSnapshotListener((snapshot, error) -> {
             if (error != null) {
