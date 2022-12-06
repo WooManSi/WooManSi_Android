@@ -3,6 +3,7 @@ package com.example.woomansi.data.repository;
 import com.example.woomansi.data.model.ScheduleDataWrapper;
 import com.example.woomansi.data.model.ScheduleModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
@@ -71,7 +72,8 @@ public class FirebaseUserSchedule {
             String scheduleId,
             String dayName,
             ScheduleModel schedule,
-            OnCompleteListener<Void> s
+            OnCompleteListener<Void> s,
+            OnFailedListener f
     ) {
         // schedules내의 특정 dayName의 경로를 가리킴. (schedules: ScheduleDataWrapper의 멤버 변수 이름)
         FieldPath path = FieldPath.of("schedules", dayName);
@@ -82,14 +84,17 @@ public class FirebaseUserSchedule {
                 .collection(COLLECTION_NAME)
                 .document(scheduleId)
                 .update(path, FieldValue.arrayUnion(schedule))
-                .addOnCompleteListener(s);
+                .addOnCompleteListener(s)
+                .addOnFailureListener(e ->
+                        f.onFailed("일정을 추가하지 못했습니다\n" + e.getMessage()));
     }
 
     public static void deleteSchedule(
             String scheduleId,
             String dayName,
             ScheduleModel schedule,
-            OnCompleteListener<Void> s
+            OnSuccessListener<Void> s,
+            OnFailedListener f
     ) {
         FieldPath path = FieldPath.of("schedules", dayName);
 
@@ -98,7 +103,9 @@ public class FirebaseUserSchedule {
                 .collection(COLLECTION_NAME)
                 .document(scheduleId)
                 .update(path, FieldValue.arrayRemove(schedule))
-                .addOnCompleteListener(s);
+                .addOnSuccessListener(s)
+                .addOnFailureListener(e ->
+                        f.onFailed("일정을 삭제하지 못했습니다\n" + e.getMessage()));
     }
 
     private static void initializeSchedule(

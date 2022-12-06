@@ -58,7 +58,8 @@ public class Main1ViewModel extends ViewModel {
                 user.getIdToken(),
                 dayOfWeekName,
                 schedule,
-                task -> errorMessage.setValue(null)
+                task -> errorMessage.setValue(null),
+                errorMsg -> errorMessage.setValue(errorMsg)
         );
 
         //현재 유저가 들어있는 그룹을 찾음
