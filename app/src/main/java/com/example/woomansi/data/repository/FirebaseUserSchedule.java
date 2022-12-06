@@ -14,22 +14,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FirebaseSchedules {
+public class FirebaseUserSchedule {
 
     private final static String COLLECTION_NAME = "schedules";
 
     public interface OnLoadSuccessListener {
         void onLoadSuccess(Map<String, List<ScheduleModel>> scheduleMap);
     }
-    public interface OnLoadFailedListener {
-        void onLoadFailed(String message);
-    }
 
     public static void getSchedules(
             String scheduleId,
             List<String> dayNameList, // 기본: 월 ~ 일
             OnLoadSuccessListener s,
-            OnLoadFailedListener f
+            OnFailedListener f
     ) {
         DocumentReference ref = FirebaseFirestore.getInstance()
                 .collection(COLLECTION_NAME).document(scheduleId);
@@ -37,7 +34,7 @@ public class FirebaseSchedules {
         // 데이터 가져오는 코드
         ref.get().addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
-                    f.onLoadFailed("스케줄 데이터를 가져오는 과정에서 문제가 발생했습니다.\n" + task.getException());
+                    f.onFailed("스케줄 데이터를 가져오는 과정에서 문제가 발생했습니다.\n" + task.getException());
                     return;
                 }
                 DocumentSnapshot document = task.getResult();
@@ -51,21 +48,21 @@ public class FirebaseSchedules {
                 if (wrapper != null) {
                     s.onLoadSuccess(wrapper.getSchedules());
                 } else {
-                    f.onLoadFailed("스케줄 데이터 형식이 잘못되어 불러올 수 없습니다.");
+                    f.onFailed("스케줄 데이터 형식이 잘못되어 불러올 수 없습니다.");
                 }
             });
 
         // 데이터 변경사항 리스너 달아주는 코드
         ref.addSnapshotListener((snapshot, error) -> {
             if (error != null) {
-                f.onLoadFailed("Data Listen Failed\n" + error.getMessage());
+                f.onFailed("Data Listen Failed\n" + error.getMessage());
                 return;
             }
             if (snapshot != null && snapshot.exists()) {
                 ScheduleDataWrapper wrapper = snapshot.toObject(ScheduleDataWrapper.class);
                 if (wrapper != null) s.onLoadSuccess(wrapper.getSchedules());
             } else {
-                f.onLoadFailed("Current Data: null");
+                f.onFailed("Current Data: null");
             }
         });
     }
@@ -85,6 +82,22 @@ public class FirebaseSchedules {
                 .collection(COLLECTION_NAME)
                 .document(scheduleId)
                 .update(path, FieldValue.arrayUnion(schedule))
+                .addOnCompleteListener(s);
+    }
+
+    public static void deleteSchedule(
+            String scheduleId,
+            String dayName,
+            ScheduleModel schedule,
+            OnCompleteListener<Void> s
+    ) {
+        FieldPath path = FieldPath.of("schedules", dayName);
+
+        FirebaseFirestore
+                .getInstance()
+                .collection(COLLECTION_NAME)
+                .document(scheduleId)
+                .update(path, FieldValue.arrayRemove(schedule))
                 .addOnCompleteListener(s);
     }
 

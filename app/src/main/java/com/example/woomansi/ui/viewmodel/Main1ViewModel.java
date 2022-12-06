@@ -10,7 +10,7 @@ import com.cometj03.composetimetable.TimeTableData;
 import com.example.woomansi.data.model.ScheduleModel;
 import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.data.repository.FirebaseGroupSchedule;
-import com.example.woomansi.data.repository.FirebaseSchedules;
+import com.example.woomansi.data.repository.FirebaseUserSchedule;
 import com.example.woomansi.util.ScheduleTypeTransform;
 import com.example.woomansi.util.TimeFormatUtil;
 import com.example.woomansi.util.UserCache;
@@ -54,7 +54,7 @@ public class Main1ViewModel extends ViewModel {
                 TimeFormatUtil.timeToString(endTime),
                 color);
 
-        FirebaseSchedules.addSchedule(
+        FirebaseUserSchedule.addSchedule(
                 user.getIdToken(),
                 dayOfWeekName,
                 schedule,
@@ -96,13 +96,17 @@ public class Main1ViewModel extends ViewModel {
             });
     }
 
-    public void loadSchedules(List<String> dayNameList) {
+    public void deleteSchedule(String dayName, ScheduleModel scheduleModel) {
+        // FirebaseUserSchedule.deleteSchedule();
+    }
+
+    private void loadSchedules(List<String> dayNameList) {
         UserModel user = UserCache.getUser(null);
         if (user == null)
             return;
 
         isLoading.setValue(true);
-        FirebaseSchedules.getSchedules(
+        FirebaseUserSchedule.getSchedules(
             user.getIdToken(),
             dayNameList,
             scheduleMap -> {

@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
+import com.example.woomansi.data.model.ScheduleModel
 import com.example.woomansi.ui.viewmodel.Main1ViewModel
 import com.example.woomansi.util.TimeFormatUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -60,7 +61,7 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
                 tableData.value?.let {
                     ComposeTimeTable(
                         timeTableData = it,
-                        onCellClick = {},
+                        onCellClick = { _, _ -> Unit },
                         modifier = Modifier.verticalScroll(scrollState)
                     )
                 }
@@ -81,6 +82,10 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             }
             scheduleCreateDialog.setCancelable(true)
         }
+    }
+
+    private fun showDeleteDialog(scheduleModel: ScheduleModel) {
+
     }
 
     private fun bottomSheetSetting() {

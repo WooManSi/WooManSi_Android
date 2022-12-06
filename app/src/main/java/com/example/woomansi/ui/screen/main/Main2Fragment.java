@@ -26,7 +26,7 @@ import androidx.fragment.app.Fragment;
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.GroupModel;
 import com.example.woomansi.data.repository.FirebaseGroupSchedule;
-import com.example.woomansi.data.repository.FirebaseSchedules;
+import com.example.woomansi.data.repository.FirebaseUserSchedule;
 import com.example.woomansi.ui.adapter.GroupListAdapter;
 import com.example.woomansi.ui.screen.group.GroupCreateActivity;
 import com.example.woomansi.ui.screen.group.GroupDetailActivity;
@@ -201,7 +201,7 @@ public class Main2Fragment extends Fragment {
 
 
                                 //멤버 스케쥴 불러오기
-                                FirebaseSchedules.getSchedules(
+                                FirebaseUserSchedule.getSchedules(
                                     userId,
                                     dayNameList,
                                     scheduleMap -> {

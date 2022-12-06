@@ -65,7 +65,7 @@ public class FirebaseGroupExit {
 
             //1. 그룹 스케쥴 업데이트
             //2. 먼저 멤버의 스케쥴을 불러옴
-            FirebaseSchedules.getSchedules(
+            FirebaseUserSchedule.getSchedules(
                 memberId,
                 dayNameList,
                 scheduleMap -> {

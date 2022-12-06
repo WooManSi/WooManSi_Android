@@ -9,24 +9,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.GroupModel;
-import com.example.woomansi.data.model.GroupTimeTableWrapper;
 import com.example.woomansi.data.repository.FirebaseGroupCreate;
 import com.example.woomansi.data.repository.FirebaseGroupSchedule;
-import com.example.woomansi.data.repository.FirebaseSchedules;
-import com.example.woomansi.util.CalculationUtil;
+import com.example.woomansi.data.repository.FirebaseUserSchedule;
 import com.example.woomansi.util.UserCache;
 import com.google.android.material.appbar.MaterialToolbar;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
 
 
 public class GroupCreateActivity extends AppCompatActivity {
@@ -84,7 +76,7 @@ public class GroupCreateActivity extends AppCompatActivity {
                 documentId -> {
                     // 방금 생성한 그룹의 documentId를 인자로 건네줌
                     // 먼저 그룹장(지금 사용자)의 개인 스케줄 데이터를 받아오기
-                    FirebaseSchedules.getSchedules(
+                    FirebaseUserSchedule.getSchedules(
                             userId,
                             dayNameList,
                             scheduleMap -> {
