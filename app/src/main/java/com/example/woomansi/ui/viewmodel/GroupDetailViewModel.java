@@ -92,8 +92,9 @@ public class GroupDetailViewModel extends ViewModel {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult().getDocuments().get(0);
                     DocumentReference ref = document.getReference();
+                    GroupModel currnetGroupModel = document.toObject(GroupModel.class);
 
-                    setBtnVisibility(ref.getId(), groupModel.getMemberList());
+                    setBtnVisibility(ref.getId(), currnetGroupModel.getMemberList());
                 }
             });
     }
@@ -113,7 +114,7 @@ public class GroupDetailViewModel extends ViewModel {
                     if(document.exists()) {
                         VoteModel voteModel = document.toObject(VoteModel.class);
                         //투표가 존재하고 멤버가 전부 투표완료한 경우
-                        if(voteModel.getVoteFinishedMember().equals(memberList)) {
+                        if(voteModel.getVoteFinishedMember().containsAll(memberList)) {
                             //투표참여하기 버튼 비활성화
                             //투표결과보기 버튼 활성화
                             canVoteResult.setValue(true);
