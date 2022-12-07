@@ -1,12 +1,14 @@
 package com.example.woomansi.ui.screen.main
 
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.livedata.observeAsState
@@ -17,11 +19,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
+import com.example.woomansi.data.model.ScheduleModel
 import com.example.woomansi.ui.viewmodel.Main1ViewModel
 import com.example.woomansi.util.TimeFormatUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.ChipGroup
 import java.time.LocalTime
+import kotlin.random.Random
 
 class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
@@ -59,7 +63,12 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
                 tableData.value?.let {
                     ComposeTimeTable(
                         timeTableData = it,
-                        onCellClick = {},
+                        onCellClick = { column, row, _ ->
+                            val key = dayNameList[column]
+                            viewModel.scheduleMap[key]?.get(row)?.let { scheduleModel ->
+                                showScheduleDialog(key, scheduleModel)
+                            }
+                        },
                         modifier = Modifier.verticalScroll(scrollState)
                     )
                 }
@@ -82,11 +91,36 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
         }
     }
 
+    private fun showScheduleDialog(dayName: String, scheduleModel: ScheduleModel) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(scheduleModel.name)
+            .setMessage("${scheduleModel.startTime} ~ ${scheduleModel.endTime}\n\n" +
+                    scheduleModel.description)
+            .setPositiveButton("확인", null)
+            .setNegativeButton("삭제하기") { _, _ -> showDeleteDialog(dayName, scheduleModel)}
+            .create()
+            .show()
+    }
+
+    private fun showDeleteDialog(dayName: String, scheduleModel: ScheduleModel) {
+        AlertDialog.Builder(requireContext())
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle("알림")
+            .setMessage("정말 \"${scheduleModel.name}\" 일정을 삭제하시겠습니까?")
+            .setPositiveButton("확인") { _, _, ->
+                viewModel.deleteSchedule(dayName, scheduleModel)
+            }
+            .setNegativeButton("취소", null)
+            .create()
+            .show()
+    }
+
     private fun bottomSheetSetting() {
         scheduleCreateDialog = BottomSheetDialog(requireActivity()).apply {
             setContentView(R.layout.bottom_sheet_create_schedule)
 
             val etTitle = findViewById<EditText>(R.id.et_title)!!
+            val etDescription = findViewById<TextView>(R.id.et_description)!!
             val tvCreate = findViewById<TextView>(R.id.tv_create)!!
             val chipGroup = findViewById<ChipGroup>(R.id.cg_days)!!
             val tvStartTime = findViewById<TextView>(R.id.tv_start_time)!!
@@ -98,15 +132,21 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
 
             tvCreate.setOnClickListener {
                 val title = etTitle.text.toString()
+                val description = etDescription.text.toString()
                 if (!validateInputData(title, curDayOfWeek, curStartTime, curEndTime))
                     return@setOnClickListener
 
+                val colorArray = resources.getStringArray(R.array.timetable_color_array)
+                val randInt = Random.nextInt(colorArray.size)
+
                 setCancelable(false)
                 viewModel.createSchedule(
-                    title,
+                    title, description,
                     dayNameList[curDayOfWeek-1],
                     curStartTime,
-                    curEndTime
+                    curEndTime,
+                    colorArray[randInt],
+                    dayNameList.toMutableList()
                 )
             }
 
@@ -125,6 +165,9 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             }
 
             chipGroup.invalidate()
+            (0 until chipGroup.childCount).forEach {
+                chipGroup.getChildAt(it).id = it + 1
+            }
             chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
                 val id = checkedIds.first()
                 curDayOfWeek = id
@@ -144,6 +187,10 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
         }
         if (dayOfWeekIndex !in 1..7) {
             showToast("요일을 선택해주세요")
+            return false
+        }
+        if (startTime.isBefore(LocalTime.of(6, 0))) {
+            showToast("오전 6시 이후로 설정해주세요")
             return false
         }
         if (!startTime.isBefore(endTime)) {

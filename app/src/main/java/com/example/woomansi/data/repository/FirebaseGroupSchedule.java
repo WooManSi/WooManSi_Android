@@ -4,9 +4,11 @@ import com.example.woomansi.data.model.GroupTimeTableWrapper;
 import com.example.woomansi.data.model.ScheduleModel;
 import com.example.woomansi.util.CalculationUtil;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Map;
 
 public class FirebaseGroupSchedule {
     private static final String COLLECTION_NAME = "group_schedules";
+    private static final String PATH_WRAPPER = "groupTimeTable";
 
     public interface OnFetchSuccessListener {
         void onSuccess(Map<String, List<Integer>> groupSchedule);
@@ -33,8 +36,67 @@ public class FirebaseGroupSchedule {
         List<String> dayNames = new ArrayList<>(scheduleData.keySet());
 
         fetchGroupSchedule(groupId, dayNames, groupSchedule -> {
-            Map<String, List<Integer>> result = calculateWith(groupSchedule, scheduleData);
+            Map<String, List<Integer>> result = calculateWith(groupSchedule, scheduleData, true);
             updateGroupSchedule(groupId, result, s, f);
+        }, f);
+    }
+
+    // 추가된 시간표만 그룹 시간표에 합쳐주고, 업데이트하는 함수
+    public static void unionSchedule(
+            String groupId,
+            String dayName,
+            ScheduleModel scheduleModel,
+            OnUnionSuccessListener s,
+            OnFailedListener f
+    ) {
+        fetchGroupSchedule(groupId, null, groupSchedule -> {
+            // 해당 요일에 맞는 데이터를 불러와서 계산
+            List<Integer> result = CalculationUtil.unionLists(
+                    groupSchedule.get(dayName), List.of(scheduleModel));
+
+            FieldPath path = FieldPath.of(PATH_WRAPPER, dayName);
+            // 해당 요일의 값을 업데이트
+            FirebaseFirestore.getInstance()
+                    .collection(COLLECTION_NAME).document(groupId).update(path, result)
+                    .addOnSuccessListener(a -> s.onSuccess())
+                    .addOnFailureListener(e -> f.onFailed(e.getMessage()));
+        }, f);
+    }
+
+    // 기존의 그룹 시간표를 불러와서 scheduleData를 계산하여 빼고, 업데이트하는 함수
+    public static void minusSchedules(
+        String groupId,
+        Map<String, List<ScheduleModel>> scheduleData,
+        OnUnionSuccessListener s,
+        OnFailedListener f
+    ) {
+        List<String> dayNames = new ArrayList<>(scheduleData.keySet());
+
+        fetchGroupSchedule(groupId, dayNames, groupSchedule -> {
+            Map<String, List<Integer>> result = calculateWith(groupSchedule, scheduleData, false);
+            updateGroupSchedule(groupId, result, s, f);
+        }, f);
+    }
+
+    // 그룹 시간표의 일정 하나만 계산하여 빼고, 업데이트하는 함수
+    public static void minusSchedule(
+            String groupId,
+            String dayName,
+            ScheduleModel scheduleModel,
+            OnUnionSuccessListener s,
+            OnFailedListener f
+    ) {
+        fetchGroupSchedule(groupId, null, groupSchedule -> {
+            // 해당 요일에 맞는 데이터를 불러와서 계산
+            List<Integer> result = CalculationUtil.minusLists(
+                    groupSchedule.get(dayName), List.of(scheduleModel));
+
+            FieldPath path = FieldPath.of(PATH_WRAPPER, dayName);
+            // 해당 요일의 값을 업데이트
+            FirebaseFirestore.getInstance()
+                    .collection(COLLECTION_NAME).document(groupId).update(path, result)
+                    .addOnSuccessListener(a -> s.onSuccess())
+                    .addOnFailureListener(e -> f.onFailed(e.getMessage()));
         }, f);
     }
 
@@ -113,17 +175,31 @@ public class FirebaseGroupSchedule {
 
     private static Map<String, List<Integer>> calculateWith(
             Map<String, List<Integer>> groupSchedule, Map<String,
-            List<ScheduleModel>> scheduleData
+            List<ScheduleModel>> scheduleData,
+            Boolean isUnion
     ) {
         Map<String, List<Integer>> result = new HashMap<>();
 
         scheduleData.forEach((key, value) -> {
             List<Integer> origin = groupSchedule.get(key); // 원래 있던 그룹 스케줄 데이터
             if (origin != null) {
-                List<Integer> column = CalculationUtil.unionLists(origin, value);
+                List<Integer> column;
+                if(isUnion) {
+                    column = CalculationUtil.unionLists(origin, value);
+                } else {
+                    column = CalculationUtil.minusLists(origin, value);
+                }
                 result.put(key, column);
             }
         });
         return result;
+    }
+
+    //그룹 시간표를 서버에서 삭제하는 함수
+    public static void deleteGroupSchedule(String groupId) {
+        FirebaseFirestore
+            .getInstance()
+            .collection("group_schedules").document(groupId)
+            .delete();
     }
 }
