@@ -1,8 +1,10 @@
 package com.example.woomansi.data.repository;
 
 import com.example.woomansi.data.model.GroupModel;
-import com.example.woomansi.data.model.ScheduleDataWrapper;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -26,7 +28,7 @@ public class FirebaseGroup {
 
     // 현재 유저가 가입되어 있는 그룹을 찾는 함수
     public static void getGroupIds(String userId, OnFindGroupIdSuccessListener s, OnFailedListener f) {
-        getGroups(userId, querySnapshot -> {
+        getGroupQueries(userId, querySnapshot -> {
             List<String> groupIdList = new ArrayList<>();
             for (DocumentSnapshot doc : querySnapshot)
                 groupIdList.add(doc.getId());
@@ -59,7 +61,7 @@ public class FirebaseGroup {
     }
 
     public static void getGroupModelsWithChangeListener(String userId, OnFindGroupModelSuccessListener s, OnFailedListener f) {
-        getGroups(userId, querySnapshot -> {
+        getGroupQueries(userId, querySnapshot -> {
             List<GroupModel> groupModelList = new ArrayList<>();
             for (DocumentSnapshot doc : querySnapshot)
                 groupModelList.add(doc.toObject(GroupModel.class));
@@ -87,7 +89,31 @@ public class FirebaseGroup {
                 });
     }
 
-    private static void getGroups(String userId, OnGetGroupQuerySuccessListener s, OnFailedListener f) {
+    // groupId 그룹에 멤버 한 명 추가
+    public static void addMember(String groupId, String memberId, OnSuccessListener<Void> s, OnFailedListener f) {
+        FirebaseFirestore
+                .getInstance()
+                .collection(COLLECTION_NAME)
+                .document(groupId)
+                .update("memberList", FieldValue.arrayUnion(groupId))
+                .addOnSuccessListener(s)
+                .addOnFailureListener(e ->
+                        f.onFailed("그룹에 추가되지 않았습니다.\n" + e.getMessage()));
+    }
+
+    // groupId 그룹에 멤버 한 명 탈퇴
+    public static void removeMember(String groupId, String memberId, OnSuccessListener<Void> s, OnFailedListener f) {
+        FirebaseFirestore
+                .getInstance()
+                .collection(COLLECTION_NAME)
+                .document(groupId)
+                .update("memberList", FieldValue.arrayRemove(groupId))
+                .addOnSuccessListener(s)
+                .addOnFailureListener(e ->
+                        f.onFailed("그룹에 추가되지 않았습니다.\n" + e.getMessage()));
+    }
+
+    private static void getGroupQueries(String userId, OnGetGroupQuerySuccessListener s, OnFailedListener f) {
         FirebaseFirestore
                 .getInstance()
                 .collection(COLLECTION_NAME)
