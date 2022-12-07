@@ -45,7 +45,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 
-public class Main4Fragment extends Fragment{
+public class Main4Fragment extends Fragment {
 
     public Main4Fragment() {
         // Required empty public constructor
@@ -72,7 +72,7 @@ public class Main4Fragment extends Fragment{
     private View view;
     private GroupModel group;
 
-    private final int[] profiles = new int[] {
+    private final int[] profiles = new int[]{
             R.drawable.ic_profile1,
             R.drawable.ic_profile2,
             R.drawable.ic_profile3,
@@ -80,7 +80,6 @@ public class Main4Fragment extends Fragment{
             R.drawable.ic_profile5,
             R.drawable.ic_profile6
     };
-
 
 
     private void customDialog() {
@@ -93,23 +92,23 @@ public class Main4Fragment extends Fragment{
 
         dialog.show();
 
-        for(i = 0; i< count ; i++) {
+        for (i = 0; i < count; i++) {
             int j = i;
             ImageView iv = (ImageView) g1.getChildAt(i);
             StringBuilder fileName = new StringBuilder("ic_profile");
-            fileName.append(j+1);
+            fileName.append(j + 1);
 
             iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ivProfile.setImageResource(profiles[j]);
-                    result = j+1;
+                    result = j + 1;
                     dialog.dismiss();
                 }
             });
         }
 
-}
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -150,13 +149,10 @@ public class Main4Fragment extends Fragment{
                 });
 
 
-
-
-
         ivProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              customDialog();
+                customDialog();
             }
         });
 
@@ -181,18 +177,24 @@ public class Main4Fragment extends Fragment{
 
     private int getProfileId(String profile) {
         int f_result = 0;
-        switch (profile){
-            case "ic_profile1.png": f_result = 0;
-                                    break;
-            case "ic_profile2.png":  f_result= 1;
+        switch (profile) {
+            case "ic_profile1.png":
+                f_result = 0;
                 break;
-            case "ic_profile3.png": f_result = 2;
+            case "ic_profile2.png":
+                f_result = 1;
                 break;
-            case "ic_profile4.png":  f_result = 3;
+            case "ic_profile3.png":
+                f_result = 2;
                 break;
-            case "ic_profile5.png":  f_result = 4;
+            case "ic_profile4.png":
+                f_result = 3;
                 break;
-            case "ic_profile6.png":  f_result = 5;
+            case "ic_profile5.png":
+                f_result = 4;
+                break;
+            case "ic_profile6.png":
+                f_result = 5;
                 break;
         }
 
@@ -214,7 +216,7 @@ public class Main4Fragment extends Fragment{
             {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-               builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle("알림").setMessage("정말 회원 탈퇴 하시겠습니까?");
+                builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle("알림").setMessage("정말 회원 탈퇴 하시겠습니까?");
 
                 builder.setPositiveButton("회원탈퇴", (dialog, id) ->
                 {
@@ -227,7 +229,7 @@ public class Main4Fragment extends Fragment{
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(view.getContext(),"탈퇴 완료",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(view.getContext(), "탈퇴 완료", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -237,7 +239,7 @@ public class Main4Fragment extends Fragment{
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    Toast.makeText(view.getContext(),"탈퇴 완료",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(view.getContext(), "탈퇴 완료", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -250,7 +252,7 @@ public class Main4Fragment extends Fragment{
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        for(DocumentSnapshot documentSnapshot : task.getResult()) {
+                                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                             DocumentReference documentReference = documentSnapshot.getReference();
 
                                             documentReference.delete();
@@ -283,22 +285,21 @@ public class Main4Fragment extends Fragment{
                                     }
 
                                     mFirebaseAuth.signOut();
-                                            Intent intent = new Intent(view.getContext(), SplashActivity.class);
-                                            startActivity(intent);
-                                            getActivity().finish();
-                                        }
-                                    });
+                                    Intent intent = new Intent(view.getContext(), SplashActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+                            });
 
                 });
 
-                builder.setNegativeButton("취소", (dialog, id) -> {});
+                builder.setNegativeButton("취소", (dialog, id) -> {
+                });
 
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
             }
-        }
-
-        else if (item.getItemId() == R.id.appBar_Logout) {
+        } else if (item.getItemId() == R.id.appBar_Logout) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
             builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle("알림").setMessage("정말 로그아웃 하시겠습니까?");
@@ -310,7 +311,8 @@ public class Main4Fragment extends Fragment{
                 startActivity(intent);
                 getActivity().finish();
             });
-            builder.setNegativeButton("취소", (dialog, id) -> {});
+            builder.setNegativeButton("취소", (dialog, id) -> {
+            });
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
