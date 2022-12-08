@@ -8,7 +8,6 @@ import com.example.woomansi.data.model.GroupModel;
 import com.example.woomansi.data.model.VoteModel;
 import com.example.woomansi.data.repository.FirebaseGroupSchedule;
 import com.example.woomansi.data.repository.FirebaseVoteCreate;
-import com.example.woomansi.util.GroupScheduleToVoteScheduleTransform;
 import com.example.woomansi.util.GroupScheduleTypeTransform;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -106,7 +105,7 @@ public class VoteCreateViewModel extends ViewModel {
                         dayNameList,
                         groupSchedule-> {
                             VoteModel voteModel
-                                = GroupScheduleToVoteScheduleTransform.groupScheduleMapToVoteSchedule(dayNameList, groupSchedule, overlapPeople);
+                                = GroupScheduleTypeTransform.groupScheduleMapToVoteSchedule(dayNameList, groupSchedule, overlapPeople);
                             FirebaseVoteCreate.createVote(groupId, voteModel);
                         },
                         message -> {

@@ -3,6 +3,8 @@ package com.example.woomansi.util
 import com.cometj03.composetimetable.ScheduleDayData
 import com.cometj03.composetimetable.ScheduleEntity
 import com.cometj03.composetimetable.TimeTableData
+import com.example.woomansi.data.model.VoteModel
+import com.example.woomansi.data.model.VoteScheduleModel
 
 class GroupScheduleTypeTransform {
     companion object {
@@ -30,5 +32,22 @@ class GroupScheduleTypeTransform {
                 )
             }
         )
+
+        @JvmStatic
+        fun groupScheduleMapToVoteSchedule(
+                dayNameList: List<String>, // 요일 이름
+                groupScheduleMap: Map<String, List<Int>>, // 그룹 스케줄 데이터
+                overlapPeople: Int
+        ): VoteModel {
+            val voteScheduleList = mutableMapOf<String, List<VoteScheduleModel>>()
+            dayNameList.map { key ->
+                val intList = groupScheduleMap[key]
+                val voteScheduleModel = CalculationUtil.calculateIndexToTime(intList, overlapPeople)
+
+                voteScheduleList.put(key, voteScheduleModel)
+            }
+
+            return VoteModel(voteScheduleList, listOf<String>())
+        }
     }
 }
