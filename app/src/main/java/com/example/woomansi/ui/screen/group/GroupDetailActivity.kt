@@ -39,13 +39,11 @@ class GroupDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_group_detail_with_appbar)
 
         viewModel = ViewModelProvider(this).get(GroupDetailViewModel::class.java)
-        initializeBottomSheets()
 
         findViewById<MaterialToolbar>(R.id.groupDetail_topAppBar).apply {
             title = groupData.groupName
             setNavigationOnClickListener { finish() }
             setOnMenuItemClickListener { item ->
-                initializeBottomSheets()
                 when (item.itemId) {
                     R.id.item_group_info -> {
                         groupInfoBottomSheet.show()
@@ -73,9 +71,7 @@ class GroupDetailActivity : AppCompatActivity() {
                 )
             }
         }
-    }
 
-    private fun initializeBottomSheets() {
         groupInfoBottomSheet = BottomSheetDialog(this).apply {
             setContentView(R.layout.bottom_sheet_group_info)
 
@@ -135,7 +131,9 @@ class GroupDetailActivity : AppCompatActivity() {
                 }
             }
 
-            viewModel.getCanVoteJoin(groupData).observe(this) { canVoteJoin ->
+            val canClickVoteBtnLiveDataList = viewModel.getCanVoteJoinAndResult(groupData)
+
+            canClickVoteBtnLiveDataList["canVoteJoin"]!!.observe(this@GroupDetailActivity) { canVoteJoin ->
                 if (canVoteJoin) {
                     joinBtn!!.isClickable = true
                     joinBtn.setTextColor(Color.BLACK)
@@ -145,7 +143,7 @@ class GroupDetailActivity : AppCompatActivity() {
                 }
             }
 
-            viewModel.getCanVoteResult(groupData).observe(this) { canVoteResult ->
+            canClickVoteBtnLiveDataList["canVoteResult"]!!.observe(this@GroupDetailActivity) { canVoteResult ->
                 if (canVoteResult) {
                     resultBtn!!.isClickable = true
                     resultBtn.setTextColor(Color.BLACK)
