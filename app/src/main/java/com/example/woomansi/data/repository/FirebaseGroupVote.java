@@ -3,7 +3,7 @@ package com.example.woomansi.data.repository;
 import com.example.woomansi.data.model.VoteModel;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class FirebaseVoteCreate {
+public class FirebaseGroupVote {
   private static final String COLLECTION_NAME = "group_votes";
 
   // 투표데이터를 서버에 생성하는 함수

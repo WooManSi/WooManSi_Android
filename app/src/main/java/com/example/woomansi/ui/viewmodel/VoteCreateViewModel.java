@@ -7,7 +7,7 @@ import com.cometj03.composetimetable.TimeTableData;
 import com.example.woomansi.data.model.GroupModel;
 import com.example.woomansi.data.model.VoteModel;
 import com.example.woomansi.data.repository.FirebaseGroupSchedule;
-import com.example.woomansi.data.repository.FirebaseVoteCreate;
+import com.example.woomansi.data.repository.FirebaseGroupVote;
 import com.example.woomansi.util.GroupScheduleTypeTransform;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -106,7 +106,7 @@ public class VoteCreateViewModel extends ViewModel {
                         groupSchedule-> {
                             VoteModel voteModel
                                 = GroupScheduleTypeTransform.groupScheduleMapToVoteSchedule(dayNameList, groupSchedule, overlapPeople);
-                            FirebaseVoteCreate.createVote(groupId, voteModel);
+                            FirebaseGroupVote.createVote(groupId, voteModel);
                         },
                         message -> {
                             errorMessage.setValue(message);

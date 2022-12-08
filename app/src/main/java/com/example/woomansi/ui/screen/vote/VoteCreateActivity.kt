@@ -41,7 +41,6 @@ class VoteCreateActivity : AppCompatActivity() {
 
         completeBtn = findViewById(R.id.voteCreate_btn_complete)
         completeBtn.setOnClickListener {
-            //TODO : 사용자가 클릭한 시간들을 vote 관련 데이터 모델 클래스에 담아 서버에 저장하는 코드 구현
             viewModel.saveScheduleEntity(dayNameList.toList(), groupData, overlapPeople)
             finish()
         }
