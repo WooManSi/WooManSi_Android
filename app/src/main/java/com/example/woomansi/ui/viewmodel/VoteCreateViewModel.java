@@ -1,5 +1,6 @@
 package com.example.woomansi.ui.viewmodel;
 
+import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,6 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 public class VoteCreateViewModel extends ViewModel {
+
+    private static final String TAG = "VoteCreateViewModel";
 
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
@@ -106,7 +109,12 @@ public class VoteCreateViewModel extends ViewModel {
                         groupSchedule-> {
                             VoteModel voteModel
                                 = GroupScheduleTypeTransform.groupScheduleMapToVoteSchedule(dayNameList, groupSchedule, overlapPeople);
-                            FirebaseGroupVote.createVote(groupId, voteModel);
+                            FirebaseGroupVote.createVote(
+                                groupId,
+                                voteModel,
+                                () -> Log.d(TAG, "그룹 스케쥴 데이터 생성완료"),
+                                errorMsg -> Log.d(TAG, errorMsg)
+                            );
                         },
                         message -> {
                             errorMessage.setValue(message);
