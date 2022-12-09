@@ -8,7 +8,7 @@ import com.cometj03.composetimetable.TimeTableData;
 import com.example.woomansi.data.model.GroupModel;
 import com.example.woomansi.data.model.VoteModel;
 import com.example.woomansi.data.repository.FirebaseGroupSchedule;
-import com.example.woomansi.util.GroupScheduleTypeTransform;
+import com.example.woomansi.util.ScheduleTypeTransform;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -74,7 +74,7 @@ public class GroupDetailViewModel extends ViewModel {
                 dayNameList,
                 groupSchedule -> {
                   TimeTableData tableData
-                      = GroupScheduleTypeTransform.groupScheduleMapToTimeTableData(dayNameList,
+                      = ScheduleTypeTransform.groupScheduleMapToTimeTableData(dayNameList,
                       groupSchedule, 0);
                   timeTableData.setValue(tableData);
                   isLoading.setValue(false);
