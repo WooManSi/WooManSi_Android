@@ -76,8 +76,6 @@ public class FirebaseUserSchedule {
             if (snapshot != null && snapshot.exists()) {
                 ScheduleDataWrapper wrapper = snapshot.toObject(ScheduleDataWrapper.class);
                 if (wrapper != null) s.onLoadSuccess(wrapper.getSchedules());
-            } else {
-                f.onFailed("Current Data: null");
             }
         });
     }
