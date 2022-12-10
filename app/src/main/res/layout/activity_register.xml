@@ -81,7 +81,7 @@
 
     <Button
         android:id="@+id/RegisterActivity_et_Signup_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Theme.WooManSi.Button.Round"
         android:layout_gravity="center"
