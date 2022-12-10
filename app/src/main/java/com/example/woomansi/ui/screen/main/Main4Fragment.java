@@ -1,7 +1,9 @@
 package com.example.woomansi.ui.screen.main;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,17 +25,8 @@ import androidx.fragment.app.Fragment;
 import com.example.woomansi.R;
 import com.example.woomansi.data.model.GroupModel;
 import com.example.woomansi.data.model.UserModel;
+import com.example.woomansi.data.repository.FirebaseGroupExit;
 import com.example.woomansi.ui.screen.SplashActivity;
-import com.example.woomansi.ui.screen.login.RegisterActivity;
-import com.example.woomansi.ui.screen.timetable.createTimeTableActivity;
-
-import android.app.Dialog;
-import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -43,6 +41,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main4Fragment extends Fragment {
@@ -70,7 +69,8 @@ public class Main4Fragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
     private View view;
-    private GroupModel group;
+
+
 
     private final int[] profiles = new int[]{
             R.drawable.ic_profile1,
@@ -122,7 +122,6 @@ public class Main4Fragment extends Fragment {
         ivProfile = view.findViewById(R.id.ProfileActivity_iv_image);
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-        group = (GroupModel) getActivity().getIntent().getSerializableExtra("group");
         tvprofile.setVisibility(View.INVISIBLE);
         ivProfile.setVisibility(View.INVISIBLE);
 
@@ -248,17 +247,19 @@ public class Main4Fragment extends Fragment {
                     db.collection("groups")
                             .whereEqualTo("leaderUid", currentID)
                             .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                                            DocumentReference documentReference = documentSnapshot.getReference();
-
-                                            documentReference.delete();
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                        GroupModel group = documentSnapshot.toObject(GroupModel.class);
+                                        if(group != null) {
+                                            FirebaseGroupExit.groupLeaderExit(
+                                                    group,
+                                                    () -> Log.d(TAG, "내가 방장인 그룹 삭제하기 성공", task.getException()),
+                                                    error -> Log.d(TAG, error, task.getException())
+                                            );
                                         }
-
                                     }
+
                                 }
                             });
 
@@ -266,29 +267,33 @@ public class Main4Fragment extends Fragment {
                     db.collection("groups")
                             .whereArrayContains("memberList", currentID)
                             .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                                            DocumentReference documentReference = documentSnapshot.getReference();
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    for (DocumentSnapshot documentSnapshot : task.getResult()) {
 
-                                            GroupModel groupModel = documentSnapshot.toObject(GroupModel.class);
-                                            ArrayList<String> list = groupModel.getMemberList();
-                                            list.remove(currentID);
+                                        GroupModel groupModel = documentSnapshot.toObject(GroupModel.class);
+                                        ArrayList<String> list = groupModel.getMemberList();
+                                        list.remove(currentID);
+                                        List<String> dayNameList = List.of(getResources().getStringArray(R.array.day_name));
 
-                                            documentReference.update("memberList", list);
+                                        FirebaseGroupExit.groupMemberExit(
+                                                groupModel,
+                                                groupModel.getMemberList(),
+                                                currentID,
+                                                dayNameList,
+                                                () -> Log.d(TAG, "내가 멤버인 그룹에서 멤버 제외하기 성공", task.getException()),
+                                                error -> Log.d(TAG, error, task.getException())
+                                                );
 
-                                        }
-                                    } else {
-                                        //empty
                                     }
-
-                                    mFirebaseAuth.signOut();
-                                    Intent intent = new Intent(view.getContext(), SplashActivity.class);
-                                    startActivity(intent);
-                                    getActivity().finish();
+                                } else {
+                                    //empty
                                 }
+
+                                mFirebaseAuth.signOut();
+                                Intent intent = new Intent(view.getContext(), SplashActivity.class);
+                                startActivity(intent);
+                                getActivity().finish();
                             });
 
                 });
