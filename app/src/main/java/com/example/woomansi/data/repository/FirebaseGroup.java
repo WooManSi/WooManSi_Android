@@ -76,12 +76,15 @@ public class FirebaseGroup {
                         f.onFailed("Data Listen Failed\n" + error.getMessage());
                         return;
                     }
-                    if (snapshot != null && !snapshot.isEmpty()) {
-                        List<GroupModel> groupModelList = new ArrayList<>();
-                        for (DocumentSnapshot doc : snapshot.getDocuments())
-                            groupModelList.add(doc.toObject(GroupModel.class));
-                        s.onSuccess(groupModelList);
+                    if (snapshot == null || snapshot.isEmpty()) {
+                        s.onSuccess(new ArrayList<>());
+                        return;
                     }
+
+                    List<GroupModel> groupModelList = new ArrayList<>();
+                    for (DocumentSnapshot doc : snapshot.getDocuments())
+                        groupModelList.add(doc.toObject(GroupModel.class));
+                    s.onSuccess(groupModelList);
                 });
     }
 
