@@ -5,14 +5,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.cometj03.composetimetable.TimeTableData;
 import com.example.woomansi.data.model.GroupModel;
+import com.example.woomansi.data.model.VoteModel;
 import com.example.woomansi.data.repository.FirebaseGroupSchedule;
-import com.example.woomansi.util.GroupScheduleTypeTransform;
+import com.example.woomansi.data.repository.FirebaseGroupVote;
+import com.example.woomansi.util.ScheduleTypeTransform;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 public class VoteCreateViewModel extends ViewModel {
+
+    private static final String TAG = "VoteCreateViewModel";
 
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
@@ -64,9 +68,47 @@ public class VoteCreateViewModel extends ViewModel {
                         dayNameList,
                         groupSchedule-> {
                             TimeTableData tableData
-                                = GroupScheduleTypeTransform.groupScheduleMapToTimeTableData(dayNameList, groupSchedule, overlapPeople);
+                                = ScheduleTypeTransform.groupScheduleMapToTimeTableData(dayNameList, groupSchedule, overlapPeople);
                             timeTableData.setValue(tableData);
                             isLoading.setValue(false);
+                        },
+                        message -> {
+                            errorMessage.setValue(message);
+                            isLoading.setValue(false);
+                        });
+                }
+            });
+    }
+
+    public void saveScheduleEntity(
+        List<String> dayNameList,
+        GroupModel groupModel,
+        int overlapPeople
+    ) {
+        if (groupModel == null)
+            return;
+
+        FirebaseFirestore
+            .getInstance()
+            .collection("groups")
+            .whereEqualTo("groupName", groupModel.getGroupName())
+            .whereEqualTo("groupPassword", groupModel.getGroupPassword())
+            .get()
+            .addOnCompleteListener(task -> {
+                //그룹을 찾았을 경우
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult().getDocuments().get(0);
+                    DocumentReference group = document.getReference();
+                    String groupId = group.getId();
+
+                    isLoading.setValue(true);
+                    FirebaseGroupSchedule.fetchGroupSchedule(
+                        groupId,
+                        dayNameList,
+                        groupSchedule-> {
+                            VoteModel voteModel
+                                = ScheduleTypeTransform.groupScheduleMapToVoteSchedule(dayNameList, groupSchedule, overlapPeople);
+                            FirebaseGroupVote.createVote(groupId, voteModel);
                         },
                         message -> {
                             errorMessage.setValue(message);

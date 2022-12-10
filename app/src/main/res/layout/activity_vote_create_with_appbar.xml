@@ -20,7 +20,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           app:navigationIcon="@drawable/ic_arrow_back_black"
-          app:title="투표할 시간을 선택 해주세요."
+          app:title="투표 생성"
           app:titleTextAppearance="@style/black_bold_title" />
 
     </com.google.android.material.appbar.AppBarLayout>

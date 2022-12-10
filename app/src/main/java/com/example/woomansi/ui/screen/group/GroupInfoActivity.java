@@ -74,6 +74,8 @@ public class GroupInfoActivity extends AppCompatActivity {
             String currentUserUid = auth.getCurrentUser().getUid();
             memberList.remove(currentUserUid);
 
+            dialog_exitGroup.dismiss();
+
             //만약 그룹탈퇴를 요청한 사용자가 리더일 경우, 그룹 자체를 삭제
             if(currentUserUid.equals(group.getLeaderUid())){
                 FirebaseGroupExit.groupLeaderExit(

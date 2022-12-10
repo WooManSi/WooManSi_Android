@@ -34,22 +34,25 @@ class VoteCreateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vote_create_with_appbar)
 
+        var overlapPeople = 0;
+
         topAppBar = findViewById(R.id.voteCreate_topAppBar)
         topAppBar.setNavigationOnClickListener { finish() }
 
         completeBtn = findViewById(R.id.voteCreate_btn_complete)
         completeBtn.setOnClickListener {
-            //TODO : 사용자가 클릭한 시간들을 vote 관련 데이터 모델 클래스에 담아 서버에 저장하는 코드 구현
+            viewModel.saveScheduleEntity(dayNameList.toList(), groupData, overlapPeople)
             finish()
         }
 
         spinner = findViewById(R.id.voteCreate_spinner)
+        //TODO : spinner에서 겹치는 유저 설정해주고 설정했다면 overlapPeople 변수에 할당해주기.
 
         viewModel = ViewModelProvider(this).get(VoteCreateViewModel::class.java)
 
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
         composeView.setContent {
-                val tableData = viewModel.getTimeTableData(dayNameList.toList(), groupData, 0).observeAsState()
+                val tableData = viewModel.getTimeTableData(dayNameList.toList(), groupData, overlapPeople).observeAsState()
                 val scrollState = rememberScrollState()
 
                 tableData.value?.let {
