@@ -81,8 +81,6 @@ public class FirebaseGroup {
                         for (DocumentSnapshot doc : snapshot.getDocuments())
                             groupModelList.add(doc.toObject(GroupModel.class));
                         s.onSuccess(groupModelList);
-                    } else {
-                        f.onFailed("Current Data: null");
                     }
                 });
     }
