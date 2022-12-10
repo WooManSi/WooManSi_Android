@@ -27,6 +27,7 @@ import com.example.woomansi.data.model.GroupModel;
 import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.data.repository.FirebaseGroupExit;
 import com.example.woomansi.ui.screen.SplashActivity;
+import com.example.woomansi.util.UserCache;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -69,7 +70,6 @@ public class Main4Fragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
     private View view;
-
 
 
     private final int[] profiles = new int[]{
@@ -251,7 +251,7 @@ public class Main4Fragment extends Fragment {
                                 if (task.isSuccessful()) {
                                     for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                         GroupModel group = documentSnapshot.toObject(GroupModel.class);
-                                        if(group != null) {
+                                        if (group != null) {
                                             FirebaseGroupExit.groupLeaderExit(
                                                     group,
                                                     () -> Log.d(TAG, "내가 방장인 그룹 삭제하기 성공", task.getException()),
@@ -283,13 +283,12 @@ public class Main4Fragment extends Fragment {
                                                 dayNameList,
                                                 () -> Log.d(TAG, "내가 멤버인 그룹에서 멤버 제외하기 성공", task.getException()),
                                                 error -> Log.d(TAG, error, task.getException())
-                                                );
+                                        );
 
                                     }
-                                } else {
-                                    //empty
                                 }
 
+                                UserCache.logout(getContext());
                                 mFirebaseAuth.signOut();
                                 Intent intent = new Intent(view.getContext(), SplashActivity.class);
                                 startActivity(intent);
@@ -311,6 +310,7 @@ public class Main4Fragment extends Fragment {
 
             builder.setPositiveButton("로그아웃", (dialog, id) ->
             {
+                UserCache.logout(getContext());
                 mFirebaseAuth.signOut();
                 Intent intent = new Intent(view.getContext(), SplashActivity.class);
                 startActivity(intent);

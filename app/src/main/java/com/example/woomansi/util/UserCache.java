@@ -28,4 +28,9 @@ public class UserCache {
             return null;
         return cache = new Gson().fromJson(json, UserModel.class);
     }
+
+    public static void logout(@NonNull Context context) {
+        SharedPreferencesUtil.putString(context, KEY_USER_CACHE, "");
+        cache = null;
+    }
 }
