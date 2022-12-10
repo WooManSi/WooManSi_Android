@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.woomansi.R;
+import com.example.woomansi.data.model.GroupModel;
 import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.ui.screen.SplashActivity;
 import com.example.woomansi.ui.screen.login.RegisterActivity;
@@ -41,8 +42,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 
-public class Main4Fragment extends Fragment{
+
+public class Main4Fragment extends Fragment {
 
     public Main4Fragment() {
         // Required empty public constructor
@@ -67,8 +70,9 @@ public class Main4Fragment extends Fragment{
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
     private View view;
+    private GroupModel group;
 
-    private final int[] profiles = new int[] {
+    private final int[] profiles = new int[]{
             R.drawable.ic_profile1,
             R.drawable.ic_profile2,
             R.drawable.ic_profile3,
@@ -76,7 +80,6 @@ public class Main4Fragment extends Fragment{
             R.drawable.ic_profile5,
             R.drawable.ic_profile6
     };
-
 
 
     private void customDialog() {
@@ -89,23 +92,23 @@ public class Main4Fragment extends Fragment{
 
         dialog.show();
 
-        for(i = 0; i< count ; i++) {
+        for (i = 0; i < count; i++) {
             int j = i;
             ImageView iv = (ImageView) g1.getChildAt(i);
             StringBuilder fileName = new StringBuilder("ic_profile");
-            fileName.append(j+1);
+            fileName.append(j + 1);
 
             iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ivProfile.setImageResource(profiles[j]);
-                    result = j+1;
+                    result = j + 1;
                     dialog.dismiss();
                 }
             });
         }
 
-}
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -119,7 +122,7 @@ public class Main4Fragment extends Fragment{
         ivProfile = view.findViewById(R.id.ProfileActivity_iv_image);
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-
+        group = (GroupModel) getActivity().getIntent().getSerializableExtra("group");
         tvprofile.setVisibility(View.INVISIBLE);
         ivProfile.setVisibility(View.INVISIBLE);
 
@@ -146,13 +149,10 @@ public class Main4Fragment extends Fragment{
                 });
 
 
-
-
-
         ivProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              customDialog();
+                customDialog();
             }
         });
 
@@ -177,18 +177,24 @@ public class Main4Fragment extends Fragment{
 
     private int getProfileId(String profile) {
         int f_result = 0;
-        switch (profile){
-            case "ic_profile1.png": f_result = 0;
-                                    break;
-            case "ic_profile2.png":  f_result= 1;
+        switch (profile) {
+            case "ic_profile1.png":
+                f_result = 0;
                 break;
-            case "ic_profile3.png": f_result = 2;
+            case "ic_profile2.png":
+                f_result = 1;
                 break;
-            case "ic_profile4.png":  f_result = 3;
+            case "ic_profile3.png":
+                f_result = 2;
                 break;
-            case "ic_profile5.png":  f_result = 4;
+            case "ic_profile4.png":
+                f_result = 3;
                 break;
-            case "ic_profile6.png":  f_result = 5;
+            case "ic_profile5.png":
+                f_result = 4;
+                break;
+            case "ic_profile6.png":
+                f_result = 5;
                 break;
         }
 
@@ -210,18 +216,20 @@ public class Main4Fragment extends Fragment{
             {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-               builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle("알림").setMessage("정말 회원 탈퇴 하시겠습니까?");
+                builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle("알림").setMessage("정말 회원 탈퇴 하시겠습니까?");
 
                 builder.setPositiveButton("회원탈퇴", (dialog, id) ->
                 {
                     FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                     DocumentReference profileRef = db.collection("users").document(firebaseUser.getUid());
+                    String currentID = mFirebaseAuth.getCurrentUser().getUid();
+
                     firebaseUser.delete()
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(view.getContext(),"탈퇴 완료",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(view.getContext(), "탈퇴 완료", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -231,24 +239,67 @@ public class Main4Fragment extends Fragment{
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    Toast.makeText(view.getContext(),"탈퇴 완료",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(view.getContext(), "탈퇴 완료", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
-                    mFirebaseAuth.signOut();
-                    Intent intent = new Intent(view.getContext(), SplashActivity.class);
-                    startActivity(intent);
-                    getActivity().finish();
+
+                    // 내가 방장으로 있는 모든 방들 삭제
+                    db.collection("groups")
+                            .whereEqualTo("leaderUid", currentID)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                            DocumentReference documentReference = documentSnapshot.getReference();
+
+                                            documentReference.delete();
+                                        }
+
+                                    }
+                                }
+                            });
+
+                    // 내가 들어가 있는 모든 방들에서의 내 정보 삭제
+                    db.collection("groups")
+                            .whereArrayContains("memberList", currentID)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                            DocumentReference documentReference = documentSnapshot.getReference();
+
+                                            GroupModel groupModel = documentSnapshot.toObject(GroupModel.class);
+                                            ArrayList<String> list = groupModel.getMemberList();
+                                            list.remove(currentID);
+
+                                            documentReference.update("memberList", list);
+
+                                        }
+                                    } else {
+                                        //empty
+                                    }
+
+                                    mFirebaseAuth.signOut();
+                                    Intent intent = new Intent(view.getContext(), SplashActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+                            });
+
                 });
 
-                builder.setNegativeButton("취소", (dialog, id) -> {});
+                builder.setNegativeButton("취소", (dialog, id) -> {
+                });
 
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
             }
-        }
-
-        else if (item.getItemId() == R.id.appBar_Logout) {
+        } else if (item.getItemId() == R.id.appBar_Logout) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
             builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle("알림").setMessage("정말 로그아웃 하시겠습니까?");
@@ -260,7 +311,8 @@ public class Main4Fragment extends Fragment{
                 startActivity(intent);
                 getActivity().finish();
             });
-            builder.setNegativeButton("취소", (dialog, id) -> {});
+            builder.setNegativeButton("취소", (dialog, id) -> {
+            });
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
