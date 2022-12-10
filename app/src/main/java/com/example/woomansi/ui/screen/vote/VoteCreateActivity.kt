@@ -55,7 +55,7 @@ class VoteCreateActivity : AppCompatActivity() {
                 tableData.value?.let {
                     ComposeTimeTable(
                             timeTableData = it,
-                            onCellClick = {},
+                            onCellClick = { _, _, _ -> },
                             modifier = Modifier.verticalScroll(scrollState)
                     )
                 }

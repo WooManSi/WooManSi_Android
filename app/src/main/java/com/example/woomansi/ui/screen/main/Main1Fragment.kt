@@ -1,12 +1,14 @@
 package com.example.woomansi.ui.screen.main
 
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.livedata.observeAsState
@@ -17,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
+import com.example.woomansi.data.model.ScheduleModel
 import com.example.woomansi.ui.viewmodel.Main1ViewModel
 import com.example.woomansi.util.TimeFormatUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -60,7 +63,12 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
                 tableData.value?.let {
                     ComposeTimeTable(
                         timeTableData = it,
-                        onCellClick = {},
+                        onCellClick = { column, row, _ ->
+                            val key = dayNameList[column]
+                            viewModel.scheduleMap[key]?.get(row)?.let { scheduleModel ->
+                                showScheduleDialog(key, scheduleModel)
+                            }
+                        },
                         modifier = Modifier.verticalScroll(scrollState)
                     )
                 }
@@ -81,6 +89,30 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
             }
             scheduleCreateDialog.setCancelable(true)
         }
+    }
+
+    private fun showScheduleDialog(dayName: String, scheduleModel: ScheduleModel) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(scheduleModel.name)
+            .setMessage("${scheduleModel.startTime} ~ ${scheduleModel.endTime}\n\n" +
+                    scheduleModel.description)
+            .setPositiveButton("확인", null)
+            .setNegativeButton("삭제하기") { _, _ -> showDeleteDialog(dayName, scheduleModel)}
+            .create()
+            .show()
+    }
+
+    private fun showDeleteDialog(dayName: String, scheduleModel: ScheduleModel) {
+        AlertDialog.Builder(requireContext())
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle("알림")
+            .setMessage("정말 \"${scheduleModel.name}\" 일정을 삭제하시겠습니까?")
+            .setPositiveButton("확인") { _, _, ->
+                viewModel.deleteSchedule(dayName, scheduleModel)
+            }
+            .setNegativeButton("취소", null)
+            .create()
+            .show()
     }
 
     private fun bottomSheetSetting() {
@@ -155,6 +187,10 @@ class Main1Fragment : Fragment(R.layout.fragment_main1) {
         }
         if (dayOfWeekIndex !in 1..7) {
             showToast("요일을 선택해주세요")
+            return false
+        }
+        if (startTime.isBefore(LocalTime.of(6, 0))) {
+            showToast("오전 6시 이후로 설정해주세요")
             return false
         }
         if (!startTime.isBefore(endTime)) {
