@@ -81,6 +81,11 @@ public class Main1ViewModel extends ViewModel {
                                             errorMsg -> errorMessage.setValue(errorMsg)
                                     );
                                 }
+                                if (groupIdList.size() == 0) {
+                                    // groupIdList의 길이가 0일 때는 위 for 문을 안 돌기 때문에
+                                    // 따로 처리해주어야 함
+                                    errorMessage.setValue(null);
+                                }
                             },
                             errorMsg -> errorMessage.setValue(errorMsg)
                     );

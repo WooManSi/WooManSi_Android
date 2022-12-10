@@ -54,8 +54,6 @@ public class FirebaseGroup {
                         for (DocumentSnapshot doc : snapshot.getDocuments())
                             groupIdList.add(doc.getId());
                         s.onSuccess(groupIdList);
-                    } else {
-                        f.onFailed("Current Data: null");
                     }
                 });
     }
