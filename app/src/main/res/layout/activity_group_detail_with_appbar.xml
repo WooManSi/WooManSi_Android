@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="#F3F2F2"
-  tools:ignore="MissingClass">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F2F2"
+    tools:ignore="MissingClass">
 
   <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBarLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#F3F2F2"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <com.google.android.material.appbar.MaterialToolbar
-      android:id="@+id/groupDetail_topAppBar"
+      android:id="@+id/appBarLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:menu="@menu/menu_appbar_for_group_detail"
-      app:navigationIcon="@drawable/ic_arrow_back_black"
-      app:title="그룹명"
-      app:titleTextAppearance="@style/black_bold_title" />
+      android:background="#F3F2F2"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/groupDetail_topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/menu_appbar_for_group_detail"
+        app:navigationIcon="@drawable/ic_arrow_back_black"
+        app:title="그룹명"
+        app:titleTextAppearance="@style/black_bold_title" />
 
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.compose.ui.platform.ComposeView
-    android:id="@+id/voteCreate_cv_time_table"
-    android:layout_width="match_parent"
-    android:layout_height="800dp"
-    app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+      android:id="@+id/voteCreate_cv_time_table"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+      app:layout_constraintVertical_bias="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
