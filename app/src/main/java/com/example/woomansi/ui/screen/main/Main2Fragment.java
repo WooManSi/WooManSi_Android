@@ -142,7 +142,8 @@ public class Main2Fragment extends Fragment {
                 userId,
                 groupModelList -> {
                     groupModelArrayList = new ArrayList<>();
-                    groupModelArrayList.addAll(groupModelList);
+                    if (groupModelList.size() != 0)
+                        groupModelArrayList.addAll(groupModelList);
                     refreshAdapter();
                 },
                 errorMsg -> showToast(errorMsg)
