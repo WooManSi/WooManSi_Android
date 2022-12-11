@@ -27,8 +27,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.2" />
 
-
-        <ImageView
+    <ImageView
             android:id="@+id/ProfileActivity_iv_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,12 +56,21 @@
             app:layout_constraintVertical_bias="0.5">
 
 
-            <Button
-                android:id="@+id/ProfileActivity_bt_profilebtn"
+            <TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:textSize="25dp" />
+
+            <Button
+                android:id="@+id/ProfileActivity_bt_profilebtn"
                 style="@style/Theme.WooManSi.Button.Round"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
                 android:ems="10"
                 android:text="확인" />
 

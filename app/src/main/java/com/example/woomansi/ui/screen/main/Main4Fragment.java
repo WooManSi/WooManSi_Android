@@ -61,6 +61,7 @@ public class Main4Fragment extends Fragment {
     private TextView tvprofile;
     private int i = 0;
     private String st_profile;
+    private String st_nickname;
     private int count = 0;
     private int result = 0;
     private int result2 = 0;
@@ -70,7 +71,7 @@ public class Main4Fragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private FirebaseAuth mFirebaseAuth;
     private View view;
-
+    private TextView tvNickname;
 
     private final int[] profiles = new int[]{
             R.drawable.ic_profile1,
@@ -117,6 +118,7 @@ public class Main4Fragment extends Fragment {
         setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.fragment_main4, container, false);
         tvprofile = view.findViewById(R.id.textView2);
+        tvNickname = view.findViewById(R.id.textView3);
         db = FirebaseFirestore.getInstance();
         btn = view.findViewById(R.id.ProfileActivity_bt_profilebtn);
         ivProfile = view.findViewById(R.id.ProfileActivity_iv_image);
@@ -129,6 +131,7 @@ public class Main4Fragment extends Fragment {
         StorageReference storageRef = storage.getReference();
 
 
+
         db.collection("users")
                 .whereEqualTo("idToken", firebaseUser.getUid())
                 .get()
@@ -139,6 +142,8 @@ public class Main4Fragment extends Fragment {
                             for (DocumentSnapshot document : task.getResult()) {
                                 UserModel member = document.toObject(UserModel.class);
                                 st_profile = member.getProfile();
+                                st_nickname = member.getNickname();
+                                tvNickname.setText(st_nickname);
                                 result2 = getProfileId(st_profile);
                                 ivProfile.setImageResource(profiles[result2]);
                                 ivProfile.setVisibility(View.VISIBLE);
