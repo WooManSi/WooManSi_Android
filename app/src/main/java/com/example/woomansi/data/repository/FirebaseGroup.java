@@ -3,7 +3,6 @@ package com.example.woomansi.data.repository;
 import com.example.woomansi.data.model.GroupModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -14,8 +13,12 @@ import java.util.List;
 public class FirebaseGroup {
     private static final String COLLECTION_NAME = "groups";
 
-    public interface OnFindGroupIdSuccessListener {
+    public interface OnFindGroupIdListSuccessListener {
         void onSuccess(List<String> groupIdList);
+    }
+
+    public interface OnFindGroupIdSuccessListener {
+        void onSuccess(String groupId);
     }
 
     public interface OnFindGroupModelSuccessListener {
@@ -26,8 +29,35 @@ public class FirebaseGroup {
         void onSuccess(QuerySnapshot querySnapshot);
     }
 
+    // groupName과 groupPassword가 같은 그룹 하나를 불러오는 함수
+    public static void getSpecificGroupId(
+            String groupName,
+            String groupPassword,
+            OnFindGroupIdSuccessListener s,
+            OnFailedListener f
+    ) {
+        FirebaseFirestore
+                .getInstance()
+                .collection(COLLECTION_NAME)
+                .whereEqualTo("groupName", groupName)
+                .whereEqualTo("groupPassword", groupPassword)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        f.onFailed("그룹 아이디 불러오기 실패");
+                        return;
+                    }
+                    if (task.getResult().isEmpty() || task.getResult().getDocuments().isEmpty()) {
+                        f.onFailed("해당 조건을 만족하는 그룹이 존재하지 않습니다.");
+                        return;
+                    }
+                    DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                    s.onSuccess(doc.getReference().getId());
+                });
+    }
+
     // 현재 유저가 가입되어 있는 그룹을 찾는 함수
-    public static void getGroupIds(String userId, OnFindGroupIdSuccessListener s, OnFailedListener f) {
+    public static void getGroupIds(String userId, OnFindGroupIdListSuccessListener s, OnFailedListener f) {
         getGroupQueries(userId, querySnapshot -> {
             List<String> groupIdList = new ArrayList<>();
             for (DocumentSnapshot doc : querySnapshot)
@@ -36,7 +66,7 @@ public class FirebaseGroup {
         }, f);
     }
 
-    public static void getGroupIdsWithChangeListener(String userId, OnFindGroupIdSuccessListener s, OnFailedListener f) {
+    public static void getGroupIdsWithChangeListener(String userId, OnFindGroupIdListSuccessListener s, OnFailedListener f) {
         getGroupIds(userId, s, f);
 
         // 리스너 달아주는 코드
