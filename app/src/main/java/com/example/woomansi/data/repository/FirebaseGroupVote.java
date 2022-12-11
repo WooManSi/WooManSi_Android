@@ -11,6 +11,10 @@ public class FirebaseGroupVote {
         void onSuccess();
     }
 
+    public interface OnCheckVoteExistListener {
+        void onCheck(boolean exist);
+    }
+
     // 투표데이터를 서버에 생성하는 함수
     public static void createVote(
             String groupId,
@@ -29,6 +33,22 @@ public class FirebaseGroupVote {
                         return;
                     }
                     s.onSuccess();
+                });
+    }
+
+    // 진행중인 투표가 있는지 체크하는 함수
+    public static void checkIfVoteExists(String groupId, OnCheckVoteExistListener l) {
+        FirebaseFirestore
+                .getInstance()
+                .collection(COLLECTION_NAME)
+                .document(groupId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful() || !task.getResult().exists()) {
+                        l.onCheck(false);
+                        return;
+                    }
+                    l.onCheck(true);
                 });
     }
 }

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -19,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
 import com.example.woomansi.data.model.GroupModel
+import com.example.woomansi.data.repository.FirebaseGroup
 import com.example.woomansi.ui.viewmodel.VoteCreateViewModel
 import com.example.woomansi.util.SharedPreferencesUtil
 import com.google.android.material.appbar.MaterialToolbar
@@ -49,7 +51,7 @@ class VoteCreateActivity : AppCompatActivity() {
 
         completeBtn = findViewById(R.id.voteCreate_btn_complete)
         completeBtn.setOnClickListener {
-            viewModel.createVote(dayNameList.toList(), groupData, curPeopleOverlapLimit)
+            createVote()
         }
 
         viewModel = ViewModelProvider(this).get(VoteCreateViewModel::class.java)
@@ -84,6 +86,18 @@ class VoteCreateActivity : AppCompatActivity() {
         }
 
         initialSpinner()
+    }
+
+    private fun createVote() {
+        AlertDialog.Builder(this)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle("알림")
+            .setMessage("새 투표를 생성하시면 진행중인 투표는 삭제됩니다. 계속하시겠습니까?")
+            .setNegativeButton("취소") { _, _ -> }
+            .setPositiveButton("생성하기") { _, _ ->
+                viewModel.createVote(dayNameList.toList(), groupData, curPeopleOverlapLimit)
+            }
+            .create().show()
     }
 
     private fun initialSpinner() {
