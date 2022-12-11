@@ -73,5 +73,27 @@ class ScheduleTypeTransform {
 
             return VoteModel(voteScheduleList, listOf<String>())
         }
+
+        // voteScheduleModel -> timeTableData로 변환하는 함수
+        @JvmStatic
+        fun voteScheduleMapToTimeTableData(
+            dayNameList: List<String>,
+            voteScheduleMap: Map<String, List<VoteScheduleModel>>
+        ) = TimeTableData(
+            dayNameList.map { key ->
+                val voteScheduleModel = voteScheduleMap[key]
+                ScheduleDayData(
+                    key,
+                    voteScheduleModel?.map { model ->
+                        ScheduleEntity(
+                            "${model.voteNum}표",
+                            "${model.startTime} ~ ${model.endTime}",
+                            TimeFormatUtil.stringToTime(model.startTime),
+                            TimeFormatUtil.stringToTime(model.endTime)
+                        )
+                    } ?: emptyList()
+                )
+            }
+        )
     }
 }

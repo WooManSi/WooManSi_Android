@@ -1,7 +1,11 @@
 package com.example.woomansi.data.repository;
 
 import com.example.woomansi.data.model.VoteModel;
+import com.example.woomansi.data.model.VoteScheduleModel;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
+import java.util.Map;
 
 public class FirebaseGroupVote {
 
@@ -9,6 +13,10 @@ public class FirebaseGroupVote {
 
     public interface OnVoteCreateSuccessListener {
         void onSuccess();
+    }
+
+    public interface OnGetVoteModelSuccessListener {
+        void onSuccess(VoteModel voteModel);
     }
 
     public interface OnCheckVoteExistListener {
@@ -33,6 +41,27 @@ public class FirebaseGroupVote {
                         return;
                     }
                     s.onSuccess();
+                });
+    }
+
+    // 진행중인 투표의 정보를 불러오는 함수
+    public static void getVoteModel(String groupId, OnGetVoteModelSuccessListener s, OnFailedListener f) {
+        FirebaseFirestore
+                .getInstance()
+                .collection(COLLECTION_NAME)
+                .document(groupId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        f.onFailed("get vote schedule failed");
+                        return;
+                    }
+                    if (!task.getResult().exists()) {
+                        f.onFailed("진행중인 투표가 존재하지 않습니다.");
+                        return;
+                    }
+                    VoteModel voteModel = task.getResult().toObject(VoteModel.class);
+                    s.onSuccess(voteModel);
                 });
     }
 
