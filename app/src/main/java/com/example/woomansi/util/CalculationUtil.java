@@ -47,10 +47,9 @@ public class CalculationUtil {
     }
 
     // 그룹 schedule int[72]에서 0이 들어있는 구간 -> 개인 scheduleModels의 시작시간, 끝시간으로 변환할 때 사용하는 함수
+    // overlapPeople: 최대 겹칠 수 있는 인원 수, 나중에 spinner를 이용해 사용자가 고르면 데이터를받아서 바꿔줄 예정
     public static List<VoteScheduleModel> calculateIndexToTime(List<Integer> origin, int overlapPeople) {
-
         List<VoteScheduleModel> result = new ArrayList<>();
-        int overlapCount = overlapPeople; //최대 겹칠 수 있는 인원 수, 나중에 spinner를 이용해 사용자가 고르면 데이터를받아서 바꿔줄 예정
         boolean isStartTimeExist = false; // 시작 시간 or 끝시간 구분하기 위한 boolean 변수
 
         int startIndex = 0;
@@ -69,7 +68,7 @@ public class CalculationUtil {
                 startMinute = i % 4 * 15; //왜 +1을 안해주는가? 최종 투표결과에서 06:01~07:16보단 06:00~07:15가 더 좋아보여서
                 isStartTimeExist = true; //시작 시간 세팅완료
                 
-            } else if (origin.get(i) > overlapCount && isStartTimeExist) { //2. 쭉 0이 나오다가 처음으로 overlapCount 이상의 값이 나온 순간
+            } else if (origin.get(i) > overlapPeople && isStartTimeExist) { //2. 쭉 0이 나오다가 처음으로 overlapCount 이상의 값이 나온 순간
                 endIndex = i;
                 endHour = i / 4 + 6;
                 endMinute = i % 4 * 15;

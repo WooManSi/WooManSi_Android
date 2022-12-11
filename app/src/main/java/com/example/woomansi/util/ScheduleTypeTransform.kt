@@ -36,24 +36,22 @@ class ScheduleTypeTransform {
         // 그룹 스케줄 데이터 -> 비는 시간 TimeTableData로 변환하는 함수
         @JvmStatic
         fun groupScheduleMapToTimeTableData(
-                dayNameList: List<String>, // 요일 이름
-                groupScheduleMap: Map<String, List<Int>>, // 그룹 스케줄 데이터
-                overlapPeople: Int
+            dayNameList: List<String>, // 요일 이름
+            groupScheduleMap: Map<String, List<Int>>, // 그룹 스케줄 데이터
+            peopleOverlapLimit: Int
         ) = TimeTableData(
                 dayNameList.map { key ->
                     val intList = groupScheduleMap[key]
-                    val groupScheduleModel = CalculationUtil.calculateIndexToTime(intList, overlapPeople)
+                    val groupScheduleModel = CalculationUtil.calculateIndexToTime(intList, peopleOverlapLimit)
                     ScheduleDayData(
-                            key,
-                            groupScheduleModel.map { model ->
-                                ScheduleEntity(
-                                        "${model.startTime} ~ ${model.endTime}",
-                                        "",
-                                        TimeFormatUtil.stringToTime(model.startTime),
-                                        TimeFormatUtil.stringToTime(model.endTime),
-                                        // TODO: Color parse
-                                )
-                            } ?: emptyList()
+                        key,
+                        groupScheduleModel.map { model ->
+                            ScheduleEntity(
+                                "${model.startTime} ~ ${model.endTime}", "",
+                                TimeFormatUtil.stringToTime(model.startTime),
+                                TimeFormatUtil.stringToTime(model.endTime)
+                            )
+                        }
                     )
                 }
         )
