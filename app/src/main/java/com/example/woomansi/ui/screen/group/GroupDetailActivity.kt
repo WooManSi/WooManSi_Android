@@ -46,7 +46,7 @@ class GroupDetailActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(GroupDetailViewModel::class.java)
 
         findViewById<MaterialToolbar>(R.id.groupDetail_topAppBar).apply {
-            title = groupData.groupName
+            title = groupData.groupName + " 그룹 시간표"
             setNavigationOnClickListener { finish() }
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {

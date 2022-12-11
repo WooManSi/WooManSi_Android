@@ -1,6 +1,7 @@
 package com.example.woomansi.ui.screen.vote
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -37,6 +38,8 @@ class VoteCreateActivity : AppCompatActivity() {
         intent.getSerializableExtra("group") as GroupModel
     }
 
+    var curPeopleOverlapLimit: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vote_create_with_appbar)
@@ -46,17 +49,16 @@ class VoteCreateActivity : AppCompatActivity() {
 
         completeBtn = findViewById(R.id.voteCreate_btn_complete)
         completeBtn.setOnClickListener {
-            viewModel.saveScheduleEntity(dayNameList.toList(), groupData, 0)
-            finish()
+            viewModel.createVote(dayNameList.toList(), groupData, curPeopleOverlapLimit)
         }
 
         viewModel = ViewModelProvider(this).get(VoteCreateViewModel::class.java)
 
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
-        val peopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY)
+        curPeopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY)
         composeView.setContent {
                 val tableData = viewModel.getTimeTableData(
-                    dayNameList.toList(), groupData, peopleOverlapLimit).observeAsState()
+                    dayNameList.toList(), groupData, curPeopleOverlapLimit).observeAsState()
                 val scrollState = rememberScrollState()
 
                 tableData.value?.let {
@@ -74,7 +76,10 @@ class VoteCreateActivity : AppCompatActivity() {
         }
         viewModel.errorMessage.observe(this) {
             if (it != null) {
+                Log.d("TEST", "onCreate: $it")
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                if (it.equals("success"))
+                    finish()
             }
         }
 
@@ -96,13 +101,12 @@ class VoteCreateActivity : AppCompatActivity() {
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
                     viewModel.updateOverlapedPeople(dayNameList.toList(), pos)
+                    curPeopleOverlapLimit = pos
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit
             }
-            setSelection(
-                SharedPreferencesUtil.getInt(this@VoteCreateActivity, PEOPLE_LIMIT_KEY)
-            )
+            setSelection(curPeopleOverlapLimit)
         }
     }
 }

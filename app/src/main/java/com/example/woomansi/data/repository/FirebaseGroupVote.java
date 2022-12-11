@@ -28,6 +28,7 @@ public class FirebaseGroupVote {
                         f.onFailed("투표 생성 실패");
                         return;
                     }
+                    s.onSuccess();
                 });
     }
 }
