@@ -46,7 +46,8 @@ class VoteJoinActivity : AppCompatActivity() {
                 ComposeTimeTable(
                     timeTableData = it,
                     onCellClick = { column, row, _ ->
-
+                        val key = dayNameList[column]
+                        viewModel.clickVoteSchedule(key, row, dayNameList)
                     },
                     modifier = Modifier.verticalScroll(scrollState)
                 )

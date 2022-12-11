@@ -78,18 +78,25 @@ class ScheduleTypeTransform {
         @JvmStatic
         fun voteScheduleMapToTimeTableData(
             dayNameList: List<String>,
-            voteScheduleMap: Map<String, List<VoteScheduleModel>>
+            voteScheduleMap: Map<String, List<VoteScheduleModel>>,
+            selectedMap: Map<String, List<Boolean>>
         ) = TimeTableData(
             dayNameList.map { key ->
                 val voteScheduleModel = voteScheduleMap[key]
                 ScheduleDayData(
                     key,
-                    voteScheduleModel?.map { model ->
+                    voteScheduleModel?.mapIndexed { i, model ->
+                        val isSelected = selectedMap[key]?.get(i) ?: false
+                        val color = if (isSelected)
+                            Color(android.graphics.Color.parseColor("#FFAE34")) else Color.Gray
+                        val voteNum = model.voteNum + if (isSelected) 1 else 0
+
                         ScheduleEntity(
-                            "${model.voteNum}표",
+                            "${voteNum}표",
                             "${model.startTime} ~ ${model.endTime}",
                             TimeFormatUtil.stringToTime(model.startTime),
-                            TimeFormatUtil.stringToTime(model.endTime)
+                            TimeFormatUtil.stringToTime(model.endTime),
+                            color
                         )
                     } ?: emptyList()
                 )
