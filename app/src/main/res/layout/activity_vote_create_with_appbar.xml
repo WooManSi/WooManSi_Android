@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="#F3F2F2"
-  tools:context=".ui.screen.vote.VoteCreateActivity">
+  tools:context=".ui.screen.vote.VoteCreateActivity"
+  android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+  <com.google.android.material.appbar.AppBarLayout
       android:id="@+id/voteCreate_appBar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -15,58 +16,68 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-          android:id="@+id/voteCreate_topAppBar"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          app:navigationIcon="@drawable/ic_arrow_back_black"
-          app:title="투표 생성"
-          app:titleTextAppearance="@style/black_bold_title" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/voteCreate_topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_arrow_back_black"
+        app:title="투표 생성"
+        app:titleTextAppearance="@style/black_bold_title" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
 
-    <Spinner
-      android:id="@+id/voteCreate_spinner"
-      android:layout_width="wrap_content"
+  <LinearLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="60dp"
-      android:layout_marginStart="4dp"
-      android:layout_centerHorizontal="true"
-      app:layout_constraintStart_toEndOf="@+id/voteCreate_tv_overlapMembers"
-      app:layout_constraintTop_toBottomOf="@+id/voteCreate_appBar" />
+      android:orientation="horizontal"
+      android:padding="16dp"
+      android:gravity="end">
+
+    <ImageView
+        android:id="@+id/iv_info"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_info" />
 
     <TextView
-      android:id="@+id/voteCreate_tv_overlapMembers"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="60dp"
-      android:text="최대 겹칠 수 있는 인원 수"
-      android:textAppearance="@style/black_bold"
-      android:textSize="18dp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.388"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/voteCreate_appBar" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="겹치는 인원 제한 :"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginEnd="8dp"/>
 
-    <androidx.compose.ui.platform.ComposeView
+    <Spinner
+        android:id="@+id/spinner_people_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="명"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="14sp"/>
+
+  </LinearLayout>
+
+  <androidx.compose.ui.platform.ComposeView
       android:id="@+id/voteCreate_cv_time_table"
       android:layout_width="match_parent"
-      android:layout_height="550dp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/voteCreate_tv_overlapMembers"
-      app:layout_constraintVertical_bias="0.181" />
+      android:layout_height="0dp"
+      android:layout_weight="1"/>
 
-    <Button
+  <Button
       android:id="@+id/voteCreate_btn_complete"
       style="@style/Theme.WooManSi.Button.Round"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="완료하기"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.5"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/voteCreate_cv_time_table" />
+      android:layout_margin="8dp"
+      android:text="투표 생성하기"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

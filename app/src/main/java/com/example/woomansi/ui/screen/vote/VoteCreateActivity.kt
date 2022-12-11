@@ -1,6 +1,9 @@
 package com.example.woomansi.ui.screen.vote
 
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
@@ -14,17 +17,19 @@ import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
 import com.example.woomansi.data.model.GroupModel
 import com.example.woomansi.ui.viewmodel.VoteCreateViewModel
+import com.example.woomansi.util.SharedPreferencesUtil
 import com.google.android.material.appbar.MaterialToolbar
 
 class VoteCreateActivity : AppCompatActivity() {
 
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var completeBtn: Button
-    private lateinit var spinner: Spinner
 
     private lateinit var viewModel: VoteCreateViewModel
 
     private val dayNameList by lazy { resources.getStringArray(R.array.day_name) }
+
+    private val PEOPLE_LIMIT_KEY by lazy { "${groupData.groupName}-peopleOverlapLimit" }
 
     private val groupData by lazy {
         intent.getSerializableExtra("group") as GroupModel
@@ -34,25 +39,22 @@ class VoteCreateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vote_create_with_appbar)
 
-        var overlapPeople = 0;
-
         topAppBar = findViewById(R.id.voteCreate_topAppBar)
         topAppBar.setNavigationOnClickListener { finish() }
 
         completeBtn = findViewById(R.id.voteCreate_btn_complete)
         completeBtn.setOnClickListener {
-            viewModel.saveScheduleEntity(dayNameList.toList(), groupData, overlapPeople)
+            viewModel.saveScheduleEntity(dayNameList.toList(), groupData, 0)
             finish()
         }
-
-        spinner = findViewById(R.id.voteCreate_spinner)
-        //TODO : spinner에서 겹치는 유저 설정해주고 설정했다면 overlapPeople 변수에 할당해주기.
 
         viewModel = ViewModelProvider(this).get(VoteCreateViewModel::class.java)
 
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
+        val peopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY)
         composeView.setContent {
-                val tableData = viewModel.getTimeTableData(dayNameList.toList(), groupData, overlapPeople).observeAsState()
+                val tableData = viewModel.getTimeTableData(
+                    dayNameList.toList(), groupData, peopleOverlapLimit).observeAsState()
                 val scrollState = rememberScrollState()
 
                 tableData.value?.let {
@@ -62,6 +64,33 @@ class VoteCreateActivity : AppCompatActivity() {
                             modifier = Modifier.verticalScroll(scrollState)
                     )
                 }
+        }
+
+        initialSpinner()
+    }
+
+    private fun initialSpinner() {
+        val peopleSpinner = findViewById<Spinner>(R.id.spinner_people_count)
+        val groupMemberCount = groupData.memberList.size
+        val spinnerAdapter = ArrayAdapter(
+            this@VoteCreateActivity,
+            android.R.layout.simple_spinner_item,
+            (0 until groupMemberCount).toList()
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        peopleSpinner.apply {
+            adapter = spinnerAdapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
+                    viewModel.updateOverlapedPeople(dayNameList.toList(), pos)
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+            }
+            setSelection(
+                SharedPreferencesUtil.getInt(this@VoteCreateActivity, PEOPLE_LIMIT_KEY)
+            )
         }
     }
 }

@@ -1,10 +1,15 @@
 package com.example.woomansi.ui.screen.group
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
-import android.widget.Button
+import android.view.View
+import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -19,10 +24,13 @@ import com.example.woomansi.ui.screen.vote.VoteCreateActivity
 import com.example.woomansi.ui.screen.vote.VoteJoinActivity
 import com.example.woomansi.ui.screen.vote.VoteResultActivity
 import com.example.woomansi.ui.viewmodel.GroupDetailViewModel
+import com.example.woomansi.util.SharedPreferencesUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class GroupDetailActivity : AppCompatActivity() {
+
+    private val PEOPLE_LIMIT_KEY by lazy { "${groupData.groupName}-peopleOverlapLimit" }
 
     private lateinit var groupInfoBottomSheet: BottomSheetDialog
     private lateinit var voteInfoBottomSheet: BottomSheetDialog
@@ -59,8 +67,10 @@ class GroupDetailActivity : AppCompatActivity() {
         }
 
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
+        val peopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY);
         composeView.setContent {
-            val tableData = viewModel.getTimeTableData(dayNameList.toList(), groupData).observeAsState()
+            val tableData = viewModel.getTimeTableData(
+                dayNameList.toList(), groupData, peopleOverlapLimit).observeAsState()
             val scrollState = rememberScrollState()
 
             tableData.value?.let {
@@ -72,6 +82,37 @@ class GroupDetailActivity : AppCompatActivity() {
             }
         }
 
+        initialBottomSheet()
+        initialSpinner()
+    }
+
+    private fun initialSpinner() {
+        val peopleSpinner = findViewById<Spinner>(R.id.spinner_people_count)
+        val groupMemberCount = groupData.memberList.size
+        val spinnerAdapter = ArrayAdapter(
+            this@GroupDetailActivity,
+            android.R.layout.simple_spinner_item,
+            (0 until groupMemberCount).toList()
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        peopleSpinner.apply {
+            adapter = spinnerAdapter
+            onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
+                    viewModel.updateOverlapedPeople(dayNameList.toList(), pos)
+                    SharedPreferencesUtil.putInt(this@GroupDetailActivity, PEOPLE_LIMIT_KEY, pos)
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+            }
+            setSelection(
+                SharedPreferencesUtil.getInt(this@GroupDetailActivity, PEOPLE_LIMIT_KEY)
+            )
+        }
+    }
+
+    private fun initialBottomSheet() {
         groupInfoBottomSheet = BottomSheetDialog(this).apply {
             setContentView(R.layout.bottom_sheet_group_info)
 

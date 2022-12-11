@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.cometj03.composetimetable.TimeTableData;
 import com.example.woomansi.data.model.GroupModel;
 import com.example.woomansi.data.model.VoteModel;
+import com.example.woomansi.data.repository.FirebaseGroup;
 import com.example.woomansi.data.repository.FirebaseGroupSchedule;
 import com.example.woomansi.data.repository.FirebaseGroupVote;
 import com.example.woomansi.util.ScheduleTypeTransform;
@@ -13,71 +14,47 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
+import java.util.Map;
 
 public class VoteCreateViewModel extends ViewModel {
 
     private static final String TAG = "VoteCreateViewModel";
 
-    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private MutableLiveData<TimeTableData> timeTableData;
 
-    public LiveData<Boolean> getIsLoading() {
-        return isLoading;
-    }
+    private Map<String, List<Integer>> groupScheduleMap;
+
     public LiveData<String> getErrorMessage() {
         return errorMessage;
     }
 
-    public LiveData<TimeTableData> getTimeTableData(
-        List<String> dayNameList,
-        GroupModel groupModel,
-        int overlapPeople
-    ) {
+    public LiveData<TimeTableData> getTimeTableData(List<String> dayNameList, GroupModel groupModel, int initialLimit) {
         if (timeTableData == null) {
             timeTableData = new MutableLiveData<>();
-            loadSchedules(dayNameList, groupModel, overlapPeople);
+            loadSchedules(dayNameList, groupModel, initialLimit);
         }
         return timeTableData;
     }
 
-    public void loadSchedules(
-        List<String> dayNameList,
-        GroupModel groupModel,
-        int overlapPeople
-    ) {
+    public void loadSchedules(List<String> dayNameList, GroupModel groupModel, int initialLimit) {
         if (groupModel == null)
             return;
 
-        FirebaseFirestore
-            .getInstance()
-            .collection("groups")
-            .whereEqualTo("groupName", groupModel.getGroupName())
-            .whereEqualTo("groupPassword", groupModel.getGroupPassword())
-            .get()
-            .addOnCompleteListener(task -> {
-                //그룹을 찾았을 경우
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                    DocumentReference group = document.getReference();
-                    group.getId();
-
-                    isLoading.setValue(true);
+        FirebaseGroup.getSpecificGroupId(
+                groupModel.getGroupName(),
+                groupModel.getGroupPassword(),
+                groupId -> {
                     FirebaseGroupSchedule.fetchGroupSchedule(
-                        group.getId(),
-                        dayNameList,
-                        groupSchedule-> {
-                            TimeTableData tableData
-                                = ScheduleTypeTransform.groupScheduleMapToTimeTableData(dayNameList, groupSchedule, overlapPeople);
-                            timeTableData.setValue(tableData);
-                            isLoading.setValue(false);
-                        },
-                        message -> {
-                            errorMessage.setValue(message);
-                            isLoading.setValue(false);
-                        });
-                }
-            });
+                            groupId, null, // 어차피 그룹 스케줄 정의되어 있을테니 dayNames null이어도 됨
+                            groupSchedule -> {
+                                groupScheduleMap = groupSchedule;
+                                updateOverlapedPeople(dayNameList, initialLimit);
+                            },
+                            errorMsg -> setError(errorMsg)
+                    );
+                },
+                errorMsg -> setError(errorMsg));
     }
 
     public void saveScheduleEntity(
@@ -101,7 +78,6 @@ public class VoteCreateViewModel extends ViewModel {
                     DocumentReference group = document.getReference();
                     String groupId = group.getId();
 
-                    isLoading.setValue(true);
                     FirebaseGroupSchedule.fetchGroupSchedule(
                         groupId,
                         dayNameList,
@@ -112,9 +88,20 @@ public class VoteCreateViewModel extends ViewModel {
                         },
                         message -> {
                             errorMessage.setValue(message);
-                            isLoading.setValue(false);
                         });
                 }
             });
+    }
+
+    public void updateOverlapedPeople(List<String> dayNameList, int peopleOverlapLimit) {
+        if (groupScheduleMap == null)
+            return;
+        TimeTableData tableData = ScheduleTypeTransform
+                .groupScheduleMapToTimeTableData(dayNameList, groupScheduleMap, peopleOverlapLimit);
+        timeTableData.setValue(tableData);
+    }
+
+    private void setError(String errorMsg) {
+        errorMessage.setValue(errorMsg);
     }
 }
