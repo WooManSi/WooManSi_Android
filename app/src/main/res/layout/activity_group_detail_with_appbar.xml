@@ -29,12 +29,22 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      android:padding="16dp">
+      android:padding="16dp"
+      android:gravity="end">
+
+    <ImageView
+        android:id="@+id/iv_info"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_info" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="최대 겹칠 수 있는 인원 수 :"
+        android:text="겹치는 인원 제한 :"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -51,8 +61,7 @@
         android:text="명"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_marginEnd="8dp"/>
+        android:textSize="18sp"/>
 
   </LinearLayout>
 

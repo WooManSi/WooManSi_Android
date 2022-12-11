@@ -1,12 +1,15 @@
 package com.example.woomansi.ui.screen.group
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -81,11 +84,6 @@ class GroupDetailActivity : AppCompatActivity() {
 
         initialBottomSheet()
         initialSpinner()
-
-        // data observe
-        viewModel.peopleCountLimit.observe(this) {
-
-        }
     }
 
     private fun initialSpinner() {

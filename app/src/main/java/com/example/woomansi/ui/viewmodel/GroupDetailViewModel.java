@@ -24,17 +24,12 @@ public class GroupDetailViewModel extends ViewModel {
     private static final String CLASS_NAME = "GroupDetailViewModel";
 
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
-    private final MutableLiveData<Integer> peopleCountLimit = new MutableLiveData<>();
     private MutableLiveData<TimeTableData> timeTableData;
 
     private Map<String, List<Integer>> groupScheduleMap;
 
     private MutableLiveData<Boolean> canVoteJoin;
     private MutableLiveData<Boolean> canVoteResult;
-
-    public LiveData<Integer> getPeopleCountLimit() {
-        return peopleCountLimit;
-    }
 
     public LiveData<TimeTableData> getTimeTableData(List<String> dayNameList, GroupModel groupModel, int initialLimit) {
         if (timeTableData == null) {
