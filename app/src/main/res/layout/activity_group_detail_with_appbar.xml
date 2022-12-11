@@ -34,8 +34,8 @@
 
     <ImageView
         android:id="@+id/iv_info"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:padding="2dp"
         android:scaleType="centerCrop"
         android:layout_marginEnd="4dp"
@@ -47,7 +47,7 @@
         android:text="겹치는 인원 제한 :"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:layout_marginEnd="8dp"/>
 
     <Spinner
@@ -61,7 +61,7 @@
         android:text="명"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="18sp"/>
+        android:textSize="14sp"/>
 
   </LinearLayout>
 
