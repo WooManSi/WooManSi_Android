@@ -19,17 +19,27 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 public class GroupDetailViewModel extends ViewModel {
 
     private static final String CLASS_NAME = "GroupDetailViewModel";
 
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<TimeTableData> timeTableData;
 
     private Map<String, List<Integer>> groupScheduleMap;
 
     private MutableLiveData<Boolean> canVoteJoin;
     private MutableLiveData<Boolean> canVoteResult;
+
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
+    }
+    public LiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
 
     public LiveData<TimeTableData> getTimeTableData(List<String> dayNameList, GroupModel groupModel, int initialLimit) {
         if (timeTableData == null) {
@@ -63,6 +73,7 @@ public class GroupDetailViewModel extends ViewModel {
                             groupSchedule -> {
                                 groupScheduleMap = groupSchedule;
                                 updateOverlapedPeople(dayNameList, initialLimit);
+                                setError(null);
                             },
                             errorMsg -> setError(errorMsg)
                     );
@@ -151,7 +162,8 @@ public class GroupDetailViewModel extends ViewModel {
         Log.d(CLASS_NAME, curFunctionName + "-> " + message);
     }
 
-    private void setError(String errorMsg) {
+    private void setError(@Nullable String errorMsg) {
         errorMessage.setValue(errorMsg);
+        isLoading.setValue(false);
     }
 }

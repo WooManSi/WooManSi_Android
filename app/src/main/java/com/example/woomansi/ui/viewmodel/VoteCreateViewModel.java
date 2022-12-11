@@ -16,17 +16,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 public class VoteCreateViewModel extends ViewModel {
-
-    private static final String TAG = "VoteCreateViewModel";
-
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<TimeTableData> timeTableData;
 
     private Map<String, List<Integer>> groupScheduleMap;
 
     public LiveData<String> getErrorMessage() {
         return errorMessage;
+    }
+    public LiveData<Boolean> getIsLoading() {
+        return isLoading;
     }
 
     public LiveData<TimeTableData> getTimeTableData(List<String> dayNameList, GroupModel groupModel, int initialLimit) {
@@ -41,6 +44,7 @@ public class VoteCreateViewModel extends ViewModel {
         if (groupModel == null)
             return;
 
+        isLoading.setValue(true);
         FirebaseGroup.getSpecificGroupId(
                 groupModel.getGroupName(),
                 groupModel.getGroupPassword(),
@@ -50,6 +54,7 @@ public class VoteCreateViewModel extends ViewModel {
                             groupSchedule -> {
                                 groupScheduleMap = groupSchedule;
                                 updateOverlapedPeople(dayNameList, initialLimit);
+                                setError(null);
                             },
                             errorMsg -> setError(errorMsg)
                     );
@@ -84,7 +89,11 @@ public class VoteCreateViewModel extends ViewModel {
                         groupSchedule-> {
                             VoteModel voteModel
                                 = ScheduleTypeTransform.groupScheduleMapToVoteSchedule(dayNameList, groupSchedule, overlapPeople);
-                            FirebaseGroupVote.createVote(groupId, voteModel);
+                            FirebaseGroupVote.createVote(
+                                    groupId, voteModel,
+                                    () -> {},
+                                    errorMsg -> {}
+                            );
                         },
                         message -> {
                             errorMessage.setValue(message);
@@ -101,7 +110,8 @@ public class VoteCreateViewModel extends ViewModel {
         timeTableData.setValue(tableData);
     }
 
-    private void setError(String errorMsg) {
+    private void setError(@Nullable String errorMsg) {
         errorMessage.setValue(errorMsg);
+        isLoading.setValue(false);
     }
 }

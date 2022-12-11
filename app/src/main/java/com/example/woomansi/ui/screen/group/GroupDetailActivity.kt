@@ -1,15 +1,12 @@
 package com.example.woomansi.ui.screen.group
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -79,6 +76,16 @@ class GroupDetailActivity : AppCompatActivity() {
                         onCellClick = { _, _, _ -> },
                         modifier = Modifier.verticalScroll(scrollState)
                 )
+            }
+        }
+
+        val progressBar = findViewById<ProgressBar>(R.id.pb_loading)
+        viewModel.isLoading.observe(this) {
+            progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        }
+        viewModel.errorMessage.observe(this) {
+            if (it != null) {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
 

@@ -5,7 +5,9 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -64,6 +66,16 @@ class VoteCreateActivity : AppCompatActivity() {
                             modifier = Modifier.verticalScroll(scrollState)
                     )
                 }
+        }
+
+        val progressBar = findViewById<ProgressBar>(R.id.pb_loading)
+        viewModel.isLoading.observe(this) {
+            progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        }
+        viewModel.errorMessage.observe(this) {
+            if (it != null) {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            }
         }
 
         initialSpinner()
