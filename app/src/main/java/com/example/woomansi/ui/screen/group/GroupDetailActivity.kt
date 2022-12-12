@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
@@ -64,17 +65,19 @@ class GroupDetailActivity : AppCompatActivity() {
         }
 
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
-        val peopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY);
+        val peopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY)
+        composeView.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
         composeView.setContent {
             val tableData = viewModel.getTimeTableData(
-                dayNameList.toList(), groupData, peopleOverlapLimit).observeAsState()
+                dayNameList.toList(), groupData, peopleOverlapLimit
+            ).observeAsState()
             val scrollState = rememberScrollState()
 
             tableData.value?.let {
                 ComposeTimeTable(
-                        timeTableData = it,
-                        onCellClick = { _, _, _ -> },
-                        modifier = Modifier.verticalScroll(scrollState)
+                    timeTableData = it,
+                    onCellClick = { _, _, _ -> },
+                    modifier = Modifier.verticalScroll(scrollState)
                 )
             }
         }

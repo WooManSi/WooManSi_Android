@@ -1,31 +1,34 @@
 package com.example.woomansi.ui.viewmodel;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cometj03.composetimetable.TimeTableData;
 import com.example.woomansi.data.model.GroupModel;
+import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.data.model.VoteScheduleModel;
 import com.example.woomansi.data.repository.FirebaseGroup;
 import com.example.woomansi.data.repository.FirebaseGroupVote;
 import com.example.woomansi.util.ScheduleTypeTransform;
+import com.example.woomansi.util.UserCache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 public class VoteJoinViewModel extends ViewModel {
     private MutableLiveData<TimeTableData> timeTableData;
 
     private Map<String, List<VoteScheduleModel>> voteScheduleMap;
-
     private Map<String, List<Boolean>> selectedVoteSchedule;
-    public Map<String, List<Boolean>> getSelectedVoteSchedule() {
-        return selectedVoteSchedule;
+
+    private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
     }
 
     public LiveData<TimeTableData> getTimeTableData(List<String> dayNameList, GroupModel groupModel) {
@@ -36,7 +39,15 @@ public class VoteJoinViewModel extends ViewModel {
         return timeTableData;
     }
 
-    public void loadSchedules(List<String> dayNameList, GroupModel groupModel) {
+    public void castVote(String userId, GroupModel groupModel) {
+        FirebaseGroup.getSpecificGroupId(groupModel.getGroupName(), groupModel.getGroupPassword(), groupId -> {
+            FirebaseGroupVote.castVote(userId, groupId, selectedVoteSchedule,
+                    success -> setError(null),
+                    errorMsg -> setError(errorMsg));
+        }, errorMsg -> setError(errorMsg));
+    }
+
+    private void loadSchedules(List<String> dayNameList, GroupModel groupModel) {
         if (groupModel == null)
             return;
 
@@ -81,5 +92,9 @@ public class VoteJoinViewModel extends ViewModel {
             }
             selectedVoteSchedule.put(dayName, tmp);
         }
+    }
+
+    private void setError(@Nullable String msg) {
+        errorMessage.setValue(msg);
     }
 }

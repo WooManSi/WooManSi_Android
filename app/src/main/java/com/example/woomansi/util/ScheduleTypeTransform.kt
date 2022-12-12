@@ -102,5 +102,16 @@ class ScheduleTypeTransform {
                 )
             }
         )
+
+        @JvmStatic
+        fun recreateVoteScheduleWithVote(
+            voteScheduleMap: Map<String, List<VoteScheduleModel>>,
+            selectedMap: Map<String, List<Boolean>>
+        ) {
+            val keySet = voteScheduleMap.keys
+            keySet.forEachIndexed { index, key ->
+
+            }
+        }
     }
 }

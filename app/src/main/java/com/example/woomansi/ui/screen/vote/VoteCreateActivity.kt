@@ -21,6 +21,7 @@ import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
 import com.example.woomansi.data.model.GroupModel
 import com.example.woomansi.data.repository.FirebaseGroup
+import com.example.woomansi.data.repository.FirebaseGroupVote
 import com.example.woomansi.ui.viewmodel.VoteCreateViewModel
 import com.example.woomansi.util.SharedPreferencesUtil
 import com.google.android.material.appbar.MaterialToolbar
@@ -59,17 +60,18 @@ class VoteCreateActivity : AppCompatActivity() {
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
         curPeopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY)
         composeView.setContent {
-                val tableData = viewModel.getTimeTableData(
-                    dayNameList.toList(), groupData, curPeopleOverlapLimit).observeAsState()
-                val scrollState = rememberScrollState()
+            val tableData = viewModel.getTimeTableData(
+                dayNameList.toList(), groupData, curPeopleOverlapLimit
+            ).observeAsState()
+            val scrollState = rememberScrollState()
 
-                tableData.value?.let {
-                    ComposeTimeTable(
-                            timeTableData = it,
-                            onCellClick = { _, _, _ -> },
-                            modifier = Modifier.verticalScroll(scrollState)
-                    )
-                }
+            tableData.value?.let {
+                ComposeTimeTable(
+                    timeTableData = it,
+                    onCellClick = { _, _, _ -> },
+                    modifier = Modifier.verticalScroll(scrollState)
+                )
+            }
         }
 
         val progressBar = findViewById<ProgressBar>(R.id.pb_loading)
@@ -89,6 +91,19 @@ class VoteCreateActivity : AppCompatActivity() {
     }
 
     private fun createVote() {
+        FirebaseGroup.getSpecificGroupId(
+            groupData.groupName, groupData.groupPassword, { groupId ->
+                FirebaseGroupVote.checkIfVoteExists(groupId) { exist ->
+                    if (exist)
+                        showAlertDialog()
+                    else
+                        viewModel.createVote(dayNameList.toList(), groupData, curPeopleOverlapLimit)
+                }
+            }, { _ -> }
+        )
+    }
+
+    private fun showAlertDialog() {
         AlertDialog.Builder(this)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setTitle("알림")
