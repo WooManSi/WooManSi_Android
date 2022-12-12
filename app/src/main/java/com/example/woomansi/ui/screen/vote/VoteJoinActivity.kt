@@ -73,6 +73,7 @@ class VoteJoinActivity : AppCompatActivity() {
 
         viewModel.errorMessage.observe(this) {
             if (it == null) {
+                Toast.makeText(this, "투표 완료!", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
