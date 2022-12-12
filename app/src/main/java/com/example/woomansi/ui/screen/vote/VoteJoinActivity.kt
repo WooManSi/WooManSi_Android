@@ -3,6 +3,7 @@ package com.example.woomansi.ui.screen.vote
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -14,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
 import com.example.woomansi.data.model.GroupModel
+import com.example.woomansi.data.repository.FirebaseGroup
+import com.example.woomansi.data.repository.FirebaseGroupVote
 import com.example.woomansi.ui.viewmodel.VoteJoinViewModel
 import com.example.woomansi.util.SharedPreferencesUtil
 import com.example.woomansi.util.UserCache
@@ -75,5 +78,27 @@ class VoteJoinActivity : AppCompatActivity() {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
+
+        checkIsAlreadyVoted()
+    }
+
+    private fun checkIsAlreadyVoted() {
+        FirebaseGroup.getSpecificGroupId(groupData.groupName, groupData.groupPassword, { groupId ->
+            FirebaseGroupVote.getVoteModel(groupId, { voteModel ->
+                val userId = UserCache.getUser(this).idToken
+                if (voteModel.voteFinishedMember.contains(userId))
+                    showWarnDialog()
+            }, {})
+        }, {})
+    }
+
+    private fun showWarnDialog() {
+        AlertDialog.Builder(this)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle("알림")
+            .setMessage("이미 투표하셨습니다.")
+            .setPositiveButton("뒤로가기") { _, _ -> finish() }
+            .setCancelable(false)
+            .create().show()
     }
 }
