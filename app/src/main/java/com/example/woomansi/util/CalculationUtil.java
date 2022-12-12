@@ -62,7 +62,7 @@ public class CalculationUtil {
         
         for (int i = 0; i < origin.size(); i++) {
 
-            if (origin.get(i) == 0 && !isStartTimeExist) { //1. 배열값이 0이고 시작시간이 아직 셋팅되지 않았을 때
+            if (origin.get(i) <= overlapPeople && !isStartTimeExist) { //1. 배열값이 overlapPeople 이하이고 시작시간이 아직 셋팅되지 않았을 때
                 startIndex = i;
                 startHour = i / 4 + 6;
                 startMinute = i % 4 * 15; //왜 +1을 안해주는가? 최종 투표결과에서 06:01~07:16보단 06:00~07:15가 더 좋아보여서
@@ -83,7 +83,7 @@ public class CalculationUtil {
 
                 isStartTimeExist = false;
 
-            } else if (i == origin.size() - 1 && origin.get(i) == 0 && isStartTimeExist) { //3. 24:00까지 0값으로 차있을 때
+            } else if (i == origin.size() - 1 && origin.get(i) <= overlapPeople && isStartTimeExist) { //3. 24:00까지 overlapPeople 이하 값으로 차있을 때
                 endIndex = i;
                 endHour = i / 4 + 6;
                 endMinute = 59;

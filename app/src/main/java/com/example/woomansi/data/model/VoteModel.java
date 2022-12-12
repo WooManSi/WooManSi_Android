@@ -21,8 +21,7 @@ public class VoteModel {
     return voteScheduleList;
   }
 
-  public void setVoteScheduleList(
-      Map<String, List<VoteScheduleModel>> voteScheduleList) {
+  public void setVoteScheduleList(Map<String, List<VoteScheduleModel>> voteScheduleList) {
     this.voteScheduleList = voteScheduleList;
   }
 

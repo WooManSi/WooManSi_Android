@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="#F3F2F2"
-  tools:context=".ui.screen.vote.VoteJoinActivity">
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F2F2"
+    tools:context=".ui.screen.vote.VoteJoinActivity"
+    android:orientation="vertical">
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/voteJoin_appBar"
@@ -17,35 +17,28 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <com.google.android.material.appbar.MaterialToolbar
-      android:id="@+id/voteJoin_topAppBar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:navigationIcon="@drawable/ic_arrow_back_black"
-      app:title="투표할 시간을 선택 해주세요."
-      app:titleTextAppearance="@style/black_bold_title" />
+        android:id="@+id/voteJoin_topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_arrow_back_black"
+        app:title="투표할 시간을 선택 해주세요."
+        app:titleTextAppearance="@style/black_bold_title" />
 
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.compose.ui.platform.ComposeView
-    android:id="@+id/voteJoin_cv_time_table"
-    android:layout_width="match_parent"
-    android:layout_height="550dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/voteJoin_appBar"
-    app:layout_constraintVertical_bias="0.300" />
+      android:id="@+id/voteJoin_cv_time_table"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1" />
 
   <Button
-    android:id="@+id/voteJoin_btn_vote"
-    style="@style/Theme.WooManSi.Button.Round"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:text="투표하기"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/voteJoin_cv_time_table" />
+      android:id="@+id/voteJoin_btn_vote"
+      style="@style/Theme.WooManSi.Button.Round"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:text="투표하기"
+      android:layout_margin="8dp"/>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

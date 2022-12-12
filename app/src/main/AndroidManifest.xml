@@ -33,10 +33,9 @@
         <activity android:name=".ui.screen.group.GroupCreateActivity" />
         <activity android:name=".ui.screen.group.GroupInfoActivity" />
         <activity android:name=".ui.screen.group.GroupDetailActivity" />
-        <activity android:name=".ui.screen.timetable.createTimeTableActivity" />
         <activity android:name=".ui.screen.vote.VoteCreateActivity" />
-        <activity android:name=".ui.screen.vote.VoteJoinActivity" />
         <activity android:name=".ui.screen.vote.VoteResultActivity" />
+        <activity android:name=".ui.screen.vote.VoteJoinActivity" />
     </application>
 
 </manifest>

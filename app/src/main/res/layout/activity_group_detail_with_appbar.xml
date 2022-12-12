@@ -65,10 +65,22 @@
 
   </LinearLayout>
 
-  <androidx.compose.ui.platform.ComposeView
-      android:id="@+id/voteCreate_cv_time_table"
+  <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:layout_weight="1"/>
+      android:layout_weight="1">
 
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/voteCreate_cv_time_table"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_gravity="center"/>
+
+  </FrameLayout>
 </LinearLayout>

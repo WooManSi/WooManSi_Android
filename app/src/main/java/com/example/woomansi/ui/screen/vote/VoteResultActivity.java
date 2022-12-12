@@ -10,102 +10,110 @@ import com.example.woomansi.data.model.VoteModel;
 import com.example.woomansi.data.model.VoteResultModel;
 import com.example.woomansi.data.model.VoteScheduleModel;
 import com.example.woomansi.ui.adapter.VoteResultListAdapter;
+import com.example.woomansi.util.DayNameList;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
+import java.util.List;
 
 public class VoteResultActivity extends AppCompatActivity {
 
-  private Button returnGroupActivityBtn;
-  private ListView listView;
-  private ArrayList<VoteResultModel> voteResultModelArrayList;
-  private VoteResultListAdapter voteResultListAdapter;
-  private MaterialToolbar topAppBar;
-  private GroupModel group;
+    private Button returnGroupActivityBtn;
+    private ListView listView;
+    private ArrayList<VoteResultModel> voteResultModelArrayList;
+    private VoteResultListAdapter voteResultListAdapter;
+    private MaterialToolbar topAppBar;
+    private GroupModel group;
 
-  private int maxVoteNum;
+    private int maxVoteNum;
+    private List<String> dayNameList;
 
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_vote_result_with_appbar);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_vote_result_with_appbar);
 
-    topAppBar= findViewById(R.id.voteResult_topAppBar);
-    topAppBar.setNavigationOnClickListener(view -> finish());
+        dayNameList = DayNameList.get(this);
 
-    group = (GroupModel) getIntent().getSerializableExtra("group");
+        topAppBar = findViewById(R.id.voteResult_topAppBar);
+        topAppBar.setNavigationOnClickListener(view -> finish());
 
-    this.InitializeMemberData();
+        group = (GroupModel) getIntent().getSerializableExtra("group");
 
-    //리스트 뷰 초기화
-    listView = findViewById(R.id.voteResult_lv_listView);
-    voteResultListAdapter = new VoteResultListAdapter(VoteResultActivity.this, voteResultModelArrayList);
+        this.InitializeMemberData();
 
-    listView.setAdapter(voteResultListAdapter);
+        //리스트 뷰 초기화
+        listView = findViewById(R.id.voteResult_lv_listView);
+        voteResultListAdapter = new VoteResultListAdapter(VoteResultActivity.this, voteResultModelArrayList);
 
-    returnGroupActivityBtn = findViewById(R.id.voteResult_btn_return);
-    returnGroupActivityBtn.setOnClickListener(v -> finish());
-  }
+        listView.setAdapter(voteResultListAdapter);
 
-  public void InitializeMemberData()
-  {
-    maxVoteNum = 0;
-    voteResultModelArrayList = new ArrayList<>();
+        returnGroupActivityBtn = findViewById(R.id.voteResult_btn_return);
+        returnGroupActivityBtn.setOnClickListener(v -> finish());
+    }
 
-    FirebaseFirestore
-        .getInstance()
-        .collection("groups")
-        .whereEqualTo("groupName", group.getGroupName())
-        .whereEqualTo("groupPassword", group.getGroupPassword())
-        .get()
-        .addOnCompleteListener(task -> {
-          //그룹을 찾았을 경우
-          if (task.isSuccessful()) {
-            DocumentSnapshot document = task.getResult().getDocuments().get(0);
-            DocumentReference ref = document.getReference();
+    public void InitializeMemberData() {
+        maxVoteNum = 0;
+        voteResultModelArrayList = new ArrayList<>();
 
-            FirebaseFirestore
+        FirebaseFirestore
                 .getInstance()
-                .collection("group_votes")
-                .document(ref.getId())
+                .collection("groups")
+                .whereEqualTo("groupName", group.getGroupName())
+                .whereEqualTo("groupPassword", group.getGroupPassword())
                 .get()
-                .addOnCompleteListener(task2 -> {
-                  if (task2.isSuccessful()) {
-                    DocumentSnapshot document2 = task2.getResult();
+                .addOnCompleteListener(task -> {
+                    //그룹을 찾았을 경우
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult().getDocuments().get(0);
+                        DocumentReference ref = document.getReference();
 
-                    //투표 존재 시
-                    if (document2.exists()) {
-                      VoteModel voteModel = document2.toObject(VoteModel.class);
+                        FirebaseFirestore
+                                .getInstance()
+                                .collection("group_votes")
+                                .document(ref.getId())
+                                .get()
+                                .addOnCompleteListener(task2 -> {
+                                    if (task2.isSuccessful()) {
+                                        DocumentSnapshot document2 = task2.getResult();
 
-                      //1. 가장 큰 voteNum 값을 찾음
-                      voteModel.getVoteScheduleList()
-                          .forEach((key, value) -> {
-                            for (VoteScheduleModel voteScheduleModel : value) {
-                              if (maxVoteNum < voteScheduleModel.getVoteNum()) {
-                                maxVoteNum = voteScheduleModel.getVoteNum();
-                              }
-                            }
-                          });
+                                        //투표 존재 시
+                                        if (document2.exists()) {
+                                            VoteModel voteModel = document2.toObject(VoteModel.class);
 
-                      //2.maxVoteNum과 일치하는 결과들만 불러옴
-                      voteModel.getVoteScheduleList()
-                          .forEach((key, value) -> {
-                            for (VoteScheduleModel voteScheduleModel : value) {
-                              if (maxVoteNum == voteScheduleModel.getVoteNum()) {
-                                VoteResultModel voteResultModel = new VoteResultModel(key, voteScheduleModel.getStartTime(), voteScheduleModel.getEndTime());
-                                voteResultModelArrayList.add(voteResultModel);
-                              }
-                            }
-                          });
-                      //어뎁터에게 데이터 변경됬다는 알림 전송
-                      voteResultListAdapter.notifyDataSetChanged();
+                                            //1. 가장 큰 voteNum 값을 찾음
+                                            voteModel.getVoteScheduleList()
+                                                    .forEach((key, value) -> {
+                                                        for (VoteScheduleModel voteScheduleModel : value) {
+                                                            if (maxVoteNum < voteScheduleModel.getVoteNum()) {
+                                                                maxVoteNum = voteScheduleModel.getVoteNum();
+                                                            }
+                                                        }
+                                                    });
+
+                                            //2.maxVoteNum과 일치하는 결과들만 불러옴
+                                            dayNameList.forEach(key -> {
+                                                List<VoteScheduleModel> voteList = voteModel.getVoteScheduleList().get(key);
+
+                                                if (voteList != null) {
+                                                    voteList.forEach((voteScheduleModel) -> {
+                                                        if (maxVoteNum == voteScheduleModel.getVoteNum()) {
+                                                            VoteResultModel voteResultModel = new VoteResultModel(key, voteScheduleModel.getStartTime(), voteScheduleModel.getEndTime());
+                                                            voteResultModelArrayList.add(voteResultModel);
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+                                            //어뎁터에게 데이터 변경됬다는 알림 전송
+                                            voteResultListAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                });
                     }
-                  }
                 });
-          }
-        });
-  }
+    }
 }

@@ -1,11 +1,15 @@
 package com.example.woomansi.ui.screen.vote
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Spinner
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -16,6 +20,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
 import com.example.woomansi.data.model.GroupModel
+import com.example.woomansi.data.repository.FirebaseGroup
+import com.example.woomansi.data.repository.FirebaseGroupVote
 import com.example.woomansi.ui.viewmodel.VoteCreateViewModel
 import com.example.woomansi.util.SharedPreferencesUtil
 import com.google.android.material.appbar.MaterialToolbar
@@ -35,6 +41,8 @@ class VoteCreateActivity : AppCompatActivity() {
         intent.getSerializableExtra("group") as GroupModel
     }
 
+    var curPeopleOverlapLimit: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vote_create_with_appbar)
@@ -44,29 +52,67 @@ class VoteCreateActivity : AppCompatActivity() {
 
         completeBtn = findViewById(R.id.voteCreate_btn_complete)
         completeBtn.setOnClickListener {
-            viewModel.saveScheduleEntity(dayNameList.toList(), groupData, 0)
-            finish()
+            createVote()
         }
 
         viewModel = ViewModelProvider(this).get(VoteCreateViewModel::class.java)
 
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
-        val peopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY)
+        curPeopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY)
         composeView.setContent {
-                val tableData = viewModel.getTimeTableData(
-                    dayNameList.toList(), groupData, peopleOverlapLimit).observeAsState()
-                val scrollState = rememberScrollState()
+            val tableData = viewModel.getTimeTableData(
+                dayNameList.toList(), groupData, curPeopleOverlapLimit
+            ).observeAsState()
+            val scrollState = rememberScrollState()
 
-                tableData.value?.let {
-                    ComposeTimeTable(
-                            timeTableData = it,
-                            onCellClick = { _, _, _ -> },
-                            modifier = Modifier.verticalScroll(scrollState)
-                    )
-                }
+            tableData.value?.let {
+                ComposeTimeTable(
+                    timeTableData = it,
+                    onCellClick = { _, _, _ -> },
+                    modifier = Modifier.verticalScroll(scrollState)
+                )
+            }
+        }
+
+        val progressBar = findViewById<ProgressBar>(R.id.pb_loading)
+        viewModel.isLoading.observe(this) {
+            progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        }
+        viewModel.errorMessage.observe(this) {
+            if (it != null) {
+                Log.d("TEST", "onCreate: $it")
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                if (it.equals("success"))
+                    finish()
+            }
         }
 
         initialSpinner()
+    }
+
+    private fun createVote() {
+        FirebaseGroup.getSpecificGroupId(
+            groupData.groupName, groupData.groupPassword, { groupId ->
+                FirebaseGroupVote.checkIfVoteExists(groupId) { exist ->
+                    if (exist)
+                        showAlertDialog()
+                    else
+                        viewModel.createVote(dayNameList.toList(), groupData, curPeopleOverlapLimit)
+                }
+            }, { _ -> }
+        )
+    }
+
+    private fun showAlertDialog() {
+        AlertDialog.Builder(this)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle("알림")
+            .setMessage("새 투표를 생성하시면 진행중인 투표는 삭제됩니다. 계속하시겠습니까?")
+            .setNegativeButton("취소") { _, _ -> }
+            .setPositiveButton("생성하기") { _, _ ->
+                viewModel.createVote(dayNameList.toList(), groupData, curPeopleOverlapLimit)
+            }
+            .create().show()
     }
 
     private fun initialSpinner() {
@@ -84,13 +130,12 @@ class VoteCreateActivity : AppCompatActivity() {
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
                     viewModel.updateOverlapedPeople(dayNameList.toList(), pos)
+                    curPeopleOverlapLimit = pos
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) = Unit
             }
-            setSelection(
-                SharedPreferencesUtil.getInt(this@VoteCreateActivity, PEOPLE_LIMIT_KEY)
-            )
+            setSelection(curPeopleOverlapLimit)
         }
     }
 }

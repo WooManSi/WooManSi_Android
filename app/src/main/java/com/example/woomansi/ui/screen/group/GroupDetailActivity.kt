@@ -1,21 +1,19 @@
 package com.example.woomansi.ui.screen.group
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.lifecycle.ViewModelProvider
 import com.cometj03.composetimetable.ComposeTimeTable
 import com.example.woomansi.R
@@ -49,7 +47,7 @@ class GroupDetailActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(GroupDetailViewModel::class.java)
 
         findViewById<MaterialToolbar>(R.id.groupDetail_topAppBar).apply {
-            title = groupData.groupName
+            title = groupData.groupName + " 그룹 시간표"
             setNavigationOnClickListener { finish() }
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
@@ -67,18 +65,30 @@ class GroupDetailActivity : AppCompatActivity() {
         }
 
         val composeView: ComposeView = findViewById(R.id.voteCreate_cv_time_table)
-        val peopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY);
+        val peopleOverlapLimit = SharedPreferencesUtil.getInt(this, PEOPLE_LIMIT_KEY)
+        composeView.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
         composeView.setContent {
             val tableData = viewModel.getTimeTableData(
-                dayNameList.toList(), groupData, peopleOverlapLimit).observeAsState()
+                dayNameList.toList(), groupData, peopleOverlapLimit
+            ).observeAsState()
             val scrollState = rememberScrollState()
 
             tableData.value?.let {
                 ComposeTimeTable(
-                        timeTableData = it,
-                        onCellClick = { _, _, _ -> },
-                        modifier = Modifier.verticalScroll(scrollState)
+                    timeTableData = it,
+                    onCellClick = { _, _, _ -> },
+                    modifier = Modifier.verticalScroll(scrollState)
                 )
+            }
+        }
+
+        val progressBar = findViewById<ProgressBar>(R.id.pb_loading)
+        viewModel.isLoading.observe(this) {
+            progressBar.visibility = if (it) View.VISIBLE else View.GONE
+        }
+        viewModel.errorMessage.observe(this) {
+            if (it != null) {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
 
