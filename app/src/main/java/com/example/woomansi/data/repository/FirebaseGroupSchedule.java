@@ -1,6 +1,7 @@
 package com.example.woomansi.data.repository;
 
 import com.example.woomansi.data.model.GroupTimeTableWrapper;
+import com.example.woomansi.data.model.ScheduleDataWrapper;
 import com.example.woomansi.data.model.ScheduleModel;
 import com.example.woomansi.util.CalculationUtil;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -128,6 +129,31 @@ public class FirebaseGroupSchedule {
                         s.onSuccess(wrapper.getGroupTimeTable());
                     } else {
                         f.onFailed("데이터 형식이 잘못되어 불러올 수 없습니다.");
+                    }
+                });
+    }
+
+    public static void fetchGroupScheduleWithChangeListener(
+            String groupId,
+            List<String> dayNames,
+            OnFetchSuccessListener s,
+            OnFailedListener f
+    ) {
+        fetchGroupSchedule(groupId, dayNames, s, f);
+        FirebaseFirestore
+                .getInstance()
+                .collection(COLLECTION_NAME)
+                .document(groupId)
+                .addSnapshotListener((snapshot, error) -> {
+                    if (error != null) {
+                        f.onFailed("Data Listen Failed\n" + error.getMessage());
+                        return;
+                    }
+                    if (snapshot != null && snapshot.exists()) {
+                        GroupTimeTableWrapper wrapper = snapshot.toObject(GroupTimeTableWrapper.class);
+                        if (wrapper != null) {
+                            s.onSuccess(wrapper.getGroupTimeTable());
+                        }
                     }
                 });
     }

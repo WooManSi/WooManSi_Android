@@ -68,7 +68,7 @@ public class GroupDetailViewModel extends ViewModel {
                 groupModel.getGroupName(),
                 groupModel.getGroupPassword(),
                 groupId -> {
-                    FirebaseGroupSchedule.fetchGroupSchedule(
+                    FirebaseGroupSchedule.fetchGroupScheduleWithChangeListener(
                             groupId, null, // 어차피 그룹 스케줄 정의되어 있을테니 dayNames null이어도 됨
                             groupSchedule -> {
                                 groupScheduleMap = groupSchedule;
