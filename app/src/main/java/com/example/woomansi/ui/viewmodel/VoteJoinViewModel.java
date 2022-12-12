@@ -6,12 +6,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.cometj03.composetimetable.TimeTableData;
 import com.example.woomansi.data.model.GroupModel;
-import com.example.woomansi.data.model.UserModel;
 import com.example.woomansi.data.model.VoteScheduleModel;
 import com.example.woomansi.data.repository.FirebaseGroup;
 import com.example.woomansi.data.repository.FirebaseGroupVote;
 import com.example.woomansi.util.ScheduleTypeTransform;
-import com.example.woomansi.util.UserCache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +38,11 @@ public class VoteJoinViewModel extends ViewModel {
     }
 
     public void castVote(String userId, GroupModel groupModel) {
+        if (!isSelected(selectedVoteSchedule)) {
+            setError("원하시는 시간을 하나 이상 선택해주세요");
+            return;
+        }
+
         FirebaseGroup.getSpecificGroupId(groupModel.getGroupName(), groupModel.getGroupPassword(), groupId -> {
             FirebaseGroupVote.castVote(userId, groupId, selectedVoteSchedule,
                     success -> setError(null),
@@ -92,6 +95,16 @@ public class VoteJoinViewModel extends ViewModel {
             }
             selectedVoteSchedule.put(dayName, tmp);
         }
+    }
+
+    // 선택된 게 하나라도 있으면 true, 없다면 false
+    private boolean isSelected(Map<String, List<Boolean>> selectedMap) {
+        for (String key : selectedMap.keySet()) {
+            for (int i = 0; i < selectedMap.get(key).size(); i++)
+                if (selectedMap.get(key).get(i))
+                    return true;
+        }
+        return false;
     }
 
     private void setError(@Nullable String msg) {
